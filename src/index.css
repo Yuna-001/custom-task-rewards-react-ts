@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+  border-style: none;
+  outline-style: none;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+body {
+  background-color: #fafaf5;
+  margin: 0;
+}
+
+@media (max-width: 1047px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 639px) {
+  html {
+    font-size: 12px;
+  }
+}
