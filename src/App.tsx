@@ -6,7 +6,7 @@ import {
 import Authentication, {
   action as authAction,
 } from "./components/auth/Authentication";
-import MainNavigation from "./components/MainNavigation";
+import MainHeader from "./components/header/MainHeader";
 
 function App() {
   const router = createBrowserRouter([
@@ -14,13 +14,8 @@ function App() {
     { path: "/auth", element: <Authentication />, action: authAction },
     {
       path: "/home",
-      element: <MainNavigation />,
-      children: [
-        { path: "tasks" },
-        { path: "rewards" },
-        { path: "storage" },
-        { path: "log" },
-      ],
+      element: <MainHeader />,
+      children: [{ path: "tasks" }, { path: "rewards" }, { path: "storage" }],
     },
   ]);
   return <RouterProvider router={router}></RouterProvider>;
