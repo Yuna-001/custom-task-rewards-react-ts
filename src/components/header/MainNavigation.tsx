@@ -26,7 +26,8 @@ const LinkItem = styled(NavLink)`
   padding: 1.5rem 0;
   text-align: center;
   transition-duration: 0.2s;
-  &:hover {
+  &:hover,
+  &.active {
     background-color: #ada8a1;
     color: #ffffff;
   }
@@ -37,13 +38,28 @@ const MainNavigation: React.FC = () => {
     <Nav>
       <LinkList>
         <li>
-          <LinkItem to="tasks">할 일</LinkItem>
+          <LinkItem
+            to="tasks"
+            className={({ isActive }) => (isActive ? "active" : undefined)}
+          >
+            할 일
+          </LinkItem>
         </li>
         <li>
-          <LinkItem to="rewards">상점</LinkItem>
+          <LinkItem
+            to="rewards"
+            className={({ isActive }) => (isActive ? "active" : undefined)}
+          >
+            상점
+          </LinkItem>
         </li>
         <li>
-          <LinkItem to="storage">보관함</LinkItem>
+          <LinkItem
+            to="storage"
+            className={({ isActive }) => (isActive ? "active" : undefined)}
+          >
+            보관함
+          </LinkItem>
         </li>
       </LinkList>
     </Nav>
