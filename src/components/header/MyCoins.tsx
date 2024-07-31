@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import coinsImg from "../assets/coins.svg";
+import coinsImg from "../../assets/coins.svg";
 
 const MyCoinData = styled.p`
   margin: 1rem;
