@@ -3,10 +3,11 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+
 import Authentication, {
   action as authAction,
 } from "./components/auth/Authentication";
-import MainHeader from "./components/header/MainHeader";
+import RootLayout from "./layout/RootLayout";
 
 function App() {
   const router = createBrowserRouter([
@@ -14,7 +15,7 @@ function App() {
     { path: "/auth", element: <Authentication />, action: authAction },
     {
       path: "/home",
-      element: <MainHeader />,
+      element: <RootLayout />,
       children: [{ path: "tasks" }, { path: "rewards" }, { path: "storage" }],
     },
   ]);
