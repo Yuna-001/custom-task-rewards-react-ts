@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 import media from "../../media";
-import MyCoins from "./MyCoins";
+import UserData from "./UserData";
 import MainNavigation from "./MainNavigation";
 
 const Header = styled.header`
@@ -30,7 +30,7 @@ const LogoutButton = styled(NavLink)`
 const MainHeader: React.FC = () => {
   return (
     <Header>
-      <MyCoins />
+      <UserData />
       <MainNavigation />
       <LogoutButton to="/auth">로그아웃</LogoutButton>
     </Header>
