@@ -8,6 +8,7 @@ import Authentication, {
   action as authAction,
 } from "./components/auth/Authentication";
 import RootLayout from "./layout/RootLayout";
+import TaskPage from "./page/TaskPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -16,7 +17,11 @@ function App() {
     {
       path: "/home",
       element: <RootLayout />,
-      children: [{ path: "tasks" }, { path: "rewards" }, { path: "storage" }],
+      children: [
+        { index: true, element: <TaskPage /> },
+        { path: "rewards" },
+        { path: "storage" },
+      ],
     },
   ]);
   return <RouterProvider router={router}></RouterProvider>;
