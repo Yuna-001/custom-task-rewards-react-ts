@@ -18,7 +18,10 @@ function App() {
       path: "/home",
       element: <RootLayout />,
       children: [
-        { index: true, element: <TaskPage /> },
+        {
+          path: "task",
+          element: <TaskPage />,
+        },
         { path: "rewards" },
         { path: "storage" },
       ],

@@ -49,5 +49,5 @@ const Authentication: React.FC = () => {
 export default Authentication;
 
 export const action = async () => {
-  return redirect("/home");
+  return redirect("/home/task");
 };

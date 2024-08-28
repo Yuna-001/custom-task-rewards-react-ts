@@ -39,9 +39,8 @@ const MainNavigation: React.FC = () => {
       <LinkList>
         <li>
           <LinkItem
-            to="/home"
+            to="/home/task"
             className={({ isActive }) => (isActive ? "active" : undefined)}
-            end
           >
             할 일
           </LinkItem>
