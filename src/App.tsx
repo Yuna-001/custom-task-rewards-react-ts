@@ -8,7 +8,7 @@ import Authentication, {
   action as authAction,
 } from "./components/auth/Authentication";
 import RootLayout from "./layout/RootLayout";
-import TaskPage from "./page/TaskPage";
+import Page from "./page/Page";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,11 +19,14 @@ function App() {
       element: <RootLayout />,
       children: [
         {
-          path: "task",
-          element: <TaskPage />,
+          path: "tasks",
+          element: <Page type="tasks" />,
         },
-        { path: "rewards" },
-        { path: "storage" },
+        { path: "rewards-shop", element: <Page type="rewards-shop" /> },
+        { path: "storage", element: <Page type="storage" /> },
+        { path: ":category/add" },
+        { path: ":category/:id" },
+        { path: ":category/:id/edit" },
       ],
     },
   ]);

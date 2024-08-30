@@ -39,7 +39,7 @@ const MainNavigation: React.FC = () => {
       <LinkList>
         <li>
           <LinkItem
-            to="/home/task"
+            to="/home/tasks"
             className={({ isActive }) => (isActive ? "active" : undefined)}
           >
             할 일
@@ -47,7 +47,7 @@ const MainNavigation: React.FC = () => {
         </li>
         <li>
           <LinkItem
-            to="/home/rewards"
+            to="/home/rewards-shop"
             className={({ isActive }) => (isActive ? "active" : undefined)}
           >
             상점
