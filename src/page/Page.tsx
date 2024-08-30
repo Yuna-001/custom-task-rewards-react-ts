@@ -41,7 +41,7 @@ const Page: React.FC<{ type: "tasks" | "rewards-shop" | "storage" }> = ({
   }
 
   return (
-    <>
+    <PageLayout>
       {type !== "storage" && <AddCard />}
       {items.map(({ title, coin }) => (
         <ItemCard
@@ -51,7 +51,7 @@ const Page: React.FC<{ type: "tasks" | "rewards-shop" | "storage" }> = ({
           coin={coin}
         />
       ))}
-    </>
+    </PageLayout>
   );
 };
 

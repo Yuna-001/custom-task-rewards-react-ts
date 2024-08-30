@@ -5,7 +5,7 @@ import media from "../media";
 
 const Main = styled.main`
   width: 80%;
-  margin-top: 3.5rem;
+  padding: 4rem 0;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
