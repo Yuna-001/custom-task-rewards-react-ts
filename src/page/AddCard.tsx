@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import Card from "./Card";
+import Card from "../components/UI/Card";
 
 const AddButton = styled(Link)`
   width: 100%;

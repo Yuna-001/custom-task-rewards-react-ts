@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import coinImg from "../assets/coin.svg";
-import Card from "../components/UI/Card";
-import ActionButton from "../components/UI/ActionButton";
+import coinImg from "../../assets/coin.svg";
+import Card from "./Card";
+import ActionButton from "./ActionButton";
+import { ReactNode } from "react";
 
-const MyCoinData = styled.p`
+const CoinData = styled.p`
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -36,35 +37,44 @@ const DetailLink = styled(Link)`
   }
 `;
 
-const TaskCard: React.FC<{
+const ItemCard: React.FC<{
+  type: "tasks" | "rewards-shop" | "storage";
   title: string;
   coin: number;
-}> = ({ title, coin }) => {
+}> = ({ type, title, coin }) => {
   const id: string = title + String(coin);
   let showingTitle: string = title;
+  const btns: Array<ReactNode> = [
+    <ActionButton>
+      <Link to={`${id}/edit`}>편집</Link>
+    </ActionButton>,
+    <ActionButton>완료</ActionButton>,
+  ];
 
   if (title.length > 30) showingTitle = title.slice(0, 30) + "...";
+
+  if (type === "rewards") {
+    btns[1] = <ActionButton>구입</ActionButton>;
+  } else if (type === "storage") {
+    btns[0] = <ActionButton>환불</ActionButton>;
+    btns[1] = <ActionButton>완료</ActionButton>;
+  }
 
   return (
     <Card>
       <Content>
         <div>
-          <MyCoinData>
+          <CoinData>
             <img src={coinImg} alt="동전" width={32} />
             <span>{coin}</span>
-          </MyCoinData>
+          </CoinData>
         </div>
         <h3> {showingTitle}</h3>
         <DetailLink to={`${id}`}>자세히 보기</DetailLink>
       </Content>
-      <ButtonArea>
-        <ActionButton>
-          <Link to={`${id}/edit`}>편집</Link>
-        </ActionButton>
-        <ActionButton>완료</ActionButton>
-      </ButtonArea>
+      <ButtonArea>{btns}</ButtonArea>
     </Card>
   );
 };
 
-export default TaskCard;
+export default ItemCard;
