@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import media from "../../media";
 
@@ -19,47 +19,45 @@ const LinkList = styled.ul`
   padding: 0;
 `;
 
-const LinkItem = styled(NavLink)`
+const LinkItem = styled(NavLink)<{ isHome?: boolean }>`
   width: 100%;
   display: block;
   margin: 0;
   padding: 1.5rem 0;
   text-align: center;
   transition-duration: 0.2s;
+
   &:hover,
   &.active {
     background-color: #ada8a1;
     color: #ffffff;
   }
+
+  ${({ isHome }) =>
+    isHome &&
+    `
+    background-color: #ada8a1;
+    color: #ffffff;
+  `}
 `;
 
 const MainNavigation: React.FC = () => {
+  const location = useLocation();
+  const pathname = location.pathname;
+
   return (
     <Nav>
       <LinkList>
         <li>
-          <LinkItem
-            to="/home/tasks"
-            className={({ isActive }) => (isActive ? "active" : undefined)}
-          >
+          <LinkItem to="/home/tasks" isHome={pathname === "/home"}>
             할 일
           </LinkItem>
         </li>
         <li>
-          <LinkItem
-            to="/home/rewards-shop"
-            className={({ isActive }) => (isActive ? "active" : undefined)}
-          >
-            상점
-          </LinkItem>
+          <LinkItem to="/home/rewards-shop">상점</LinkItem>
         </li>
         <li>
-          <LinkItem
-            to="/home/storage"
-            className={({ isActive }) => (isActive ? "active" : undefined)}
-          >
-            보관함
-          </LinkItem>
+          <LinkItem to="/home/storage">보관함</LinkItem>
         </li>
       </LinkList>
     </Nav>

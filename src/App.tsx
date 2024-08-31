@@ -18,6 +18,7 @@ function App() {
       path: "/home",
       element: <RootLayout />,
       children: [
+        { index: true, element: <Page type="tasks" /> },
         {
           path: "tasks",
           element: <Page type="tasks" />,

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
-import coinImg from "../../assets/coin.svg";
-import Card from "./Card";
-import ActionButton from "./ActionButton";
 import { ReactNode } from "react";
+
+import coinImg from "../assets/coin.svg";
+import Card from "../components/UI/Card";
+import ActionButton from "../components/UI/ActionButton";
 
 const CoinData = styled.p`
   display: flex;
@@ -44,20 +44,21 @@ const ItemCard: React.FC<{
 }> = ({ type, title, coin }) => {
   const id: string = title + String(coin);
   let showingTitle: string = title;
-  const btns: Array<ReactNode> = [
+
+  let actionBtn1: ReactNode = (
     <ActionButton>
-      <Link to={`${id}/edit`}>편집</Link>
-    </ActionButton>,
-    <ActionButton>완료</ActionButton>,
-  ];
+      <Link to={`/home/${type}/${id}/edit`}>편집</Link>
+    </ActionButton>
+  );
+  let actionBtn2: ReactNode = <ActionButton>완료</ActionButton>;
 
   if (title.length > 30) showingTitle = title.slice(0, 30) + "...";
 
-  if (type === "rewards") {
-    btns[1] = <ActionButton>구입</ActionButton>;
+  if (type === "rewards-shop") {
+    actionBtn2 = <ActionButton>구입</ActionButton>;
   } else if (type === "storage") {
-    btns[0] = <ActionButton>환불</ActionButton>;
-    btns[1] = <ActionButton>완료</ActionButton>;
+    actionBtn1 = <ActionButton>환불</ActionButton>;
+    actionBtn2 = <ActionButton>완료</ActionButton>;
   }
 
   return (
@@ -70,9 +71,12 @@ const ItemCard: React.FC<{
           </CoinData>
         </div>
         <h3> {showingTitle}</h3>
-        <DetailLink to={`${id}`}>자세히 보기</DetailLink>
+        <DetailLink to={`/home/${type}/${id}`}>자세히 보기</DetailLink>
       </Content>
-      <ButtonArea>{btns}</ButtonArea>
+      <ButtonArea>
+        {actionBtn1}
+        {actionBtn2}
+      </ButtonArea>
     </Card>
   );
 };
