@@ -1,9 +1,8 @@
-import { ReactNode } from "react";
 import styled from "styled-components";
 
 import media from "../media";
 
-const Main = styled.main`
+const PageLayout = styled.main`
   width: 80%;
   padding: 4rem 0;
   position: absolute;
@@ -14,13 +13,8 @@ const Main = styled.main`
   gap: 3rem;
   align-items: center;
   ${media.small`
-    width : 80%;
     grid-template-columns: repeat(auto-fit, minmax(15rem, auto));
   `}
 `;
-
-const PageLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
-  return <Main>{children}</Main>;
-};
 
 export default PageLayout;
