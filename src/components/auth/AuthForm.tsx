@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Form } from "react-router-dom";
 
-import Input from "./Input";
+import AuthInput from "./AuthInput";
 import AuthType from "../../models/authType";
 
 const SubmitButton = styled.button`
@@ -28,10 +28,10 @@ const AuthForm: React.FC<{ authState: AuthType }> = ({ authState }) => {
   return (
     <StyledForm method="post">
       {authState === "signup" && (
-        <Input type="text" id="nickname" label="닉네임" />
+        <AuthInput type="text" id="nickname" label="닉네임" />
       )}
-      <Input type="text" id="id" label="아이디" />
-      <Input type="password" id="password" label="비밀번호" />
+      <AuthInput type="text" id="id" label="아이디" />
+      <AuthInput type="password" id="password" label="비밀번호" />
       <SubmitButton>
         {authState === "login" ? "로그인" : "회원가입"}
       </SubmitButton>
