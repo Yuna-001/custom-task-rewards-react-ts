@@ -19,7 +19,7 @@ const LinkList = styled.ul`
   padding: 0;
 `;
 
-const LinkItem = styled(NavLink)<{ isHome?: boolean }>`
+const LinkItem = styled(NavLink)<{ ishome?: string }>`
   width: 100%;
   display: block;
   margin: 0;
@@ -33,8 +33,8 @@ const LinkItem = styled(NavLink)<{ isHome?: boolean }>`
     color: #ffffff;
   }
 
-  ${({ isHome }) =>
-    isHome &&
+  ${({ ishome }) =>
+    ishome === "true" &&
     `
     background-color: #ada8a1;
     color: #ffffff;
@@ -49,7 +49,7 @@ const MainNavigation: React.FC = () => {
     <Nav>
       <LinkList>
         <li>
-          <LinkItem to="/home/tasks" isHome={pathname === "/home"}>
+          <LinkItem to="/home/tasks" ishome={(pathname === "/home").toString()}>
             할 일
           </LinkItem>
         </li>
