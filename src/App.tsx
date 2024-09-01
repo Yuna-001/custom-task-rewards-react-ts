@@ -9,6 +9,7 @@ import Authentication, {
 } from "./components/auth/Authentication";
 import RootLayout from "./layout/RootLayout";
 import Page from "./page/Page";
+import ItemForm from "./page/ItemForm";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,16 +19,15 @@ function App() {
       path: "/home",
       element: <RootLayout />,
       children: [
-        { index: true, element: <Page type="tasks" /> },
+        { index: true, element: <Page /> },
         {
-          path: "tasks",
-          element: <Page type="tasks" />,
+          path: ":category",
+          children: [
+            { index: true, element: <Page /> },
+            { path: "add", element: <ItemForm /> },
+            { path: ":id", children: [{ index: true }, { path: "edit" }] },
+          ],
         },
-        { path: "rewards-shop", element: <Page type="rewards-shop" /> },
-        { path: "storage", element: <Page type="storage" /> },
-        { path: ":category/add" },
-        { path: ":category/:id" },
-        { path: ":category/:id/edit" },
       ],
     },
   ]);

@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import coinImg from "../assets/coin.svg";
 import Card from "../components/UI/Card";
 import ActionButton from "../components/UI/ActionButton";
-import CategoryType from "../models/categoryType";
+import CategoryType from "../models/CategoryType";
 
 const CoinData = styled.p`
   display: flex;

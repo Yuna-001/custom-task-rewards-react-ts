@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import AddCard from "./AddCard";
 import ItemCard from "./ItemCard";
 import PageLayout from "../layout/PageLayout";
@@ -30,22 +31,32 @@ const DUMMY_STORED_ITEMS = [
   { title: "아이스크림 먹기", coin: 1000 },
 ];
 
-const Page: React.FC<{ type: CategoryType }> = ({ type }) => {
+const Page: React.FC = () => {
+  let { category } = useParams();
+
   let items: Array<{ title: string; coin: number }> = DUMMY_TASKS;
 
-  if (type === "rewards-shop") {
+  if (category === undefined) {
+    category = "tasks";
+  }
+
+  if (!["tasks", "rewards-shop", "storage"].includes(category)) {
+    // 에러 처리
+  }
+
+  if (category === "rewards-shop") {
     items = DUMMY_REWARDS;
-  } else if (type === "storage") {
+  } else if (category === "storage") {
     items = DUMMY_STORED_ITEMS;
   }
 
   return (
     <PageLayout>
-      <AddCard type={type} />
+      <AddCard category={category as CategoryType} />
       {items.map(({ title, coin }) => (
         <ItemCard
           key={title + String(coin)}
-          type={type}
+          category={category as CategoryType}
           title={title}
           coin={coin}
         />

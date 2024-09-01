@@ -19,14 +19,14 @@ const AddButton = styled(Link)`
   }
 `;
 
-const AddCard: React.FC<{ type: CategoryType }> = ({ type }) => {
-  if (type === "storage") {
+const AddCard: React.FC<{ category: CategoryType }> = ({ category }) => {
+  if (category === "storage") {
     return <></>;
   }
 
   return (
     <Card>
-      <AddButton to={`/home/${type}/add`}>
+      <AddButton to={`/home/${category}/add`}>
         <FontAwesomeIcon icon={faPlus} size="8x" color="#F7F5E8" />
       </AddButton>
     </Card>
