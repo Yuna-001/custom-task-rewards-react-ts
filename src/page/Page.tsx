@@ -1,6 +1,7 @@
 import AddCard from "./AddCard";
 import ItemCard from "./ItemCard";
 import PageLayout from "../layout/PageLayout";
+import CategoryType from "../models/categoryType";
 
 const DUMMY_TASKS = [
   { title: "HTML", coin: 100 },
@@ -29,9 +30,7 @@ const DUMMY_STORED_ITEMS = [
   { title: "아이스크림 먹기", coin: 1000 },
 ];
 
-const Page: React.FC<{ type: "tasks" | "rewards-shop" | "storage" }> = ({
-  type,
-}) => {
+const Page: React.FC<{ type: CategoryType }> = ({ type }) => {
   let items: Array<{ title: string; coin: number }> = DUMMY_TASKS;
 
   if (type === "rewards-shop") {
@@ -42,7 +41,7 @@ const Page: React.FC<{ type: "tasks" | "rewards-shop" | "storage" }> = ({
 
   return (
     <PageLayout>
-      {type !== "storage" && <AddCard />}
+      {type !== "storage" && <AddCard type={type} />}
       {items.map(({ title, coin }) => (
         <ItemCard
           key={title + String(coin)}
