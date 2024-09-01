@@ -23,10 +23,11 @@ const Content = styled.article`
   margin-bottom: 1rem;
 `;
 
-const ButtonArea = styled.nav`
+const ActionButtons = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin-bottom: -0.5rem;
 `;
 
 const DetailLink = styled(Link)`
@@ -39,25 +40,25 @@ const DetailLink = styled(Link)`
 `;
 
 const ItemCard: React.FC<{
-  type: CategoryType;
+  category: CategoryType;
   title: string;
   coin: number;
-}> = ({ type, title, coin }) => {
+}> = ({ category, title, coin }) => {
   const id: string = title + String(coin);
   let showingTitle: string = title;
 
   let actionBtn1: ReactNode = (
     <ActionButton>
-      <Link to={`/home/${type}/${id}/edit`}>편집</Link>
+      <Link to={`/home/${category}/${id}/edit`}>편집</Link>
     </ActionButton>
   );
   let actionBtn2: ReactNode = <ActionButton>완료</ActionButton>;
 
   if (title.length > 30) showingTitle = title.slice(0, 30) + "...";
 
-  if (type === "rewards-shop") {
+  if (category === "rewards-shop") {
     actionBtn2 = <ActionButton>구입</ActionButton>;
-  } else if (type === "storage") {
+  } else if (category === "storage") {
     actionBtn1 = <ActionButton>환불</ActionButton>;
     actionBtn2 = <ActionButton>완료</ActionButton>;
   }
@@ -72,12 +73,12 @@ const ItemCard: React.FC<{
           </CoinData>
         </div>
         <h3> {showingTitle}</h3>
-        <DetailLink to={`/home/${type}/${id}`}>자세히 보기</DetailLink>
+        <DetailLink to={`/home/${category}/${id}`}>자세히 보기</DetailLink>
       </Content>
-      <ButtonArea>
+      <ActionButtons>
         {actionBtn1}
         {actionBtn2}
-      </ButtonArea>
+      </ActionButtons>
     </Card>
   );
 };
