@@ -41,7 +41,7 @@ const Page: React.FC<{ type: CategoryType }> = ({ type }) => {
 
   return (
     <PageLayout>
-      {type !== "storage" && <AddCard type={type} />}
+      <AddCard type={type} />
       {items.map(({ title, coin }) => (
         <ItemCard
           key={title + String(coin)}

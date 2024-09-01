@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import Card from "../components/UI/Card";
+import CategoryType from "../models/categoryType";
 
 const AddButton = styled(Link)`
   width: 100%;
@@ -18,10 +19,14 @@ const AddButton = styled(Link)`
   }
 `;
 
-const AddCard: React.FC = () => {
+const AddCard: React.FC<{ type: CategoryType }> = ({ type }) => {
+  if (type === "storage") {
+    return <></>;
+  }
+
   return (
     <Card>
-      <AddButton to="add">
+      <AddButton to={`/home/${type}/add`}>
         <FontAwesomeIcon icon={faPlus} size="8x" color="#F7F5E8" />
       </AddButton>
     </Card>
