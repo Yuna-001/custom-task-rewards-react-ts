@@ -6,6 +6,7 @@ import coinImg from "../assets/coin.svg";
 import Card from "../components/UI/Card";
 import ActionButton from "../components/UI/ActionButton";
 import CategoryType from "../models/categoryType";
+import { numberFormatting } from "../util/numberFormatting";
 
 const CoinData = styled.p`
   display: flex;
@@ -69,7 +70,7 @@ const ItemCard: React.FC<{
         <div>
           <CoinData>
             <img src={coinImg} alt="동전" width={32} />
-            <span>{coin}</span>
+            <span>{numberFormatting(coin)}</span>
           </CoinData>
         </div>
         <h3> {showingTitle}</h3>

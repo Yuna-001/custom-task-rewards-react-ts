@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import coinsImg from "../../assets/coins.svg";
+import { numberFormatting } from "../../util/numberFormatting";
 
 const Data = styled.div`
   margin: 1rem;
@@ -26,7 +27,7 @@ const UserData: React.FC = () => {
       <Nickname>닉네임</Nickname>
       <Coins>
         <img src={coinsImg} alt="동전" width={32} />
-        <span>5,000</span>
+        <span>{numberFormatting(5000)}</span>
       </Coins>
     </Data>
   );
