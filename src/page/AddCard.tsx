@@ -12,9 +12,9 @@ const AddButton = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   transition-duration: 0.3s;
   &:hover {
-    cursor: pointer;
     scale: 1.1;
   }
 `;
