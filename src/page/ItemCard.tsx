@@ -6,14 +6,7 @@ import coinImg from "../assets/coin.svg";
 import Card from "../components/UI/Card";
 import ActionButton from "../components/UI/ActionButton";
 import CategoryType from "../models/categoryType";
-import { numberFormatting } from "../util/numberFormatting";
-
-const CoinData = styled.p`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-`;
+import CoinData from "../components/UI/CoinData";
 
 const Content = styled.article`
   width: 100%;
@@ -68,10 +61,7 @@ const ItemCard: React.FC<{
     <Card>
       <Content>
         <div>
-          <CoinData>
-            <img src={coinImg} alt="동전" width={32} />
-            <span>{numberFormatting(coin)}</span>
-          </CoinData>
+          <CoinData image={coinImg} coin={coin} />
         </div>
         <h3> {showingTitle}</h3>
         <DetailLink to={`/home/${category}/${id}`}>자세히 보기</DetailLink>

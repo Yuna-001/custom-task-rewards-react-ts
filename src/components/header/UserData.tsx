@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import coinsImg from "../../assets/coins.svg";
-import { numberFormatting } from "../../util/numberFormatting";
+import CoinData from "../UI/CoinData";
 
 const Data = styled.div`
   margin: 1rem;
@@ -14,21 +14,11 @@ const Nickname = styled.p`
   margin: 0;
 `;
 
-const Coins = styled.p`
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-`;
-
 const UserData: React.FC = () => {
   return (
     <Data>
       <Nickname>닉네임</Nickname>
-      <Coins>
-        <img src={coinsImg} alt="동전" width={32} />
-        <span>{numberFormatting(5000)}</span>
-      </Coins>
+      <CoinData image={coinsImg} coin={5000} />
     </Data>
   );
 };
