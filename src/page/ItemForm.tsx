@@ -1,9 +1,11 @@
-import { Form, useParams, Link } from "react-router-dom";
+import { Form, useParams, Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import media from "../media";
 import ActionButton from "../components/UI/ActionButton";
 import ItemInput from "./ItemInput";
+import useItemStore from "../store/items";
+import useCategory from "../hooks/useCategory";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -41,32 +43,60 @@ const SubmitButton = styled.button`
 `;
 
 const ItemForm: React.FC = () => {
-  const params = useParams();
-  let category = params.category;
+  const category = useCategory();
+  const { id } = useParams();
 
-  if (category === undefined) {
-    category = "tasks";
-  }
+  const item = useItemStore((state) => state.getItem(id));
 
-  if (!["tasks", "rewards-shop", "storage"].includes(category)) {
-    // 에러 처리
+  const { pathname } = useLocation();
+  const isEditting = pathname.endsWith("/edit");
+  const isCreating = pathname.endsWith("/add");
+
+  let changeBtn = <></>;
+
+  if (isEditting) {
+    changeBtn = <SubmitButton type="submit">변경</SubmitButton>;
+  } else if (isCreating) {
+    changeBtn = <SubmitButton type="submit">추가</SubmitButton>;
   }
 
   return (
     <StyledForm onSubmit={(e) => e.preventDefault()}>
-      <ItemInput type="text" id="name" label="이름" />
-      <ItemInput type="number" id="coin" label="가격" />
+      <ItemInput
+        type="text"
+        id="title"
+        label={category === "tasks" ? "제목" : "이름"}
+        defaultValue={item?.title ?? ""}
+        required
+      />
+      <ItemInput
+        type="number"
+        id="coin"
+        label={category === "tasks" ? "보수" : "가격"}
+        defaultValue={item?.coin ? item.coin : ""}
+        required
+      />
       {category === "tasks" && (
-        <ItemInput type="date" id="period" label="기간" />
+        <ItemInput
+          type="date"
+          id="end-date"
+          label="기한"
+          defaultValue={item?.endDate ?? ""}
+        />
       )}
-      <ItemInput id="description" label="설명" isTextarea />
+      <ItemInput
+        id="description"
+        label="설명"
+        isTextarea
+        defaultValue={item?.description ?? ""}
+      />
       <ActionButtons>
         <ActionButton>
-          <Link to=".." relative="path">
+          <Link to={`/home/${category}`} relative="path">
             취소
           </Link>
         </ActionButton>
-        <SubmitButton type="submit">추가</SubmitButton>
+        {changeBtn}
       </ActionButtons>
     </StyledForm>
   );

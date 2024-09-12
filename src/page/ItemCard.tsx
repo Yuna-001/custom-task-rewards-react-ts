@@ -6,6 +6,7 @@ import coinImg from "../assets/coin.svg";
 import Card from "../components/UI/Card";
 import ActionButton from "../components/UI/ActionButton";
 import CategoryType from "../models/categoryType";
+import ItemType from "../models/itemType";
 import CoinData from "../components/UI/CoinData";
 
 const Content = styled.article`
@@ -35,9 +36,9 @@ const DetailLink = styled(Link)`
 
 const ItemCard: React.FC<{
   category: CategoryType;
-  title: string;
-  coin: number;
-}> = ({ category, title, coin }) => {
+  task: ItemType;
+}> = ({ category, task }) => {
+  const { title, coin } = task;
   const id: string = title + String(coin);
   let showingTitle: string = title;
 

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import Card from "../components/UI/Card";
-import CategoryType from "../models/categoryType";
+import useCategory from "../hooks/useCategory";
 
 const AddButton = styled(Link)`
   width: 100%;
@@ -19,7 +19,9 @@ const AddButton = styled(Link)`
   }
 `;
 
-const AddCard: React.FC<{ category: CategoryType }> = ({ category }) => {
+const AddCard: React.FC = () => {
+  const category = useCategory();
+
   if (category === "storage") {
     return <></>;
   }

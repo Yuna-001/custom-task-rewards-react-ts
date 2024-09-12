@@ -30,12 +30,36 @@ const ItemInput: React.FC<{
   id: string;
   label: string;
   isTextarea?: boolean;
-}> = ({ type = "text", id, label, isTextarea = false }) => {
+  defaultValue: string | number;
+  required?: boolean;
+}> = ({
+  type = "text",
+  id,
+  label,
+  defaultValue,
+  isTextarea = false,
+  required = false,
+}) => {
   return (
     <Container>
       <Label htmlFor={id}>{label}</Label>
-      {!isTextarea && <InputArea type={type} name={id} id={id} />}
-      {isTextarea && <Textarea name={id} id={id} />}
+      {!isTextarea && (
+        <InputArea
+          type={type}
+          name={id}
+          id={id}
+          defaultValue={defaultValue}
+          required={required}
+        />
+      )}
+      {isTextarea && (
+        <Textarea
+          name={id}
+          id={id}
+          defaultValue={defaultValue}
+          required={required}
+        />
+      )}
     </Container>
   );
 };

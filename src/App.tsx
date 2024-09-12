@@ -25,7 +25,13 @@ function App() {
           children: [
             { index: true, element: <Page /> },
             { path: "add", element: <ItemForm /> },
-            { path: ":id", children: [{ index: true }, { path: "edit" }] },
+            {
+              path: ":id",
+              children: [
+                { index: true, element: <ItemForm /> },
+                { path: "edit", element: <ItemForm /> },
+              ],
+            },
           ],
         },
       ],
