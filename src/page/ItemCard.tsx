@@ -5,9 +5,9 @@ import { ReactNode } from "react";
 import coinImg from "../assets/coin.svg";
 import Card from "../components/UI/Card";
 import ActionButton from "../components/UI/ActionButton";
-import CategoryType from "../models/categoryType";
-import ItemType from "../models/itemType";
 import CoinData from "../components/UI/CoinData";
+import ItemType from "../models/itemType";
+import useCategory from "../hooks/useCategory";
 
 const Content = styled.article`
   width: 100%;
@@ -35,10 +35,10 @@ const DetailLink = styled(Link)`
 `;
 
 const ItemCard: React.FC<{
-  category: CategoryType;
-  task: ItemType;
-}> = ({ category, task }) => {
-  const { title, coin } = task;
+  item: ItemType;
+}> = ({ item }) => {
+  const category = useCategory();
+  const { title, coin } = item;
   const id: string = title + String(coin);
   let showingTitle: string = title;
 

@@ -11,8 +11,8 @@ const Page: React.FC = () => {
   return (
     <PageLayout>
       <AddCard />
-      {items.map((task) => (
-        <ItemCard key={task.id} task={task} />
+      {items.map((item) => (
+        <ItemCard key={item.id} item={item} />
       ))}
     </PageLayout>
   );
