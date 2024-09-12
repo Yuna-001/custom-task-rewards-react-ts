@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { numberFormatting } from "../../util/numberFormatting";
 
-const Coins = styled.p`
+const Coins = styled.div`
   margin: 0;
   display: flex;
   align-items: center;
