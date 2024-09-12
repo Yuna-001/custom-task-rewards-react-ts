@@ -26,7 +26,7 @@ const ActionButtons = styled.div`
   display: flex;
   justify-content: right;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
 `;
 
 const SubmitButton = styled.button`
@@ -42,22 +42,33 @@ const SubmitButton = styled.button`
   }
 `;
 
+const useActionButtons = () => {
+  const { pathname } = useLocation();
+  const isEditing = pathname.endsWith("/edit");
+  const isCreating = pathname.endsWith("/add");
+
+  return { isEditing, isCreating };
+};
+
 const ItemForm: React.FC = () => {
   const category = useCategory();
   const { id } = useParams();
 
   const item = useItemStore((state) => state.getItem(id));
 
-  const { pathname } = useLocation();
-  const isEditting = pathname.endsWith("/edit");
-  const isCreating = pathname.endsWith("/add");
+  const { isEditing, isCreating } = useActionButtons();
+  let actiontBtn = <></>;
 
-  let changeBtn = <></>;
-
-  if (isEditting) {
-    changeBtn = <SubmitButton type="submit">변경</SubmitButton>;
+  if (isEditing) {
+    actiontBtn = <SubmitButton type="submit">변경</SubmitButton>;
   } else if (isCreating) {
-    changeBtn = <SubmitButton type="submit">추가</SubmitButton>;
+    actiontBtn = <SubmitButton type="submit">추가</SubmitButton>;
+  } else {
+    actiontBtn = (
+      <ActionButton>
+        <Link to="edit">편집 시작</Link>
+      </ActionButton>
+    );
   }
 
   return (
@@ -96,7 +107,7 @@ const ItemForm: React.FC = () => {
             취소
           </Link>
         </ActionButton>
-        {changeBtn}
+        {actiontBtn}
       </ActionButtons>
     </StyledForm>
   );
