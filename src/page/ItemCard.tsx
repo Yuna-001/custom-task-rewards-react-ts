@@ -8,6 +8,7 @@ import ActionButton from "../components/UI/ActionButton";
 import CoinData from "../components/UI/CoinData";
 import ItemType from "../models/itemType";
 import useCategory from "../hooks/useCategory";
+import { dateFormatting } from "../util/formatting";
 
 const Content = styled.article`
   width: 100%;
@@ -32,6 +33,13 @@ const DetailLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 0.5rem;
 `;
 
 const ItemCard: React.FC<{
@@ -61,9 +69,10 @@ const ItemCard: React.FC<{
   return (
     <Card>
       <Content>
-        <div>
+        <Header>
           <CoinData image={coinImg} coin={coin} />
-        </div>
+          {item?.endDate && <span>~ {dateFormatting(item.endDate)}</span>}
+        </Header>
         <h3> {showingTitle}</h3>
         <DetailLink to={`/home/${category}/${id}`}>자세히 보기</DetailLink>
       </Content>

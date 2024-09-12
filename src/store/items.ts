@@ -19,7 +19,7 @@ const useItemStore = create<ItemStore>((set, get) => ({
       type: "tasks",
       id: "자바스크립트10000",
       title: "자바스크립트",
-      endDate: "2055-09-10",
+      endDate: "2055-09-1",
       description: "JS",
       coin: 10000,
     },
