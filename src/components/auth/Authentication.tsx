@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { redirect } from "react-router-dom";
-
 import styled from "styled-components";
+
 import AuthForm from "./AuthForm";
 import AuthMenu from "./AuthMenu";
 import AuthType from "../../models/authType";
@@ -47,7 +46,3 @@ const Authentication: React.FC = () => {
 };
 
 export default Authentication;
-
-export const action = async () => {
-  return redirect("/home");
-};

@@ -26,7 +26,8 @@ const StyledForm = styled(Form)`
 
 const AuthForm: React.FC<{ authState: AuthType }> = ({ authState }) => {
   return (
-    <StyledForm method="post">
+    <StyledForm method="POST">
+      <input type="hidden" name="authState" value={authState} />
       {authState === "signup" && (
         <AuthInput type="text" id="nickname" label="닉네임" />
       )}

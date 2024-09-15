@@ -4,17 +4,23 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import Authentication, {
-  action as authAction,
-} from "./components/auth/Authentication";
+import Authentication from "./components/auth/Authentication";
+import authAction from "./components/auth/authActions";
 import RootLayout from "./layout/RootLayout";
 import Page from "./page/Page";
 import ItemForm from "./page/ItemForm";
 
 function App() {
   const router = createBrowserRouter([
-    { path: "/", element: <Navigate to="/auth" /> },
-    { path: "/auth", element: <Authentication />, action: authAction },
+    {
+      path: "/",
+      element: <Navigate to="/auth" />,
+    },
+    {
+      path: "/auth",
+      element: <Authentication />,
+      action: authAction,
+    },
     {
       path: "/home",
       element: <RootLayout />,
