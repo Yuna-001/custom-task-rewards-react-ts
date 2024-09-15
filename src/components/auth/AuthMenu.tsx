@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import AuthType from "../../models/authType";
+import AuthModeType from "../../models/authModeType";
 
 const Menu = styled.menu`
   width: 100%;
@@ -23,19 +23,19 @@ const MenuItem = styled.li`
 `;
 
 const AuthMenu: React.FC<{
-  authState: AuthType;
-  onClick: (state: AuthType) => void;
-}> = ({ authState, onClick }) => {
+  authMode: AuthModeType;
+  onClick: (state: AuthModeType) => void;
+}> = ({ authMode, onClick }) => {
   return (
     <Menu>
       <MenuItem
-        className={authState === "login" ? "active" : undefined}
+        className={authMode === "login" ? "active" : undefined}
         onClick={() => onClick("login")}
       >
         로그인
       </MenuItem>
       <MenuItem
-        className={authState === "signup" ? "active" : undefined}
+        className={authMode === "signup" ? "active" : undefined}
         onClick={() => onClick("signup")}
       >
         회원가입

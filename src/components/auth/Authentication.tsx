@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import AuthForm from "./AuthForm";
 import AuthMenu from "./AuthMenu";
-import AuthType from "../../models/authType";
+import AuthModeType from "../../models/authModeType";
 
 const Container = styled.div`
   position: absolute;
@@ -28,18 +28,18 @@ const Main = styled.main`
 `;
 
 const Authentication: React.FC = () => {
-  const [authState, setAuthState] = useState<AuthType>("login");
+  const [authMode, setAuthMode] = useState<AuthModeType>("login");
 
-  const handleChooseAuthState = (state: AuthType) => {
-    setAuthState(state);
+  const handleChooseAuthMode = (state: AuthModeType) => {
+    setAuthMode(state);
   };
 
   return (
     <Container>
       <Title>Custom Task Rewards App</Title>
       <Main>
-        <AuthMenu authState={authState} onClick={handleChooseAuthState} />
-        <AuthForm authState={authState} />
+        <AuthMenu authMode={authMode} onClick={handleChooseAuthMode} />
+        <AuthForm authMode={authMode} />
       </Main>
     </Container>
   );

@@ -28,7 +28,7 @@ const Input: React.FC<{ type: string; id: string; label: string }> = ({
   return (
     <Container>
       <Label htmlFor={id}>{label}</Label>
-      <InputArea type={type} name={id} id={id} />
+      <InputArea type={type} name={id} id={id} required />
     </Container>
   );
 };
