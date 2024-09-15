@@ -25,28 +25,37 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
   if (authMode === "signup") user.nickname = nickname;
 
   if (authMode !== "signup" && authMode !== "login") {
-    throw json({ message: "유효하지 않은 인증 모드입니다." }, { status: 400 });
+    // 처리할 수 없는 엔티티
+    return json(
+      { message: "유효하지 않은 인증 모드입니다.", status: 422 },
+      { status: 422 },
+    );
   }
 
-  validateUserData(user, authMode);
-
   try {
+    validateUserData(user, authMode);
     if (authMode === "signup") {
       await signup(user);
     } else {
       await login(user);
     }
   } catch (error) {
-    if (
+    if (error instanceof Error && error.message.includes("필수")) {
+      // 잘못된 요청
+      return json({ message: error.message, status: 400 }, { status: 400 });
+    } else if (
       error instanceof Error &&
       (error.message.includes("비밀번호가 틀렸습니다.") ||
         error.message.includes("존재하지 않는 아이디입니다."))
     ) {
-      // 인증 오류: 로그인 실패 (401 Unauthorized)
-      throw json({ message: error.message }, { status: 401 });
+      // 인증 오류
+      return json({ message: error.message, status: 401 }, { status: 401 });
     } else {
-      // 서버 오류: 예기치 않은 오류 (500 Internal Server Error)
-      throw json({ message: "서버에 오류가 발생했습니다." }, { status: 500 });
+      // 서버 오류
+      return json(
+        { message: "서버에 오류가 발생했습니다.", status: 500 },
+        { status: 500 },
+      );
     }
   }
 
@@ -58,17 +67,11 @@ const validateUserData: (user: AuthUser, authMode: string) => void = (
   authMode,
 ) => {
   if (!user.id || !user.password) {
-    throw json(
-      { message: "아이디와 비밀번호는 필수 입력 항목입니다." },
-      { status: 400 },
-    );
+    throw new Error("아이디와 비밀번호는 필수 입력 항목입니다.");
   }
 
   if (authMode === "signup" && !user.nickname) {
-    throw json(
-      { message: "회원가입 시 닉네임은 필수입니다." },
-      { status: 400 },
-    );
+    throw new Error("회원가입 시 닉네임은 필수입니다.");
   }
 
   // 추가적인 유효성 검사
@@ -95,7 +98,6 @@ const login: (user: AuthUser) => Promise<void> = async (user) => {
     const userData = userDoc.data();
     if (userData && verifyPassword(user.password, userData.password)) {
       // 로그인 성공
-      console.log("로그인 성공");
     } else {
       // 비밀번호 불일치
       throw new Error("비밀번호가 틀렸습니다.");

@@ -1,8 +1,20 @@
 import styled from "styled-components";
 import { Form } from "react-router-dom";
+import { useState } from "react";
 
 import AuthInput from "./AuthInput";
 import AuthModeType from "../../models/authModeType";
+import AuthMenu from "./AuthMenu";
+
+const Authentication = styled.section`
+  background-color: #d6cfc6e6;
+  width: 25rem;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 1rem;
+`;
 
 const SubmitButton = styled.button`
   width: 90%;
@@ -24,19 +36,28 @@ const StyledForm = styled(Form)`
   padding-bottom: 2rem;
 `;
 
-const AuthForm: React.FC<{ authMode: AuthModeType }> = ({ authMode }) => {
+const AuthForm: React.FC = () => {
+  const [authMode, setAuthMode] = useState<AuthModeType>("login");
+
+  const handleChooseAuthMode = (mode: AuthModeType) => {
+    setAuthMode(mode);
+  };
+
   return (
-    <StyledForm method="POST">
-      <input type="hidden" name="authMode" value={authMode} />
-      {authMode === "signup" && (
-        <AuthInput type="text" id="nickname" label="닉네임" />
-      )}
-      <AuthInput type="text" id="id" label="아이디" />
-      <AuthInput type="password" id="password" label="비밀번호" />
-      <SubmitButton>
-        {authMode === "login" ? "로그인" : "회원가입"}
-      </SubmitButton>
-    </StyledForm>
+    <Authentication>
+      <AuthMenu authMode={authMode} onClick={handleChooseAuthMode} />
+      <StyledForm method="POST">
+        <input type="hidden" name="authMode" value={authMode} />
+        {authMode === "signup" && (
+          <AuthInput type="text" id="nickname" label="닉네임" />
+        )}
+        <AuthInput type="text" id="id" label="아이디" />
+        <AuthInput type="password" id="password" label="비밀번호" />
+        <SubmitButton>
+          {authMode === "login" ? "로그인" : "회원가입"}
+        </SubmitButton>
+      </StyledForm>
+    </Authentication>
   );
 };
 
