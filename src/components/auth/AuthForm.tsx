@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { Form } from "react-router-dom";
-import { useState } from "react";
 
 import AuthInput from "./AuthInput";
-import AuthModeType from "../../models/authModeType";
 import AuthMenu from "./AuthMenu";
+import AuthModeType from "../../models/authModeType";
 
 const Authentication = styled.section`
   background-color: #d6cfc6e6;
@@ -36,16 +35,13 @@ const StyledForm = styled(Form)`
   padding-bottom: 2rem;
 `;
 
-const AuthForm: React.FC = () => {
-  const [authMode, setAuthMode] = useState<AuthModeType>("login");
-
-  const handleChooseAuthMode = (mode: AuthModeType) => {
-    setAuthMode(mode);
-  };
-
+const AuthForm: React.FC<{
+  authMode: AuthModeType;
+  onAuthModeChange: (mode: AuthModeType) => void;
+}> = ({ authMode, onAuthModeChange }) => {
   return (
     <Authentication>
-      <AuthMenu authMode={authMode} onClick={handleChooseAuthMode} />
+      <AuthMenu authMode={authMode} onClick={onAuthModeChange} />
       <StyledForm method="POST">
         <input type="hidden" name="authMode" value={authMode} />
         {authMode === "signup" && (
