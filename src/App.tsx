@@ -6,6 +6,7 @@ import RootLayout from "./layout/RootLayout";
 import Page from "./page/Page";
 import ItemForm from "./page/ItemForm";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
   const router = createBrowserRouter([
@@ -40,7 +41,14 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={router}></RouterProvider>;
+
+  const queryClient = new QueryClient();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

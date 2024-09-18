@@ -6,7 +6,7 @@ type ItemType = {
   title: string;
   coin: number;
   endDate?: string;
-  description?: string;
+  description: string;
 };
 
 export default ItemType;
