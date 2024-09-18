@@ -8,6 +8,7 @@ type AuthUser = {
   id: string;
   password: string;
   nickname?: string;
+  coin?: number;
   items?: Array<ItemType>;
 };
 
@@ -27,6 +28,7 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
 
   if (authMode === "signup") {
     user.nickname = nickname;
+    user.coin = 0;
     user.items = [];
   }
 

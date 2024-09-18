@@ -4,7 +4,7 @@ import AddCard from "./AddCard";
 import ItemCard from "./ItemCard";
 import PageLayout from "../layout/PageLayout";
 import usePath from "../hooks/usePath";
-import { getItemsByCategory } from "../util/http";
+import { fetchItemsByCategory } from "../util/http";
 
 const Page: React.FC = () => {
   const { category } = usePath();
@@ -15,8 +15,8 @@ const Page: React.FC = () => {
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: ["items", category],
-    queryFn: () => getItemsByCategory(category),
+    queryKey: ["items", { category }],
+    queryFn: () => fetchItemsByCategory(category),
   });
 
   if (isError) {

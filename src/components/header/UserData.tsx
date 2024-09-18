@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 import coinsImg from "../../assets/coins.svg";
 import CoinData from "../UI/CoinData";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUserData } from "../../util/http";
 
 const Data = styled.div`
   margin: 1rem;
@@ -15,10 +17,18 @@ const Nickname = styled.p`
 `;
 
 const UserData: React.FC = () => {
+  const { data } = useQuery({
+    queryKey: ["user-data"],
+    queryFn: fetchUserData,
+  });
+
+  const nickname = data?.nickname || "";
+  const coin = data?.coin || 0;
+
   return (
     <Data>
-      <Nickname>닉네임</Nickname>
-      <CoinData image={coinsImg} coin={5000} />
+      <Nickname>{nickname}</Nickname>
+      <CoinData image={coinsImg} coin={coin} />
     </Data>
   );
 };

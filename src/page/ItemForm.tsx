@@ -1,11 +1,12 @@
 import { Form, useParams, Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
 
 import media from "../media";
 import ActionButton from "../components/UI/ActionButton";
 import ItemInput from "./ItemInput";
-import useItemStore from "../store/items";
 import usePath from "../hooks/usePath";
+import { fetchItem } from "../util/http";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -54,9 +55,14 @@ const ItemForm: React.FC = () => {
   const { category, userId } = usePath();
   const { itemId } = useParams();
 
-  const item = useItemStore((state) => state.getItem(itemId));
-
   const { isEditing, isCreating } = useActionButtons();
+
+  const { data: item } = useQuery({
+    queryKey: ["items", { category, itemId }],
+    queryFn: () => fetchItem(itemId),
+    enabled: isEditing,
+  });
+
   let actiontBtn = <></>;
 
   if (isEditing) {
