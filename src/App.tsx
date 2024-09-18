@@ -5,6 +5,7 @@ import authAction from "./components/auth/authActions";
 import RootLayout from "./layout/RootLayout";
 import Page from "./page/Page";
 import ItemForm from "./page/ItemForm";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const router = createBrowserRouter([
@@ -15,7 +16,11 @@ function App() {
     },
     {
       path: ":userId",
-      element: <RootLayout />,
+      element: (
+        <ProtectedRoute>
+          <RootLayout />
+        </ProtectedRoute>
+      ),
       children: [
         { index: true, element: <Page /> },
         {

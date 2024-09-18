@@ -1,11 +1,14 @@
 import { json, redirect } from "react-router-dom";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import ItemType from "../../models/itemType";
+import useUserStore from "../../store/user";
 
 type AuthUser = {
   id: string;
   password: string;
   nickname?: string;
+  items?: Array<ItemType>;
 };
 
 const authAction: (args: { request: Request }) => Promise<Response> = async ({
@@ -22,7 +25,10 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
     password,
   };
 
-  if (authMode === "signup") user.nickname = nickname;
+  if (authMode === "signup") {
+    user.nickname = nickname;
+    user.items = [];
+  }
 
   if (authMode !== "signup" && authMode !== "login") {
     // 처리할 수 없는 엔티티
@@ -34,6 +40,7 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
 
   try {
     validateUserData(user, authMode);
+
     if (authMode === "signup") {
       await signup(user);
     } else {
@@ -58,6 +65,8 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
       );
     }
   }
+
+  useUserStore.getState().login(id);
 
   return redirect(`/${id}`);
 };
