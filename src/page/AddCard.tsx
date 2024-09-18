@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import Card from "../components/UI/Card";
-import useCategory from "../hooks/useCategory";
+import usePath from "../hooks/usePath";
 
 const AddButton = styled(Link)`
   width: 100%;
@@ -20,7 +20,7 @@ const AddButton = styled(Link)`
 `;
 
 const AddCard: React.FC = () => {
-  const category = useCategory();
+  const { category, userId } = usePath();
 
   if (category === "storage") {
     return <></>;
@@ -28,7 +28,7 @@ const AddCard: React.FC = () => {
 
   return (
     <Card>
-      <AddButton to={`/home/${category}/add`}>
+      <AddButton to={`/${userId}/${category}/add`}>
         <FontAwesomeIcon icon={faPlus} size="8x" color="#F7F5E8" />
       </AddButton>
     </Card>

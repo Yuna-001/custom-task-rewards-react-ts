@@ -32,7 +32,7 @@ const MainHeader: React.FC = () => {
     <Header>
       <UserData />
       <MainNavigation />
-      <LogoutButton to="/auth">로그아웃</LogoutButton>
+      <LogoutButton to="/">로그아웃</LogoutButton>
     </Header>
   );
 };

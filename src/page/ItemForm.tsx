@@ -5,7 +5,7 @@ import media from "../media";
 import ActionButton from "../components/UI/ActionButton";
 import ItemInput from "./ItemInput";
 import useItemStore from "../store/items";
-import useCategory from "../hooks/useCategory";
+import usePath from "../hooks/usePath";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -51,10 +51,10 @@ const useActionButtons = () => {
 };
 
 const ItemForm: React.FC = () => {
-  const category = useCategory();
-  const { id } = useParams();
+  const { category, userId } = usePath();
+  const { itemId } = useParams();
 
-  const item = useItemStore((state) => state.getItem(id));
+  const item = useItemStore((state) => state.getItem(itemId));
 
   const { isEditing, isCreating } = useActionButtons();
   let actiontBtn = <></>;
@@ -72,7 +72,7 @@ const ItemForm: React.FC = () => {
   }
 
   return (
-    <StyledForm onSubmit={(e) => e.preventDefault()}>
+    <StyledForm method={isEditing ? "PATCH" : "POST"}>
       <ItemInput
         type="text"
         id="title"
@@ -103,9 +103,7 @@ const ItemForm: React.FC = () => {
       />
       <ActionButtons>
         <ActionButton>
-          <Link to={`/home/${category}`} relative="path">
-            취소
-          </Link>
+          <Link to={`/${userId}/${category}`}>취소</Link>
         </ActionButton>
         {actiontBtn}
       </ActionButtons>

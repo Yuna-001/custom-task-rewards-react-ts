@@ -9,12 +9,12 @@ import ItemForm from "./page/ItemForm";
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/auth",
+      path: "/",
       element: <AuthPage />,
       action: authAction,
     },
     {
-      path: "/home",
+      path: ":userId",
       element: <RootLayout />,
       children: [
         { index: true, element: <Page /> },
@@ -24,7 +24,7 @@ function App() {
             { index: true, element: <Page /> },
             { path: "add", element: <ItemForm /> },
             {
-              path: ":id",
+              path: ":itemId",
               children: [
                 { index: true, element: <ItemForm /> },
                 { path: "edit", element: <ItemForm /> },

@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
 import CategoryType from "../models/categoryType";
 
-const useCategory = () => {
-  let { category } = useParams();
+const usePath = () => {
+  const params = useParams();
+  const userId = params.userId;
+  let category = params.category;
 
   if (category === undefined) {
     category = "tasks";
@@ -13,7 +15,7 @@ const useCategory = () => {
     throw new Error("잘못된 주소입니다.");
   }
 
-  return category as CategoryType;
+  return { userId, category } as { userId: string; category: CategoryType };
 };
 
-export default useCategory;
+export default usePath;

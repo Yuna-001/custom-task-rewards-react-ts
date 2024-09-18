@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 
 import media from "../../media";
 
@@ -42,22 +42,25 @@ const LinkItem = styled(NavLink)<{ ishome?: string }>`
 `;
 
 const MainNavigation: React.FC = () => {
-  const location = useLocation();
-  const pathname = location.pathname;
+  const { pathname } = useLocation();
+  const { userId } = useParams();
 
   return (
     <Nav>
       <LinkList>
         <li>
-          <LinkItem to="/home/tasks" ishome={(pathname === "/home").toString()}>
+          <LinkItem
+            to={`/${userId}/tasks`}
+            ishome={(pathname === `/${userId}`).toString()}
+          >
             할 일
           </LinkItem>
         </li>
         <li>
-          <LinkItem to="/home/rewards-shop">상점</LinkItem>
+          <LinkItem to={`/${userId}/rewards-shop`}>상점</LinkItem>
         </li>
         <li>
-          <LinkItem to="/home/storage">보관함</LinkItem>
+          <LinkItem to={`/${userId}/storage`}>보관함</LinkItem>
         </li>
       </LinkList>
     </Nav>

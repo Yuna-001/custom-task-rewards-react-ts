@@ -59,7 +59,7 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
     }
   }
 
-  return redirect("/home");
+  return redirect(`/${id}`);
 };
 
 const validateUserData: (user: AuthUser, authMode: string) => void = (

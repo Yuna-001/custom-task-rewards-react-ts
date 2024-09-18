@@ -2,10 +2,10 @@ import AddCard from "./AddCard";
 import ItemCard from "./ItemCard";
 import PageLayout from "../layout/PageLayout";
 import useItemStore from "../store/items";
-import useCategory from "../hooks/useCategory";
+import usePath from "../hooks/usePath";
 
 const Page: React.FC = () => {
-  const category = useCategory();
+  const { category } = usePath();
   const items = useItemStore((state) => state.getItemsByType(category));
 
   return (
