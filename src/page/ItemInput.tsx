@@ -29,14 +29,16 @@ const ItemInput: React.FC<{
   type?: string;
   id: string;
   label: string;
-  isTextarea?: boolean;
   defaultValue: string | number;
+  disabled: boolean;
+  isTextarea?: boolean;
   required?: boolean;
 }> = ({
   type = "text",
   id,
   label,
   defaultValue,
+  disabled,
   isTextarea = false,
   required = false,
 }) => {
@@ -50,6 +52,7 @@ const ItemInput: React.FC<{
           id={id}
           defaultValue={defaultValue}
           required={required}
+          disabled={disabled}
         />
       )}
       {isTextarea && (
@@ -58,6 +61,7 @@ const ItemInput: React.FC<{
           id={id}
           defaultValue={defaultValue}
           required={required}
+          disabled={disabled}
         />
       )}
     </Container>

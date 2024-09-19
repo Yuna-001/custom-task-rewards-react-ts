@@ -69,11 +69,12 @@ const ItemForm: React.FC = () => {
   const { itemId } = useParams();
 
   const { isEditing, isCreating } = useActionButtons();
+  const isDetail = !isCreating && !isEditing;
 
   const { data: item } = useQuery({
     queryKey: ["items", { category, itemId }],
     queryFn: () => fetchItem(itemId),
-    enabled: isEditing,
+    enabled: !isCreating,
   });
 
   let actiontBtn = <></>;
@@ -129,6 +130,7 @@ const ItemForm: React.FC = () => {
         id="title"
         label={category === "tasks" ? "제목" : "이름"}
         defaultValue={item?.title ?? ""}
+        disabled={isDetail}
         required
       />
       <ItemInput
@@ -136,6 +138,7 @@ const ItemForm: React.FC = () => {
         id="coin"
         label={category === "tasks" ? "보수" : "가격"}
         defaultValue={item?.coin ? item.coin : ""}
+        disabled={isDetail}
         required
       />
       {category === "tasks" && (
@@ -144,6 +147,7 @@ const ItemForm: React.FC = () => {
           id="end-date"
           label="기한"
           defaultValue={item?.endDate ?? ""}
+          disabled={isDetail}
         />
       )}
       <ItemInput
@@ -151,6 +155,7 @@ const ItemForm: React.FC = () => {
         label="설명"
         isTextarea
         defaultValue={item?.description ?? ""}
+        disabled={isDetail}
       />
       <ActionButtons>
         <ActionButton>
