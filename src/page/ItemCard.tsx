@@ -46,8 +46,7 @@ const ItemCard: React.FC<{
   item: ItemType;
 }> = ({ item }) => {
   const { category, userId } = usePath();
-  const { title, coin } = item;
-  const id: string = title + String(coin);
+  const { title, coin, id } = item;
   let showingTitle: string = title;
 
   let actionBtn1: ReactNode = (

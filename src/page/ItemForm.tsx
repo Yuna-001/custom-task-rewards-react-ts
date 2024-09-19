@@ -1,12 +1,25 @@
-import { Form, useParams, Link, useLocation } from "react-router-dom";
+import {
+  Form,
+  useParams,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import styled from "styled-components";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { v4 as uuidv4 } from "uuid";
 
 import media from "../media";
 import ActionButton from "../components/UI/ActionButton";
 import ItemInput from "./ItemInput";
 import usePath from "../hooks/usePath";
-import { fetchItem } from "../util/http";
+import {
+  createNewItem,
+  fetchItem,
+  queryClient,
+  updateItem,
+} from "../util/http";
+import ItemType from "../models/itemType";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -77,8 +90,40 @@ const ItemForm: React.FC = () => {
     );
   }
 
+  const navigate = useNavigate();
+
+  const { mutate } = useMutation({
+    mutationFn: isCreating ? createNewItem : updateItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+      navigate(`/${userId}/${category}`);
+    },
+  });
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const data = new FormData(event.currentTarget);
+
+    const title = data.get("title")?.toString().trim() || "";
+    const coin = data.get("coin") ? Number(data.get("coin")) : 0;
+    const endDate = data.get("endDate")?.toString().trim() || "";
+    const description = data.get("description")?.toString().trim() || "";
+
+    const item: ItemType = {
+      type: category,
+      id: isCreating ? uuidv4() : userId,
+      title,
+      coin,
+      endDate,
+      description,
+    };
+
+    mutate(item);
+  };
+
   return (
-    <StyledForm method={isEditing ? "PATCH" : "POST"}>
+    <StyledForm method={isCreating ? "POST" : "PATCH"} onSubmit={handleSubmit}>
       <ItemInput
         type="text"
         id="title"

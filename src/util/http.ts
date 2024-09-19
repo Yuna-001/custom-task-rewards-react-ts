@@ -1,9 +1,12 @@
-import { doc, getDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { QueryClient } from "@tanstack/react-query";
 
 import ItemType from "../models/itemType";
 import useUserStore from "../store/user";
 import CategoryType from "../models/categoryType";
+
+export const queryClient = new QueryClient();
 
 export const fetchItemsByCategory: (
   category: CategoryType,
@@ -46,3 +49,20 @@ export const fetchItem: (
 
   return items?.find(({ id }) => id === itemId) || undefined;
 };
+
+export const createNewItem: (item: ItemType) => Promise<void> = async (
+  item,
+) => {
+  const userId = useUserStore.getState().id;
+  const userDocRef = doc(db, "user-data", userId);
+
+  try {
+    await updateDoc(userDocRef, {
+      items: arrayUnion(item),
+    });
+  } catch (error) {
+    throw Error("데이터를 추가하는 데 실패하였습니다.");
+  }
+};
+
+export const updateItem = async () => {};
