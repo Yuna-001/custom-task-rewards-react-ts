@@ -113,7 +113,7 @@ const ItemForm: React.FC = () => {
 
     const item: ItemType = {
       type: category,
-      id: isCreating ? uuidv4() : userId,
+      id: isCreating ? uuidv4() : itemId,
       title,
       coin,
       endDate,
@@ -144,7 +144,7 @@ const ItemForm: React.FC = () => {
       {category === "tasks" && (
         <ItemInput
           type="date"
-          id="end-date"
+          id="endDate"
           label="기한"
           defaultValue={item?.endDate ?? ""}
           disabled={isDetail}

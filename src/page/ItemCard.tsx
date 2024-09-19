@@ -50,9 +50,9 @@ const ItemCard: React.FC<{
   let showingTitle: string = title;
 
   let actionBtn1: ReactNode = (
-    <ActionButton>
-      <Link to={`/${userId}/${category}/${id}/edit`}>편집</Link>
-    </ActionButton>
+    <Link to={`/${userId}/${category}/${id}/edit`}>
+      <ActionButton>편집</ActionButton>
+    </Link>
   );
   let actionBtn2: ReactNode = <ActionButton>완료</ActionButton>;
 
