@@ -80,13 +80,13 @@ const ItemForm: React.FC = () => {
   let actiontBtn = <></>;
 
   if (isEditing) {
-    actiontBtn = <SubmitButton type="submit">변경</SubmitButton>;
+    actiontBtn = <SubmitButton type="submit">저장</SubmitButton>;
   } else if (isCreating) {
     actiontBtn = <SubmitButton type="submit">추가</SubmitButton>;
   } else {
     actiontBtn = (
       <ActionButton>
-        <Link to="edit">편집 시작</Link>
+        <Link to="edit">편집</Link>
       </ActionButton>
     );
   }
@@ -125,6 +125,7 @@ const ItemForm: React.FC = () => {
 
   return (
     <StyledForm method={isCreating ? "POST" : "PATCH"} onSubmit={handleSubmit}>
+      <ActionButton>삭제</ActionButton>
       <ItemInput
         type="text"
         id="title"

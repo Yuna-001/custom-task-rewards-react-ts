@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Form } from "react-router-dom";
 
@@ -39,16 +40,66 @@ const AuthForm: React.FC<{
   authMode: AuthModeType;
   onAuthModeChange: (mode: AuthModeType) => void;
 }> = ({ authMode, onAuthModeChange }) => {
+  const [enteredValues, setEnteredValues] = useState<{
+    id: string;
+    password: string;
+    nickname: string;
+  }>({
+    id: "",
+    password: "",
+    nickname: "",
+  });
+
+  useEffect(() => {
+    setEnteredValues({
+      id: "",
+      password: "",
+      nickname: "",
+    });
+  }, [authMode]);
+
+  const handleChangeInput: (
+    identifier: string,
+    enteredValue: string,
+  ) => void = (identifier, enteredValue) => {
+    setEnteredValues((prevValues) => ({
+      ...prevValues,
+      [identifier]: enteredValue,
+    }));
+  };
+
   return (
     <Authentication>
       <AuthMenu authMode={authMode} onClick={onAuthModeChange} />
       <StyledForm method="POST">
         <input type="hidden" name="authMode" value={authMode} />
         {authMode === "signup" && (
-          <AuthInput type="text" id="nickname" label="닉네임" />
+          <AuthInput
+            type="text"
+            id="nickname"
+            label="닉네임"
+            value={enteredValues.nickname}
+            onChange={(event) =>
+              handleChangeInput("nickname", event.target.value)
+            }
+          />
         )}
-        <AuthInput type="text" id="id" label="아이디" />
-        <AuthInput type="password" id="password" label="비밀번호" />
+        <AuthInput
+          type="text"
+          id="id"
+          label="아이디"
+          value={enteredValues.id}
+          onChange={(event) => handleChangeInput("id", event.target.value)}
+        />
+        <AuthInput
+          type="password"
+          id="password"
+          label="비밀번호"
+          value={enteredValues.password}
+          onChange={(event) =>
+            handleChangeInput("password", event.target.value)
+          }
+        />
         <SubmitButton>
           {authMode === "login" ? "로그인" : "회원가입"}
         </SubmitButton>

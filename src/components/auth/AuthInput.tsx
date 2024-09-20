@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -20,15 +21,24 @@ const InputArea = styled.input`
   background-color: #f8f8f3;
 `;
 
-const Input: React.FC<{ type: string; id: string; label: string }> = ({
-  type,
-  id,
-  label,
-}) => {
+const Input: React.FC<{
+  type: string;
+  id: string;
+  label: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ type, id, label, value, onChange }) => {
   return (
     <Container>
       <Label htmlFor={id}>{label}</Label>
-      <InputArea type={type} name={id} id={id} required />
+      <InputArea
+        type={type}
+        name={id}
+        id={id}
+        value={value}
+        required
+        onChange={onChange}
+      />
     </Container>
   );
 };
