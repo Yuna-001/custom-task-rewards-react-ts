@@ -5,7 +5,7 @@ type ItemType = {
   id: string;
   title: string;
   coin: number;
-  endDate?: string;
+  endDate: string;
   description: string;
 };
 

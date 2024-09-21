@@ -9,7 +9,9 @@ type AuthUser = {
   password: string;
   nickname?: string;
   coin?: number;
-  items?: Array<ItemType>;
+  tasks?: Array<ItemType>;
+  "rewards-shop"?: Array<ItemType>;
+  storage?: Array<ItemType>;
 };
 
 const authAction: (args: { request: Request }) => Promise<Response> = async ({
@@ -29,7 +31,9 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
   if (authMode === "signup") {
     user.nickname = nickname;
     user.coin = 0;
-    user.items = [];
+    user.tasks = [];
+    user["rewards-shop"] = [];
+    user.storage = [];
   }
 
   if (authMode !== "signup" && authMode !== "login") {
@@ -93,13 +97,6 @@ const signup: (user: AuthUser) => Promise<void> = async (user) => {
   await setDoc(userDocRef, user);
 };
 
-const verifyPassword: (
-  inputPassword: string,
-  storedPassword: string,
-) => boolean = (inputPassword, storedPassword) => {
-  return inputPassword === storedPassword;
-};
-
 const login: (user: AuthUser) => Promise<void> = async (user) => {
   // Firestore에서 사용자 문서 조회
   const userDocRef = doc(db, "user-data", user.id);
@@ -107,14 +104,10 @@ const login: (user: AuthUser) => Promise<void> = async (user) => {
 
   if (userDoc.exists()) {
     const userData = userDoc.data();
-    if (userData && verifyPassword(user.password, userData.password)) {
-      // 로그인 성공
-    } else {
-      // 비밀번호 불일치
+    if (user.password !== userData.password) {
       throw new Error("비밀번호가 틀렸습니다.");
     }
   } else {
-    // 사용자가 존재하지 않음
     throw new Error("존재하지 않는 아이디입니다.");
   }
 };

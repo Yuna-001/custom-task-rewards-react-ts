@@ -1,4 +1,11 @@
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  updateDoc,
+  DocumentReference,
+  DocumentData,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { QueryClient } from "@tanstack/react-query";
 
@@ -8,19 +15,19 @@ import CategoryType from "../models/categoryType";
 
 export const queryClient = new QueryClient();
 
-export const fetchItemsByCategory: (
-  category: CategoryType,
-) => Promise<ItemType[]> = async (category) => {
+export const fetchItemsByCategory: (category: CategoryType) => Promise<{
+  items: ItemType[];
+  userDocRef: DocumentReference<DocumentData, DocumentData>;
+}> = async (category) => {
   const userId = useUserStore.getState().id;
   const userDocRef = doc(db, "user-data", userId);
 
   try {
     const userDoc = await getDoc(userDocRef);
     const data = userDoc.data();
-    const items: Array<ItemType> = data?.items || [];
-    const filteredItems = items?.filter((item) => item.type === category);
+    const items: Array<ItemType> = data ? data[category] : [];
 
-    return filteredItems;
+    return { items, userDocRef };
   } catch (error) {
     throw new Error("데이터를 불러오는 데 실패하였습니다.");
   }
@@ -47,55 +54,50 @@ export const fetchUserData: () => Promise<{
 };
 
 export const fetchItem: (
+  category: CategoryType,
   itemId: string | undefined,
-) => Promise<ItemType | undefined> = async (itemId) => {
-  if (itemId === undefined) return undefined;
+) => Promise<ItemType | undefined> = async (category, itemId) => {
+  const { items } = await fetchItemsByCategory(category);
+  const item = items?.find(({ id }) => id === itemId);
 
-  const userId = useUserStore.getState().id;
-  const userDocRef = doc(db, "user-data", userId);
-
-  try {
-    const userDoc = await getDoc(userDocRef);
-    const data = userDoc.data();
-    const items: Array<ItemType> = data?.items || [];
-
-    return items?.find(({ id }) => id === itemId) || undefined;
-  } catch (error) {
-    throw new Error("데이터를 불러오는 데 실패하였습니다.");
-  }
+  return item;
 };
 
-export const createNewItem: (item: ItemType) => Promise<void> = async (
+export const createNewItem: ({
+  category,
   item,
-) => {
+}: {
+  category: CategoryType;
+  item: ItemType;
+}) => Promise<void> = async ({ category, item }) => {
   const userId = useUserStore.getState().id;
   const userDocRef = doc(db, "user-data", userId);
 
   try {
     await updateDoc(userDocRef, {
-      items: arrayUnion(item),
+      [category]: arrayUnion(item),
     });
   } catch (error) {
     throw Error("데이터를 추가하는 데 실패하였습니다.");
   }
 };
 
-export const updateItem: (updatedItem: ItemType) => Promise<void> = async (
-  updatedItem,
-) => {
-  const userId = useUserStore.getState().id;
-  const userDocRef = doc(db, "user-data", userId);
-
+export const updateItem: ({
+  category,
+  item,
+}: {
+  category: CategoryType;
+  item: ItemType;
+}) => Promise<void> = async ({ category, item: updatedItem }) => {
   try {
-    const userDoc = await getDoc(userDocRef);
-    const data = userDoc.data();
-    const items = data?.items || [];
+    const { items, userDocRef } = await fetchItemsByCategory(category);
+
     const updatedItems = items.map((item: ItemType) =>
       item.id === updatedItem.id ? updatedItem : item,
     );
 
     await updateDoc(userDocRef, {
-      items: updatedItems,
+      [category]: updatedItems,
     });
   } catch (error) {
     throw new Error("데이터 업데이트에 실패하였습니다.");

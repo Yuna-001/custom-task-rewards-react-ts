@@ -73,7 +73,7 @@ const ItemForm: React.FC = () => {
 
   const { data: item } = useQuery({
     queryKey: ["items", { category, itemId }],
-    queryFn: () => fetchItem(itemId),
+    queryFn: () => fetchItem(category, itemId),
     enabled: !isCreating,
   });
 
@@ -120,7 +120,7 @@ const ItemForm: React.FC = () => {
       description,
     };
 
-    mutate(item);
+    mutate({ category, item });
   };
 
   return (

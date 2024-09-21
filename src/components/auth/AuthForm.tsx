@@ -5,6 +5,7 @@ import { Form } from "react-router-dom";
 import AuthInput from "./AuthInput";
 import AuthMenu from "./AuthMenu";
 import AuthModeType from "../../models/authModeType";
+import AuthFormValues from "../../models/authFormValues";
 
 const Authentication = styled.section`
   background-color: #d6cfc6e6;
@@ -40,11 +41,7 @@ const AuthForm: React.FC<{
   authMode: AuthModeType;
   onAuthModeChange: (mode: AuthModeType) => void;
 }> = ({ authMode, onAuthModeChange }) => {
-  const [enteredValues, setEnteredValues] = useState<{
-    id: string;
-    password: string;
-    nickname: string;
-  }>({
+  const [enteredValues, setEnteredValues] = useState<AuthFormValues>({
     id: "",
     password: "",
     nickname: "",
@@ -64,8 +61,12 @@ const AuthForm: React.FC<{
   ) => void = (identifier, enteredValue) => {
     setEnteredValues((prevValues) => ({
       ...prevValues,
-      [identifier]: enteredValue,
+      [identifier]: enteredValue.trim(),
     }));
+  };
+
+  const handleSubmit: () => void = () => {
+    onFormSubmit(enteredValues);
   };
 
   return (

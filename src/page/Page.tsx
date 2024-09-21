@@ -8,16 +8,11 @@ import { fetchItemsByCategory } from "../util/http";
 
 const Page: React.FC = () => {
   const { category } = usePath();
-  const {
-    data: items,
-    isError,
-    error,
-    isLoading,
-    isFetching,
-  } = useQuery({
+  const { data, isError, error, isLoading, isFetching } = useQuery({
     queryKey: ["items", { category }],
     queryFn: () => fetchItemsByCategory(category),
   });
+  const items = data?.items;
 
   if (isError) {
     return <div>{error.message}</div>;
