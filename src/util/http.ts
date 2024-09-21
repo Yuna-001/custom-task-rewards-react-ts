@@ -103,3 +103,25 @@ export const updateItem: ({
     throw new Error("데이터 업데이트에 실패하였습니다.");
   }
 };
+
+export const removeItem: ({
+  category,
+  item,
+}: {
+  category: CategoryType;
+  item: ItemType;
+}) => Promise<void> = async ({ category, item: updatedItem }) => {
+  try {
+    const { items, userDocRef } = await fetchItemsByCategory(category);
+
+    const updatedItems = items.filter(
+      (item: ItemType) => item.id !== updatedItem.id,
+    );
+
+    await updateDoc(userDocRef, {
+      [category]: updatedItems,
+    });
+  } catch (error) {
+    throw new Error("데이터 삭제에 실패하였습니다.");
+  }
+};

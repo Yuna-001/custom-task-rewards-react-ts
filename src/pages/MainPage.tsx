@@ -6,7 +6,7 @@ import PageLayout from "../layout/PageLayout";
 import usePath from "../hooks/usePath";
 import { fetchItemsByCategory } from "../util/http";
 
-const Page: React.FC = () => {
+const MainPage: React.FC = () => {
   const { category } = usePath();
   const { data, isError, error, isLoading, isFetching } = useQuery({
     queryKey: ["items", { category }],
@@ -34,4 +34,4 @@ const Page: React.FC = () => {
   );
 };
 
-export default Page;
+export default MainPage;
