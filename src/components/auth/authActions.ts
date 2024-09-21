@@ -56,20 +56,29 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
     if (error instanceof Error && error.message.includes("필수")) {
       // 잘못된 요청
       return json({ message: error.message, status: 400 }, { status: 400 });
-    } else if (
+    }
+
+    if (
       error instanceof Error &&
       (error.message.includes("비밀번호가 틀렸습니다.") ||
         error.message.includes("존재하지 않는 아이디입니다."))
     ) {
       // 인증 오류
       return json({ message: error.message, status: 401 }, { status: 401 });
-    } else {
-      // 서버 오류
-      return json(
-        { message: "서버에 오류가 발생했습니다.", status: 500 },
-        { status: 500 },
-      );
     }
+
+    if (
+      error instanceof Error &&
+      error.message.includes("이미 존재하는 아이디입니다.")
+    ) {
+      // 요청 충돌
+      return json({ message: error.message, status: 409 }, { status: 409 });
+    }
+
+    return json(
+      { message: "서버에 오류가 발생했습니다.", status: 500 },
+      { status: 500 },
+    );
   }
 
   useUserStore.getState().login(id);
@@ -94,6 +103,12 @@ const validateUserData: (user: AuthUser, authMode: string) => void = (
 
 const signup: (user: AuthUser) => Promise<void> = async (user) => {
   const userDocRef = doc(db, "user-data", user.id);
+  const userDoc = await getDoc(userDocRef);
+
+  if (userDoc.exists()) {
+    throw new Error("이미 존재하는 아이디입니다.");
+  }
+
   await setDoc(userDocRef, user);
 };
 
