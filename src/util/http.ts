@@ -104,19 +104,17 @@ export const updateItem: ({
   }
 };
 
-export const removeItem: ({
+export const deleteItem: ({
   category,
-  item,
+  itemId,
 }: {
   category: CategoryType;
-  item: ItemType;
-}) => Promise<void> = async ({ category, item: updatedItem }) => {
+  itemId: string;
+}) => Promise<void> = async ({ category, itemId }) => {
   try {
     const { items, userDocRef } = await fetchItemsByCategory(category);
 
-    const updatedItems = items.filter(
-      (item: ItemType) => item.id !== updatedItem.id,
-    );
+    const updatedItems = items.filter((item: ItemType) => item.id !== itemId);
 
     await updateDoc(userDocRef, {
       [category]: updatedItems,
