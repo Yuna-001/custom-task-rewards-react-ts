@@ -3,13 +3,27 @@ import { useActionData } from "react-router-dom";
 import styled from "styled-components";
 
 import AuthForm from "../components/auth/AuthForm";
-import AuthPageLayout from "../layout/AuthPageLayout";
 import AuthModeType from "../models/authModeType";
 
 const ErrorBox = styled.p`
   margin-top: 20px;
+  height: 3rem;
   text-align: center;
   color: red;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 10rem);
+`;
+
+const Title = styled.h1`
+  width: 100%;
+  margin: 2rem 0 3rem;
+  text-align: center;
 `;
 
 type ActionData = {
@@ -38,10 +52,13 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <AuthPageLayout>
-      <AuthForm authMode={authMode} onAuthModeChange={handleChangeAuthMode} />
-      {error && <ErrorBox>{error}</ErrorBox>}
-    </AuthPageLayout>
+    <>
+      <Title>할 일 보상 관리 앱</Title>
+      <Container>
+        <AuthForm authMode={authMode} onAuthModeChange={handleChangeAuthMode} />
+        <ErrorBox>{error ?? ""}</ErrorBox>
+      </Container>
+    </>
   );
 };
 

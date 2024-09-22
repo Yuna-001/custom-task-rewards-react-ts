@@ -11,7 +11,7 @@ const Authentication = styled.section`
   background-color: #d6cfc6e6;
   width: 25rem;
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   align-items: center;
   gap: 1rem;
   border-radius: 1rem;
@@ -63,10 +63,6 @@ const AuthForm: React.FC<{
       ...prevValues,
       [identifier]: enteredValue.trim(),
     }));
-  };
-
-  const handleSubmit: () => void = () => {
-    onFormSubmit(enteredValues);
   };
 
   return (
