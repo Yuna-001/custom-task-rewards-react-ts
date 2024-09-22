@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { QueryClient } from "@tanstack/react-query";
+import { v4 as uuidv4 } from "uuid";
 
 import ItemType from "../models/itemType";
 import useUserStore from "../store/user";
@@ -150,4 +151,19 @@ export const completeTask: ({
 
   // item 삭제
   await deleteItem({ category: "tasks", itemId });
+};
+
+export const buyReward: ({
+  item,
+  coin,
+}: {
+  item: ItemType;
+  coin: number;
+}) => Promise<void> = async ({ item, coin }) => {
+  // user의 coin을 업데이트
+  await updateUserCoin(coin * -1);
+
+  //storage에 item 추가
+  item.id = uuidv4();
+  await createNewItem({ category: "storage", item });
 };
