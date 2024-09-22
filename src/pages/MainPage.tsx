@@ -8,23 +8,11 @@ import { fetchItemsByCategory } from "../util/http";
 
 const MainPage: React.FC = () => {
   const { category } = usePath();
-  const { data, isError, error, isLoading, isFetching } = useQuery({
-    queryKey: ["items", { category }],
+  const { data } = useQuery({
+    queryKey: ["items", category],
     queryFn: () => fetchItemsByCategory(category),
   });
   const items = data?.items;
-
-  if (isError) {
-    return <div>{error.message}</div>;
-  }
-
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (isFetching) {
-    return <div>업데이트 중...</div>;
-  }
 
   return (
     <PageLayout>

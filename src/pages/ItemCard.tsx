@@ -9,6 +9,8 @@ import CoinData from "../components/UI/CoinData";
 import ItemType from "../models/itemType";
 import usePath from "../hooks/usePath";
 import { dateFormatting } from "../util/formatting";
+import { useMutation } from "@tanstack/react-query";
+import { completeTask, queryClient } from "../util/http";
 
 const Content = styled.article`
   width: 100%;
@@ -46,15 +48,34 @@ const ItemCard: React.FC<{
   item: ItemType;
 }> = ({ item }) => {
   const { category, userId } = usePath();
-  const { title, coin, id } = item;
-  let showingTitle: string = title;
+  const { title, coin, id: itemId } = item;
+
+  const { mutate } = useMutation({
+    mutationFn: completeTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user-data"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["items", category],
+      });
+    },
+  });
+
+  const handleCompleteTask = () => {
+    mutate({ itemId, coin });
+  };
 
   let actionBtn1: ReactNode = (
-    <Link to={`/${userId}/${category}/${id}/edit`}>
+    <Link to={`/${userId}/${category}/${itemId}/edit`}>
       <ActionButton>편집</ActionButton>
     </Link>
   );
-  let actionBtn2: ReactNode = <ActionButton>완료</ActionButton>;
+  let actionBtn2: ReactNode = (
+    <ActionButton onClick={handleCompleteTask}>완료</ActionButton>
+  );
+
+  let showingTitle: string = title;
 
   if (title.length > 30) showingTitle = title.slice(0, 30) + "...";
 
@@ -73,7 +94,9 @@ const ItemCard: React.FC<{
           {item?.endDate && <span>~ {dateFormatting(item.endDate)}</span>}
         </Header>
         <h3> {showingTitle}</h3>
-        <DetailLink to={`/${userId}/${category}/${id}`}>자세히 보기</DetailLink>
+        <DetailLink to={`/${userId}/${category}/${itemId}`}>
+          자세히 보기
+        </DetailLink>
       </Content>
       <ActionButtons>
         {actionBtn1}

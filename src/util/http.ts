@@ -36,6 +36,7 @@ export const fetchItemsByCategory: (category: CategoryType) => Promise<{
 export const fetchUserData: () => Promise<{
   nickname: string;
   coin: number;
+  userDocRef: DocumentReference<DocumentData, DocumentData>;
 }> = async () => {
   const userId = useUserStore.getState().id;
   const userDocRef = doc(db, "user-data", userId);
@@ -47,7 +48,7 @@ export const fetchUserData: () => Promise<{
     const nickname: string = data?.nickname || "";
     const coin: number = data?.coin || 0;
 
-    return { nickname, coin };
+    return { nickname, coin, userDocRef };
   } catch (error) {
     throw new Error("사용자의 데이터를 불러오는 데 실패하였습니다.");
   }
@@ -56,11 +57,11 @@ export const fetchUserData: () => Promise<{
 export const fetchItem: (
   category: CategoryType,
   itemId: string | undefined,
-) => Promise<ItemType | undefined> = async (category, itemId) => {
+) => Promise<ItemType | null> = async (category, itemId) => {
   const { items } = await fetchItemsByCategory(category);
   const item = items?.find(({ id }) => id === itemId);
 
-  return item;
+  return item ?? null;
 };
 
 export const createNewItem: ({
@@ -122,4 +123,31 @@ export const deleteItem: ({
   } catch (error) {
     throw new Error("데이터 삭제에 실패하였습니다.");
   }
+};
+
+const updateUserCoin: (coin: number) => Promise<void> = async (coin) => {
+  const { coin: userCoin, userDocRef } = await fetchUserData();
+  const updatedCoin = userCoin + coin;
+
+  try {
+    await updateDoc(userDocRef, {
+      coin: updatedCoin,
+    });
+  } catch (error) {
+    throw new Error("데이터 업데이트에 실패했습니다.");
+  }
+};
+
+export const completeTask: ({
+  itemId,
+  coin,
+}: {
+  itemId: string;
+  coin: number;
+}) => Promise<void> = async ({ itemId, coin }) => {
+  // 사용자의 coin을 업데이트
+  await updateUserCoin(coin);
+
+  // item 삭제
+  await deleteItem({ category: "tasks", itemId });
 };

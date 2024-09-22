@@ -89,9 +89,9 @@ const ItemForm: React.FC = () => {
   const isDetail = !isCreating && !isEditing;
 
   const { data: item } = useQuery({
-    queryKey: ["items", { category, itemId }],
+    queryKey: ["items", category, itemId],
     queryFn: () => fetchItem(category, itemId),
-    enabled: !isCreating,
+    enabled: !isCreating && itemId !== undefined,
   });
 
   let actiontBtn = <></>;
@@ -113,7 +113,9 @@ const ItemForm: React.FC = () => {
   const { mutate } = useMutation({
     mutationFn: isCreating ? createNewItem : updateItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["items"] });
+      queryClient.invalidateQueries({
+        queryKey: ["items", category],
+      });
       navigate(`/${userId}/${category}`);
     },
   });
@@ -124,7 +126,8 @@ const ItemForm: React.FC = () => {
     const data = new FormData(event.currentTarget);
 
     const title = data.get("title")?.toString().trim() || "";
-    const coin = data.get("coin") ? Number(data.get("coin")) : 0;
+    const coinString = data.get("coin")?.toString().trim() || "";
+    const coin = Number(coinString);
     const endDate = data.get("endDate")?.toString().trim() || "";
     const description = data.get("description")?.toString().trim() || "";
 
@@ -142,12 +145,14 @@ const ItemForm: React.FC = () => {
   const { mutate: mutateDeleteItem } = useMutation({
     mutationFn: deleteItem,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["items"] });
+      queryClient.invalidateQueries({
+        queryKey: ["items", category],
+      });
       navigate(`/${userId}/${category}`);
     },
   });
 
-  const handleDelete = () => {
+  const handleDelete: () => void = () => {
     if (itemId) {
       mutateDeleteItem({ category, itemId });
     }
