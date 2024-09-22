@@ -23,13 +23,13 @@ import ItemType from "../models/itemType";
 
 const StyledForm = styled(Form)`
   width: 50%;
-  padding: 4rem 0;
+  padding: 3rem 0 4rem;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   font-weight: bold;
   ${media.small`
     width:75%;
@@ -53,6 +53,21 @@ const SubmitButton = styled.button`
   transition-duration: 0.2s;
   &:hover {
     background-color: #fff08c;
+  }
+`;
+
+const DeleteButtonContainer = styled.div`
+  display: flex;
+  justify-content: right;
+  margin-bottom: -1.5rem;
+`;
+const DeleteButton = styled.div`
+  color: #74726e;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition-duration: 0.2s;
+  &:hover {
+    color: red;
   }
 `;
 
@@ -125,7 +140,9 @@ const ItemForm: React.FC = () => {
 
   return (
     <StyledForm method={isCreating ? "POST" : "PATCH"} onSubmit={handleSubmit}>
-      <ActionButton>삭제</ActionButton>
+      <DeleteButtonContainer>
+        <DeleteButton>삭제</DeleteButton>
+      </DeleteButtonContainer>
       <ItemInput
         type="text"
         id="title"
