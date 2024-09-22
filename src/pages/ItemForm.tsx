@@ -15,6 +15,7 @@ import ItemInput from "./ItemInput";
 import usePath from "../hooks/usePath";
 import {
   createNewItem,
+  deleteItem,
   fetchItem,
   queryClient,
   updateItem,
@@ -61,6 +62,7 @@ const DeleteButtonContainer = styled.div`
   justify-content: right;
   margin-bottom: -1.5rem;
 `;
+
 const DeleteButton = styled.div`
   color: #74726e;
   padding: 0.5rem;
@@ -127,8 +129,7 @@ const ItemForm: React.FC = () => {
     const description = data.get("description")?.toString().trim() || "";
 
     const item: ItemType = {
-      type: category,
-      id: isCreating ? uuidv4() : itemId,
+      id: itemId ?? uuidv4(),
       title,
       coin,
       endDate,
@@ -138,11 +139,27 @@ const ItemForm: React.FC = () => {
     mutate({ category, item });
   };
 
+  const { mutate: mutateDeleteItem } = useMutation({
+    mutationFn: deleteItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+      navigate(`/${userId}/${category}`);
+    },
+  });
+
+  const handleDelete = () => {
+    if (itemId) {
+      mutateDeleteItem({ category, itemId });
+    }
+  };
+
   return (
     <StyledForm method={isCreating ? "POST" : "PATCH"} onSubmit={handleSubmit}>
-      <DeleteButtonContainer>
-        <DeleteButton>삭제</DeleteButton>
-      </DeleteButtonContainer>
+      {!isCreating && (
+        <DeleteButtonContainer>
+          <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
+        </DeleteButtonContainer>
+      )}
       <ItemInput
         type="text"
         id="title"
