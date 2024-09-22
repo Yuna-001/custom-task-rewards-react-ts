@@ -167,3 +167,17 @@ export const buyReward: ({
   item.id = uuidv4();
   await createNewItem({ category: "storage", item });
 };
+
+export const refundItem: ({
+  itemId,
+  coin,
+}: {
+  itemId: string;
+  coin: number;
+}) => Promise<void> = async ({ itemId, coin }) => {
+  // 사용자의 coin을 업데이트
+  await updateUserCoin(coin);
+
+  // item 삭제
+  await deleteItem({ category: "storage", itemId });
+};

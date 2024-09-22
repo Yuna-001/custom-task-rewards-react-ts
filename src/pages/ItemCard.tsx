@@ -10,7 +10,13 @@ import ItemType from "../models/itemType";
 import usePath from "../hooks/usePath";
 import { dateFormatting } from "../util/formatting";
 import { useMutation } from "@tanstack/react-query";
-import { buyReward, completeTask, deleteItem, queryClient } from "../util/http";
+import {
+  buyReward,
+  completeTask,
+  deleteItem,
+  queryClient,
+  refundItem,
+} from "../util/http";
 
 const Content = styled.article`
   width: 100%;
@@ -66,8 +72,24 @@ const ItemCard: React.FC<{
     },
   });
 
+  const { mutate: mutateRefundItem } = useMutation({
+    mutationFn: refundItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user-data"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["items", category],
+      });
+    },
+  });
+
   const handleActionButtonClick = () => {
     mutate();
+  };
+
+  const handleRefundButtonClick = () => {
+    mutateRefundItem({ itemId, coin });
   };
 
   let actionBtn1: ReactNode = (
@@ -89,7 +111,9 @@ const ItemCard: React.FC<{
       <ActionButton onClick={handleActionButtonClick}>구입</ActionButton>
     );
   } else if (category === "storage") {
-    actionBtn1 = <ActionButton>환불</ActionButton>;
+    actionBtn1 = (
+      <ActionButton onClick={handleRefundButtonClick}>환불</ActionButton>
+    );
     actionBtn2 = (
       <ActionButton onClick={handleActionButtonClick}>사용</ActionButton>
     );
