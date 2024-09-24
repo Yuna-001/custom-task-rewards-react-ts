@@ -53,7 +53,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <>
-      <Title>할 일 보상 관리 앱</Title>
+      <Title>할 일 보상 관리</Title>
       <Container>
         <AuthForm authMode={authMode} onAuthModeChange={handleChangeAuthMode} />
         <ErrorBox>{error ?? ""}</ErrorBox>
