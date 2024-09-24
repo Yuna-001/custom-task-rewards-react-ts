@@ -12,12 +12,14 @@ const Label = styled.label`
 `;
 
 const InputArea = styled.input`
+  width: 100%;
   padding: 0.7rem;
   background-color: #e4e0d5;
   border-radius: 0.5rem;
 `;
 
 const Textarea = styled.textarea`
+  width: 100%;
   height: 10rem;
   resize: none;
   padding: 0.7rem;
