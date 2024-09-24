@@ -91,7 +91,7 @@ const ItemForm: React.FC = () => {
   const { data: item } = useQuery({
     queryKey: ["items", category, itemId],
     queryFn: () => fetchItem(category, itemId),
-    enabled: !isCreating && itemId !== undefined,
+    enabled: itemId !== undefined,
   });
 
   let actiontBtn = <></>;
@@ -147,6 +147,7 @@ const ItemForm: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["items", category],
+        refetchType: "none",
       });
       navigate(`/${userId}/${category}`);
     },
