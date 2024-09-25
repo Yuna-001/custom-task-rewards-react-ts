@@ -6,6 +6,7 @@ import AuthInput from "./AuthInput";
 import AuthMenu from "./AuthMenu";
 import AuthModeType from "../../models/authModeType";
 import AuthFormValues from "../../models/authFormValues";
+import useErrorMessageStore from "../../store/errorMessage";
 
 const Authentication = styled.section`
   background-color: #d6cfc6e6;
@@ -41,6 +42,10 @@ const AuthForm: React.FC<{
   authMode: AuthModeType;
   onAuthModeChange: (mode: AuthModeType) => void;
 }> = ({ authMode, onAuthModeChange }) => {
+  const clearErrorMessage = useErrorMessageStore(
+    (state) => state.clearErrorMessage,
+  );
+
   const [enteredValues, setEnteredValues] = useState<AuthFormValues>({
     id: "",
     password: "",
@@ -68,7 +73,7 @@ const AuthForm: React.FC<{
   return (
     <Authentication>
       <AuthMenu authMode={authMode} onClick={onAuthModeChange} />
-      <StyledForm method="POST">
+      <StyledForm method="POST" onFocus={() => clearErrorMessage()}>
         <input type="hidden" name="authMode" value={authMode} />
         {authMode === "signup" && (
           <AuthInput
