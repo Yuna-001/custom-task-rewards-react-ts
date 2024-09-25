@@ -102,7 +102,7 @@ const validateUserData: (user: AuthUser, authMode: string) => void = (
 };
 
 const signup: (user: AuthUser) => Promise<void> = async (user) => {
-  const userDocRef = doc(db, "user-data", user.id);
+  const userDocRef = doc(db, "users", user.id);
   const userDoc = await getDoc(userDocRef);
 
   if (userDoc.exists()) {
@@ -114,7 +114,7 @@ const signup: (user: AuthUser) => Promise<void> = async (user) => {
 
 const login: (user: AuthUser) => Promise<void> = async (user) => {
   // Firestore에서 사용자 문서 조회
-  const userDocRef = doc(db, "user-data", user.id);
+  const userDocRef = doc(db, "users", user.id);
   const userDoc = await getDoc(userDocRef);
 
   if (userDoc.exists()) {

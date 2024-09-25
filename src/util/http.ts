@@ -21,7 +21,7 @@ export const fetchItemsByCategory: (category: CategoryType) => Promise<{
   userDocRef: DocumentReference<DocumentData, DocumentData>;
 }> = async (category) => {
   const userId = useUserStore.getState().id;
-  const userDocRef = doc(db, "user-data", userId);
+  const userDocRef = doc(db, "users", userId);
 
   try {
     const userDoc = await getDoc(userDocRef);
@@ -40,7 +40,7 @@ export const fetchUserData: () => Promise<{
   userDocRef: DocumentReference<DocumentData, DocumentData>;
 }> = async () => {
   const userId = useUserStore.getState().id;
-  const userDocRef = doc(db, "user-data", userId);
+  const userDocRef = doc(db, "users", userId);
 
   try {
     const userDoc = await getDoc(userDocRef);
@@ -73,7 +73,7 @@ export const createNewItem: ({
   item: ItemType;
 }) => Promise<void> = async ({ category, item }) => {
   const userId = useUserStore.getState().id;
-  const userDocRef = doc(db, "user-data", userId);
+  const userDocRef = doc(db, "users", userId);
 
   try {
     await updateDoc(userDocRef, {
