@@ -44,28 +44,35 @@ const ItemInput: React.FC<{
   isTextarea = false,
   required = false,
 }) => {
+  const conditionalAttributes = type === "number" ? { min: 0 } : {};
+
+  let inputField = (
+    <InputArea
+      type={type}
+      name={id}
+      id={id}
+      defaultValue={defaultValue}
+      required={required}
+      disabled={disabled}
+      {...conditionalAttributes}
+    />
+  );
+
+  if (isTextarea) {
+    inputField = (
+      <Textarea
+        name={id}
+        id={id}
+        defaultValue={defaultValue}
+        required={required}
+        disabled={disabled}
+      />
+    );
+  }
   return (
     <Container>
       <Label htmlFor={id}>{label}</Label>
-      {!isTextarea && (
-        <InputArea
-          type={type}
-          name={id}
-          id={id}
-          defaultValue={defaultValue}
-          required={required}
-          disabled={disabled}
-        />
-      )}
-      {isTextarea && (
-        <Textarea
-          name={id}
-          id={id}
-          defaultValue={defaultValue}
-          required={required}
-          disabled={disabled}
-        />
-      )}
+      {inputField}
     </Container>
   );
 };
