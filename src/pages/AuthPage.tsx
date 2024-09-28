@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useActionData } from "react-router-dom";
 import styled from "styled-components";
 
 import AuthForm from "../components/auth/AuthForm";
-import AuthModeType from "../models/authModeType";
 import useErrorMessageStore from "../store/errorMessage";
 
 const ErrorBox = styled.p`
@@ -38,13 +37,11 @@ const isActionData = (data: any): data is ActionData => {
 
 const AuthPage: React.FC = () => {
   const data = useActionData();
-  const [authMode, setAuthMode] = useState<AuthModeType>("login");
-  const { errorMessage, setErrorMessage, clearErrorMessage } =
-    useErrorMessageStore((state) => ({
-      errorMessage: state.errorMessage,
-      setErrorMessage: state.setErrorMessage,
-      clearErrorMessage: state.clearErrorMessage,
-    }));
+
+  const { errorMessage, setErrorMessage } = useErrorMessageStore((state) => ({
+    errorMessage: state.errorMessage,
+    setErrorMessage: state.setErrorMessage,
+  }));
 
   useEffect(() => {
     if (data && isActionData(data) && data.message) {
@@ -52,16 +49,11 @@ const AuthPage: React.FC = () => {
     }
   }, [data, setErrorMessage]);
 
-  const handleChangeAuthMode = (mode: AuthModeType) => {
-    setAuthMode(mode);
-    clearErrorMessage();
-  };
-
   return (
     <>
       <Title>할 일 보상 관리</Title>
       <Container>
-        <AuthForm authMode={authMode} onAuthModeChange={handleChangeAuthMode} />
+        <AuthForm />
         <ErrorBox>{errorMessage}</ErrorBox>
       </Container>
     </>

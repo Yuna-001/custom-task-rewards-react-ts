@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import useAuthModeStore from "../../store/authMode";
+import useErrorMessageStore from "../../store/errorMessage";
 import AuthModeType from "../../models/authModeType";
 
 const Menu = styled.menu`
@@ -22,21 +24,34 @@ const MenuItem = styled.li`
   }
 `;
 
-const AuthMenu: React.FC<{
-  authMode: AuthModeType;
-  onClick: (state: AuthModeType) => void;
-}> = ({ authMode, onClick }) => {
+const AuthMenu: React.FC = () => {
+  const { authMode, setAuthMode } = useAuthModeStore((state) => ({
+    authMode: state.authMode,
+    setAuthMode: state.setAuthMode,
+  }));
+
+  const clearErrorMessage = useErrorMessageStore(
+    (state) => state.clearErrorMessage,
+  );
+
+  const handleClick = (mode: AuthModeType) => {
+    if (mode !== authMode) {
+      clearErrorMessage();
+      setAuthMode(mode);
+    }
+  };
+
   return (
     <Menu>
       <MenuItem
         className={authMode === "login" ? "active" : undefined}
-        onClick={() => onClick("login")}
+        onClick={() => handleClick("login")}
       >
         로그인
       </MenuItem>
       <MenuItem
         className={authMode === "signup" ? "active" : undefined}
-        onClick={() => onClick("signup")}
+        onClick={() => handleClick("signup")}
       >
         회원가입
       </MenuItem>

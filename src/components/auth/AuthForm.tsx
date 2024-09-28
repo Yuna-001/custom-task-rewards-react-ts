@@ -4,9 +4,9 @@ import { Form } from "react-router-dom";
 
 import AuthInput from "./AuthInput";
 import AuthMenu from "./AuthMenu";
-import AuthModeType from "../../models/authModeType";
 import AuthFormValues from "../../models/authFormValues";
 import useErrorMessageStore from "../../store/errorMessage";
+import useAuthModeStore from "../../store/authMode";
 
 const Authentication = styled.section`
   background-color: #d6cfc6e6;
@@ -38,13 +38,12 @@ const StyledForm = styled(Form)`
   padding-bottom: 2rem;
 `;
 
-const AuthForm: React.FC<{
-  authMode: AuthModeType;
-  onAuthModeChange: (mode: AuthModeType) => void;
-}> = ({ authMode, onAuthModeChange }) => {
+const AuthForm: React.FC = () => {
   const clearErrorMessage = useErrorMessageStore(
     (state) => state.clearErrorMessage,
   );
+
+  const authMode = useAuthModeStore((state) => state.authMode);
 
   const [enteredValues, setEnteredValues] = useState<AuthFormValues>({
     id: "",
@@ -72,7 +71,7 @@ const AuthForm: React.FC<{
 
   return (
     <Authentication>
-      <AuthMenu authMode={authMode} onClick={onAuthModeChange} />
+      <AuthMenu />
       <StyledForm method="POST" onFocus={() => clearErrorMessage()}>
         <input type="hidden" name="authMode" value={authMode} />
         {authMode === "signup" && (
