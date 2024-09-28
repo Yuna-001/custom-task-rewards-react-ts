@@ -73,7 +73,6 @@ const AuthForm: React.FC = () => {
     <Authentication>
       <AuthMenu />
       <StyledForm method="POST" onFocus={() => clearErrorMessage()}>
-        <input type="hidden" name="authMode" value={authMode} />
         {authMode === "signup" && (
           <AuthInput
             type="text"

@@ -3,6 +3,7 @@ import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import ItemType from "../../models/itemType";
 import useUserStore from "../../store/user";
+import useAuthModeStore from "../../store/authMode";
 
 type AuthUser = {
   id: string;
@@ -17,11 +18,12 @@ type AuthUser = {
 const authAction: (args: { request: Request }) => Promise<Response> = async ({
   request,
 }) => {
+  const authMode = useAuthModeStore.getState().authMode;
+
   const data = await request.formData();
   const id = data.get("id")?.toString().trim() || "";
   const password = data.get("password")?.toString().trim() || "";
   const nickname = data.get("nickname")?.toString().trim() || "";
-  const authMode = data.get("authMode")?.toString().trim() || "";
 
   const user: AuthUser = {
     id,
