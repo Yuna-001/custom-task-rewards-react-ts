@@ -9,18 +9,18 @@ import styled from "styled-components";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { v4 as uuidv4 } from "uuid";
 
-import media from "../media";
-import ActionButton from "../components/UI/ActionButton";
+import media from "../../media";
+import ActionButton from "../UI/ActionButton";
 import ItemInput from "./ItemInput";
-import usePath from "../hooks/usePath";
+import usePath from "../../hooks/usePath";
 import {
   createNewItem,
   deleteItem,
   fetchItem,
   queryClient,
   updateItem,
-} from "../util/http";
-import ItemType from "../models/itemType";
+} from "../../utils/http";
+import ItemType from "../../models/itemType";
 
 const StyledForm = styled(Form)`
   width: 50%;

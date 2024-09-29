@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ReactNode } from "react";
 
-import coinImg from "../assets/coin.svg";
-import Card from "../components/UI/Card";
-import ActionButton from "../components/UI/ActionButton";
-import CoinData from "../components/UI/CoinData";
-import ItemType from "../models/itemType";
-import usePath from "../hooks/usePath";
-import { dateFormatting } from "../util/formatting";
+import coinImg from "../../assets/coin.svg";
+import Card from "./Card";
+import ActionButton from "../UI/ActionButton";
+import CoinData from "../UI/CoinData";
+import ItemType from "../../models/itemType";
+import usePath from "../../hooks/usePath";
+import { dateFormatting } from "../../utils/formatting";
 import { useMutation } from "@tanstack/react-query";
 import {
   buyReward,
@@ -16,7 +16,7 @@ import {
   deleteItem,
   queryClient,
   refundItem,
-} from "../util/http";
+} from "../../utils/http";
 
 const Content = styled.article`
   width: 100%;

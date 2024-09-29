@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { numberFormatting } from "../../util/formatting";
+import { numberFormatting } from "../../utils/formatting";
 
 const Coins = styled.div`
   margin: 0;

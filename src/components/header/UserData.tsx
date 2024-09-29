@@ -3,7 +3,7 @@ import styled from "styled-components";
 import coinsImg from "../../assets/coins.svg";
 import CoinData from "../UI/CoinData";
 import { useQuery } from "@tanstack/react-query";
-import { fetchUserData } from "../../util/http";
+import { fetchUserData } from "../../utils/http";
 
 const Data = styled.div`
   margin: 1rem;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import media from "../media";
+import media from "../../media";
 
 const PageLayout = styled.main`
   width: 80%;

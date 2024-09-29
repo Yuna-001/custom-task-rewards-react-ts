@@ -1,4 +1,4 @@
-import MainHeader from "../components/header/MainHeader";
+import MainHeader from "../header/MainHeader";
 import { Outlet } from "react-router-dom";
 
 const RootLayout: React.FC = () => {

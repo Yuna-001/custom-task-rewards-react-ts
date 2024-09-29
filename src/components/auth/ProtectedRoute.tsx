@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useUserStore from "../store/user";
+import useUserStore from "../../store/user";
 import { useEffect } from "react";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
