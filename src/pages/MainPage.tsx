@@ -17,7 +17,10 @@ const MainPage: React.FC = () => {
   return (
     <PageLayout>
       <AddCard />
-      {items?.map((item) => <ItemCard key={item.id} item={item} />)}
+      {items
+        ?.slice()
+        .reverse()
+        .map((item) => <ItemCard key={item.id} item={item} />)}
     </PageLayout>
   );
 };
