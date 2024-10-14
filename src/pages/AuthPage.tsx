@@ -51,7 +51,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <>
-      <Title>할 일 보상 관리</Title>
+      <Title>스스로 어른이</Title>
       <Container>
         <AuthForm />
         <ErrorBox>{errorMessage}</ErrorBox>
