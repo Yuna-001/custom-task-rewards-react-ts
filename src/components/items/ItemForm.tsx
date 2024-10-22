@@ -177,7 +177,7 @@ const ItemForm: React.FC = () => {
       <ItemInput
         type="number"
         id="coin"
-        label={category === "tasks" ? "보수" : "가격"}
+        label={category === "tasks" ? "완료 시 얻을 수 있는 코인" : "가격"}
         defaultValue={item?.coin ? item.coin : ""}
         disabled={isDetail}
         required
