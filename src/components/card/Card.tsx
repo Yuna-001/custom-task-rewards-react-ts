@@ -11,6 +11,12 @@ const Card = styled.section`
   align-items: center;
   text-align: center;
   border-radius: 1rem;
+  transition-duration: 0.3s;
+
+  &:hover {
+    scale: 1.02;
+    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+  }
 `;
 
 export default Card;

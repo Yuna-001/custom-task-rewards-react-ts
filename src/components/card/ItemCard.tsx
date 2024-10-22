@@ -18,13 +18,11 @@ import {
   refundItem,
 } from "../../utils/http";
 
-const Content = styled.article`
+const Content = styled(Link)`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 1rem;
 `;
 
 const ActionButtons = styled.div`
@@ -34,20 +32,19 @@ const ActionButtons = styled.div`
   margin-bottom: -0.5rem;
 `;
 
-const DetailLink = styled(Link)`
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #74726e;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
 const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-right: 0.5rem;
+`;
+
+const Title = styled.h3`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 4px;
 `;
 
 const ItemCard: React.FC<{
@@ -104,7 +101,7 @@ const ItemCard: React.FC<{
 
   let showingTitle: string = title;
 
-  if (title.length > 30) showingTitle = title.slice(0, 30) + "...";
+  if (title.length > 35) showingTitle = title.slice(0, 35) + "...";
 
   if (category === "rewards-shop") {
     actionBtn2 = (
@@ -121,15 +118,12 @@ const ItemCard: React.FC<{
 
   return (
     <Card>
-      <Content>
+      <Content to={`/${userId}/${category}/${itemId}`}>
         <Header>
           <CoinData image={coinImg} coin={coin} />
           {item?.endDate && <span>~ {dateFormatting(item.endDate)}</span>}
         </Header>
-        <h3> {showingTitle}</h3>
-        <DetailLink to={`/${userId}/${category}/${itemId}`}>
-          자세히 보기
-        </DetailLink>
+        <Title> {showingTitle}</Title>
       </Content>
       <ActionButtons>
         {actionBtn1}

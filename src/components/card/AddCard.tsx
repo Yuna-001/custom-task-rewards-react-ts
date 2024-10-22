@@ -13,10 +13,6 @@ const AddButton = styled(Link)`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition-duration: 0.3s;
-  &:hover {
-    scale: 1.1;
-  }
 `;
 
 const AddCard: React.FC = () => {
