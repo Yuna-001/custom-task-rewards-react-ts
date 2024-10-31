@@ -4,6 +4,7 @@ import { db } from "../../firebase";
 import ItemType from "../../models/itemType";
 import useUserStore from "../../store/user";
 import useAuthModeStore from "../../store/authMode";
+import { isDuplicatedId } from "../../utils/http";
 
 type AuthUser = {
   id: string;
@@ -104,13 +105,11 @@ const validateUserData: (user: AuthUser, authMode: string) => void = (
 };
 
 const signup: (user: AuthUser) => Promise<void> = async (user) => {
-  const userDocRef = doc(db, "users", user.id);
-  const userDoc = await getDoc(userDocRef);
-
-  if (userDoc.exists()) {
+  if (await isDuplicatedId(user.id)) {
     throw new Error("이미 존재하는 아이디입니다.");
   }
 
+  const userDocRef = doc(db, "users", user.id);
   await setDoc(userDocRef, user);
 };
 

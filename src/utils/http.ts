@@ -181,3 +181,10 @@ export const refundItem: ({
   // item 삭제
   await deleteItem({ category: "storage", itemId });
 };
+
+export const isDuplicatedId = async (id: string) => {
+  const userDocRef = doc(db, "users", id);
+  const userDoc = await getDoc(userDocRef);
+
+  return userDoc.exists();
+};
