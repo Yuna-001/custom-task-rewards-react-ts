@@ -10,8 +10,15 @@ const Container = styled.div`
 `;
 
 const Label = styled.label`
-  width: 7rem;
+  width: 6rem;
   text-align: center;
+  padding-bottom: 1rem;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const InputArea = styled.input`
@@ -21,24 +28,38 @@ const InputArea = styled.input`
   background-color: #f8f8f3;
 `;
 
+const ErrorText = styled.p`
+  color: red;
+  height: 1rem;
+  width: 100%;
+  margin: 0;
+  padding: 4px;
+  font-size: 0.8rem;
+`;
+
 const Input: React.FC<{
   type: string;
   id: string;
   label: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}> = ({ type, id, label, value, onChange }) => {
+  hasError: boolean;
+  errorMessage: string;
+}> = ({ type, id, label, value, onChange, hasError, errorMessage }) => {
   return (
     <Container>
       <Label htmlFor={id}>{label}</Label>
-      <InputArea
-        type={type}
-        name={id}
-        id={id}
-        value={value}
-        required
-        onChange={onChange}
-      />
+      <Content>
+        <InputArea
+          type={type}
+          name={id}
+          id={id}
+          value={value}
+          required
+          onChange={onChange}
+        />
+        <ErrorText>{hasError ? errorMessage : ""}</ErrorText>
+      </Content>
     </Container>
   );
 };
