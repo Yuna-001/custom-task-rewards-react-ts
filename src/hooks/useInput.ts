@@ -27,7 +27,7 @@ const useInput = (identifier: "id" | "password" | "nickname") => {
       setHasError(error !== "");
       setErrorMessage(error);
     },
-    [identifier],
+    [identifier, mode],
   );
 
   useEffect(() => {
