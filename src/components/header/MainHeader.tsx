@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import media from "../../media";
 import UserData from "./UserData";
@@ -16,7 +16,7 @@ const Header = styled.header`
   flex-wrap: wrap;
 `;
 
-const LogoutButton = styled(NavLink)`
+const LogoutButton = styled.button`
   margin: 0.7rem 1rem;
   background-color: #f7f5e8;
   cursor: pointer;
@@ -28,11 +28,18 @@ const LogoutButton = styled(NavLink)`
 `;
 
 const MainHeader: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("user");
+    navigate("/");
+  };
+
   return (
     <Header>
       <UserData />
       <MainNavigation />
-      <LogoutButton to="/">로그아웃</LogoutButton>
+      <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
     </Header>
   );
 };

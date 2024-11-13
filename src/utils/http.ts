@@ -11,7 +11,6 @@ import { QueryClient } from "@tanstack/react-query";
 import { v4 as uuidv4 } from "uuid";
 
 import ItemType from "../models/itemType";
-import useUserStore from "../store/user";
 import CategoryType from "../models/categoryType";
 
 export const queryClient = new QueryClient();
@@ -20,10 +19,9 @@ export const fetchItemsByCategory: (category: CategoryType) => Promise<{
   items: ItemType[];
   userDocRef: DocumentReference<DocumentData, DocumentData>;
 }> = async (category) => {
-  const userId = useUserStore.getState().id;
-  const userDocRef = doc(db, "users", userId);
-
   try {
+    const userId = await identifierToId();
+    const userDocRef = doc(db, "users", userId);
     const userDoc = await getDoc(userDocRef);
     const data = userDoc.data();
     const items: Array<ItemType> = data ? data[category] : [];
@@ -39,10 +37,9 @@ export const fetchUserData: () => Promise<{
   coin: number;
   userDocRef: DocumentReference<DocumentData, DocumentData>;
 }> = async () => {
-  const userId = useUserStore.getState().id;
-  const userDocRef = doc(db, "users", userId);
-
   try {
+    const userId = await identifierToId();
+    const userDocRef = doc(db, "users", userId);
     const userDoc = await getDoc(userDocRef);
     const data = userDoc.data();
 
@@ -72,10 +69,10 @@ export const createNewItem: ({
   category: CategoryType;
   item: ItemType;
 }) => Promise<void> = async ({ category, item }) => {
-  const userId = useUserStore.getState().id;
-  const userDocRef = doc(db, "users", userId);
-
   try {
+    const userId = await identifierToId();
+    const userDocRef = doc(db, "users", userId);
+
     await updateDoc(userDocRef, {
       [category]: arrayUnion(item),
     });
@@ -187,4 +184,23 @@ export const isDuplicatedId = async (id: string) => {
   const userDoc = await getDoc(userDocRef);
 
   return userDoc.exists();
+};
+
+export const identifierToId = async () => {
+  const identifier = sessionStorage.getItem("user") || "";
+
+  const identifierDocRef = doc(db, "identifiers", identifier);
+
+  try {
+    const identifierDoc = await getDoc(identifierDocRef);
+    const id = identifierDoc.data()?.id;
+
+    if (id === undefined) {
+      throw new Error();
+    }
+
+    return id;
+  } catch (error) {
+    throw new Error("사용자의 데이터를 불러오는 데 실패하였습니다.");
+  }
 };

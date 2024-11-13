@@ -1,8 +1,9 @@
 import { json, redirect } from "react-router-dom";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import { v4 as uuidv4 } from "uuid";
+
 import ItemType from "../../models/itemType";
-import useUserStore from "../../store/user";
 import useAuthModeStore from "../../store/authMode";
 import { isDuplicatedId } from "../../utils/http";
 
@@ -10,6 +11,7 @@ type AuthUser = {
   id: string;
   password: string;
   nickname?: string;
+  identifier?: string;
   coin?: number;
   tasks?: Array<ItemType>;
   "rewards-shop"?: Array<ItemType>;
@@ -47,13 +49,15 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
     );
   }
 
+  let identifier: null | string = null;
+
   try {
     validateUserData(user, authMode);
 
     if (authMode === "signup") {
-      await signup(user);
+      identifier = await signup(user);
     } else {
-      await login(user);
+      identifier = await login(user);
     }
   } catch (error) {
     if (error instanceof Error && error.message.includes("필수")) {
@@ -84,7 +88,7 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
     );
   }
 
-  useUserStore.getState().login(id);
+  if (identifier !== null) sessionStorage.setItem("user", identifier);
 
   return redirect(`/${id}`);
 };
@@ -104,25 +108,35 @@ const validateUserData: (user: AuthUser, authMode: string) => void = (
   // 추가적인 유효성 검사
 };
 
-const signup: (user: AuthUser) => Promise<void> = async (user) => {
+const signup: (user: AuthUser) => Promise<string> = async (user) => {
   if (await isDuplicatedId(user.id)) {
     throw new Error("이미 존재하는 아이디입니다.");
   }
 
+  user.identifier = uuidv4();
+
   const userDocRef = doc(db, "users", user.id);
+  const identifierDocRef = doc(db, "identifiers", user.identifier);
+
   await setDoc(userDocRef, user);
+  await setDoc(identifierDocRef, { id: user.id });
+
+  return user.identifier;
 };
 
-const login: (user: AuthUser) => Promise<void> = async (user) => {
+const login: (user: AuthUser) => Promise<string> = async (user) => {
   // Firestore에서 사용자 문서 조회
   const userDocRef = doc(db, "users", user.id);
   const userDoc = await getDoc(userDocRef);
 
   if (userDoc.exists()) {
     const userData = userDoc.data();
+
     if (user.password !== userData.password) {
       throw new Error("비밀번호가 틀렸습니다.");
     }
+
+    return userData.identifier;
   } else {
     throw new Error("존재하지 않는 아이디입니다.");
   }

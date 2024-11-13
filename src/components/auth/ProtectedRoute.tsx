@@ -1,21 +1,29 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useUserStore from "../../store/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { identifierToId } from "../../utils/http";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const navigate = useNavigate();
-  const loggedInUserId = useUserStore((state) => state.id);
   const { userId: routeUserId } = useParams();
+  const [isConfirmedUser, setIsConfirmedUser] = useState(false);
 
   useEffect(() => {
-    if (loggedInUserId !== routeUserId) {
-      navigate("/");
-    }
-  }, [loggedInUserId, routeUserId, navigate]);
+    const confirmUser = async () => {
+      const loggedInUserId = await identifierToId();
 
-  return loggedInUserId === routeUserId ? children : null;
+      if (loggedInUserId !== routeUserId) {
+        navigate("/");
+      } else {
+        setIsConfirmedUser(true);
+      }
+    };
+
+    confirmUser();
+  }, [routeUserId]);
+
+  return isConfirmedUser ? children : null;
 };
 
 export default ProtectedRoute;
