@@ -15,7 +15,7 @@ type AuthUser = {
   coin?: number;
   tasks?: Array<ItemType>;
   "rewards-shop"?: Array<ItemType>;
-  storage?: Array<ItemType>;
+  log?: Array<ItemType>;
 };
 
 const authAction: (args: { request: Request }) => Promise<Response> = async ({
@@ -38,7 +38,7 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
     user.coin = 0;
     user.tasks = [];
     user["rewards-shop"] = [];
-    user.storage = [];
+    user.log = [];
   }
 
   if (authMode !== "signup" && authMode !== "login") {
@@ -104,8 +104,6 @@ const validateUserData: (user: AuthUser, authMode: string) => void = (
   if (authMode === "signup" && !user.nickname) {
     throw new Error("회원가입 시 닉네임은 필수입니다.");
   }
-
-  // 추가적인 유효성 검사
 };
 
 const signup: (user: AuthUser) => Promise<string> = async (user) => {

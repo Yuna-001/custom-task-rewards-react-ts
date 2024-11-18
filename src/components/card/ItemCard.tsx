@@ -10,13 +10,7 @@ import ItemType from "../../models/itemType";
 import usePath from "../../hooks/usePath";
 import { dateFormatting } from "../../utils/formatting";
 import { useMutation } from "@tanstack/react-query";
-import {
-  buyReward,
-  completeTask,
-  deleteItem,
-  queryClient,
-  refundItem,
-} from "../../utils/http";
+import { buyReward, completeTask, queryClient } from "../../utils/http";
 
 const Content = styled(Link)`
   width: 100%;
@@ -55,22 +49,9 @@ const ItemCard: React.FC<{
 
   const { mutate } = useMutation({
     mutationFn: async () => {
-      if (category === "tasks") return completeTask({ itemId, coin });
-      if (category === "rewards-shop") return buyReward({ item, coin });
-      if (category === "storage") return deleteItem({ category, itemId });
+      if (category === "tasks") return completeTask({ item, coin });
+      if (category === "rewards-shop") return buyReward(coin);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["user-data"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["items", category],
-      });
-    },
-  });
-
-  const { mutate: mutateRefundItem } = useMutation({
-    mutationFn: refundItem,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user-data"],
@@ -83,10 +64,6 @@ const ItemCard: React.FC<{
 
   const handleActionButtonClick = () => {
     mutate();
-  };
-
-  const handleRefundButtonClick = () => {
-    mutateRefundItem({ itemId, coin });
   };
 
   let actionBtn1: ReactNode = (
@@ -107,13 +84,9 @@ const ItemCard: React.FC<{
     actionBtn2 = (
       <ActionButton onClick={handleActionButtonClick}>구입</ActionButton>
     );
-  } else if (category === "storage") {
-    actionBtn1 = (
-      <ActionButton onClick={handleRefundButtonClick}>환불</ActionButton>
-    );
-    actionBtn2 = (
-      <ActionButton onClick={handleActionButtonClick}>사용</ActionButton>
-    );
+  } else if (category === "log") {
+    actionBtn1 = <></>;
+    actionBtn2 = <></>;
   }
 
   return (

@@ -8,7 +8,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { QueryClient } from "@tanstack/react-query";
-import { v4 as uuidv4 } from "uuid";
 
 import ItemType from "../models/itemType";
 import CategoryType from "../models/categoryType";
@@ -124,59 +123,39 @@ export const deleteItem: ({
 };
 
 const updateUserCoin: (coin: number) => Promise<void> = async (coin) => {
-  const { coin: userCoin, userDocRef } = await fetchUserData();
-  const updatedCoin = userCoin + coin;
-
   try {
+    const { coin: userCoin, userDocRef } = await fetchUserData();
+
+    const updatedCoin = userCoin + coin;
+
     await updateDoc(userDocRef, {
       coin: updatedCoin,
     });
   } catch (error) {
-    throw new Error("데이터 업데이트에 실패했습니다.");
+    throw new Error("데이터 업데이트에 실패하였습니다.");
   }
 };
 
 export const completeTask: ({
-  itemId,
-  coin,
-}: {
-  itemId: string;
-  coin: number;
-}) => Promise<void> = async ({ itemId, coin }) => {
-  // 사용자의 coin을 업데이트
-  await updateUserCoin(coin);
-
-  // item 삭제
-  await deleteItem({ category: "tasks", itemId });
-};
-
-export const buyReward: ({
   item,
   coin,
 }: {
   item: ItemType;
   coin: number;
 }) => Promise<void> = async ({ item, coin }) => {
-  // user의 coin을 업데이트
-  await updateUserCoin(coin * -1);
-
-  //storage에 item 추가
-  item.id = uuidv4();
-  await createNewItem({ category: "storage", item });
-};
-
-export const refundItem: ({
-  itemId,
-  coin,
-}: {
-  itemId: string;
-  coin: number;
-}) => Promise<void> = async ({ itemId, coin }) => {
   // 사용자의 coin을 업데이트
   await updateUserCoin(coin);
 
   // item 삭제
-  await deleteItem({ category: "storage", itemId });
+  await deleteItem({ category: "tasks", itemId: item.id });
+
+  // log에 추가
+  await createNewItem({ category: "log", item });
+};
+
+export const buyReward: (coin: number) => Promise<void> = async (coin) => {
+  // user의 coin을 업데이트
+  await updateUserCoin(coin * -1);
 };
 
 export const isDuplicatedId = async (id: string) => {

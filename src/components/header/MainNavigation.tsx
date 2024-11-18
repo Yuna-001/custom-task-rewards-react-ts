@@ -60,7 +60,7 @@ const MainNavigation: React.FC = () => {
           <LinkItem to={`/${userId}/rewards-shop`}>상점</LinkItem>
         </li>
         <li>
-          <LinkItem to={`/${userId}/storage`}>보관함</LinkItem>
+          <LinkItem to={`/${userId}/log`}>기록</LinkItem>
         </li>
       </LinkList>
     </Nav>

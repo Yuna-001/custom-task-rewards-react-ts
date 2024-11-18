@@ -96,7 +96,9 @@ const ItemForm: React.FC = () => {
 
   let actiontBtn = <></>;
 
-  if (isEditing) {
+  if (category === "log") {
+    actiontBtn = <></>;
+  } else if (isEditing) {
     actiontBtn = <SubmitButton type="submit">저장</SubmitButton>;
   } else if (isCreating) {
     actiontBtn = <SubmitButton type="submit">추가</SubmitButton>;
@@ -169,7 +171,7 @@ const ItemForm: React.FC = () => {
       <ItemInput
         type="text"
         id="title"
-        label={category === "tasks" ? "제목" : "이름"}
+        label={category === "rewards-shop" ? "이름" : "제목"}
         defaultValue={item?.title ?? ""}
         disabled={isDetail}
         required
@@ -177,12 +179,12 @@ const ItemForm: React.FC = () => {
       <ItemInput
         type="number"
         id="coin"
-        label={category === "tasks" ? "완료 시 얻을 수 있는 코인" : "가격"}
+        label={category === "rewards-shop" ? "가격" : "완료 후 획득 코인"}
         defaultValue={item?.coin ? item.coin : ""}
         disabled={isDetail}
         required
       />
-      {category === "tasks" && (
+      {category !== "rewards-shop" && (
         <ItemInput
           type="date"
           id="endDate"

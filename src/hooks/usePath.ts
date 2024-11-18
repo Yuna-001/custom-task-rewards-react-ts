@@ -10,7 +10,7 @@ const usePath = () => {
     category = "tasks";
   }
 
-  if (!["tasks", "rewards-shop", "storage"].includes(category)) {
+  if (!["tasks", "rewards-shop", "log"].includes(category)) {
     // 에러 처리
     throw new Error("잘못된 주소입니다.");
   }

@@ -1,3 +1,3 @@
-type CategoryType = "tasks" | "rewards-shop" | "storage";
+type CategoryType = "tasks" | "rewards-shop" | "log";
 
 export default CategoryType;

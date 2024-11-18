@@ -18,7 +18,7 @@ const AddButton = styled(Link)`
 const AddCard: React.FC = () => {
   const { category, userId } = usePath();
 
-  if (category === "storage") {
+  if (category === "log") {
     return <></>;
   }
 
