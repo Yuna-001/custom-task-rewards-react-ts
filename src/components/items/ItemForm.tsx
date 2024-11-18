@@ -176,6 +176,16 @@ const ItemForm: React.FC = () => {
         disabled={isDetail}
         required
       />
+      {category === "log" && (
+        <ItemInput
+          type="date"
+          id="completedDate"
+          label="완료일"
+          defaultValue={item?.completedDate || ""}
+          disabled={true}
+          required
+        />
+      )}
       <ItemInput
         type="number"
         id="coin"

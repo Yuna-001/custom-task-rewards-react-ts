@@ -149,6 +149,12 @@ export const completeTask: ({
   // item 삭제
   await deleteItem({ category: "tasks", itemId: item.id });
 
+  const now = new Date();
+  const compledDate =
+    now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+
+  item.completedDate = compledDate;
+
   // log에 추가
   await createNewItem({ category: "log", item });
 };

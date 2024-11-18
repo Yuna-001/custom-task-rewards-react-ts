@@ -4,6 +4,7 @@ type ItemType = {
   coin: number;
   endDate: string;
   description: string;
+  completedDate?: string;
 };
 
 export default ItemType;
