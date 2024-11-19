@@ -159,9 +159,25 @@ export const completeTask: ({
   await createNewItem({ category: "log", item });
 };
 
+export const logToTask: ({
+  item,
+  coin,
+}: {
+  item: ItemType;
+  coin: number;
+}) => Promise<void> = async ({ item, coin }) => {
+  await updateUserCoin(-coin);
+
+  await deleteItem({ category: "log", itemId: item.id });
+
+  delete item.completedDate;
+
+  await createNewItem({ category: "tasks", item });
+};
+
 export const buyReward: (coin: number) => Promise<void> = async (coin) => {
   // user의 coin을 업데이트
-  await updateUserCoin(coin * -1);
+  await updateUserCoin(-coin);
 };
 
 export const isDuplicatedId = async (id: string) => {

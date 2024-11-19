@@ -63,9 +63,18 @@ const ItemCard: React.FC<{
       queryClient.invalidateQueries({
         queryKey: ["user-data"],
       });
-      queryClient.invalidateQueries({
-        queryKey: ["items", category],
-      });
+      if (category === "tasks" || category === "log") {
+        queryClient.invalidateQueries({
+          queryKey: ["items", "tasks"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["items", "log"],
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: ["items", category],
+        });
+      }
     },
   });
 

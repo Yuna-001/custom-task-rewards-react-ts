@@ -21,6 +21,8 @@ import {
   updateItem,
 } from "../../utils/http";
 import ItemType from "../../models/itemType";
+import CloneTaskButton from "./CloneTaskButton";
+import LogToTaskButton from "./LogToTaskButton";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -97,7 +99,7 @@ const ItemForm: React.FC = () => {
   let actiontBtn = <></>;
 
   if (category === "log") {
-    actiontBtn = <></>;
+    actiontBtn = <LogToTaskButton item={item} />;
   } else if (isEditing) {
     actiontBtn = <SubmitButton type="submit">저장</SubmitButton>;
   } else if (isCreating) {
@@ -212,8 +214,11 @@ const ItemForm: React.FC = () => {
       />
       <ActionButtons>
         <ActionButton>
-          <Link to={`/${userId}/${category}`}>취소</Link>
+          <Link to={`/${userId}/${category}`}>목록으로</Link>
         </ActionButton>
+        {category !== "rewards-shop" && !isCreating && (
+          <CloneTaskButton item={item} />
+        )}
         {actiontBtn}
       </ActionButtons>
     </StyledForm>
