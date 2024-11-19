@@ -26,6 +26,13 @@ const ActionButtons = styled.div`
   margin-bottom: -0.5rem;
 `;
 
+const CompletedDate = styled.div`
+  width: 100%;
+  margin-bottom: -0.5rem;
+  color: #74726e;
+  padding: 1rem 1.5rem;
+`;
+
 const Header = styled.header`
   display: flex;
   align-items: center;
@@ -89,6 +96,18 @@ const ItemCard: React.FC<{
     actionBtn2 = <></>;
   }
 
+  const footerElement =
+    category === "log" ? (
+      <CompletedDate>
+        {item.completedDate ? dateFormatting(item.completedDate) : ""}
+      </CompletedDate>
+    ) : (
+      <ActionButtons>
+        {actionBtn1}
+        {actionBtn2}
+      </ActionButtons>
+    );
+
   return (
     <Card>
       <Content to={`/${userId}/${category}/${itemId}`}>
@@ -98,10 +117,7 @@ const ItemCard: React.FC<{
         </Header>
         <Title> {showingTitle}</Title>
       </Content>
-      <ActionButtons>
-        {actionBtn1}
-        {actionBtn2}
-      </ActionButtons>
+      {footerElement}
     </Card>
   );
 };
