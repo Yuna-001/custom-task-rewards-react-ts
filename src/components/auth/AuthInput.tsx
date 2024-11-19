@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Container = styled.div`
   width: 90%;
@@ -21,11 +21,18 @@ const Content = styled.div`
   flex-direction: column;
 `;
 
-const InputArea = styled.input`
+const InputArea = styled.input<{ hasError: boolean }>`
   width: 100%;
   padding: 0.5rem;
   border-radius: 5px;
   background-color: #f8f8f3;
+  border: 1.5px solid #d6cfc6e6;
+
+  ${({ hasError }) =>
+    !hasError &&
+    css`
+      border-color: #4caf93;
+    `}
 `;
 
 const ErrorText = styled.p`
@@ -57,6 +64,7 @@ const Input: React.FC<{
           value={value}
           required
           onChange={onChange}
+          hasError={hasError}
         />
         <ErrorText>{hasError ? errorMessage : ""}</ErrorText>
       </Content>

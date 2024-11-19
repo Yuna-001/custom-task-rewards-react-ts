@@ -50,13 +50,17 @@ const validateId = async (
   id: string,
   mode: "login" | "signup",
 ): Promise<string> => {
-  if (/\s/.test(id)) return "아이디는 공백을 포함할 수 없습니다.";
+  if (/\s/.test(id)) {
+    return "아이디는 공백을 포함할 수 없습니다.";
+  }
 
-  if (id.length < 1 || id.length > 20)
-    return "아이디는 1자 이상 20자 이하여야 합니다.";
-
-  if (/^[A-Za-z0-9]+$/.test(id) === false)
+  if (/[^A-Za-z0-9]/.test(id)) {
     return "아이디는 영어와 숫자만 포함 가능합니다.";
+  }
+
+  if (id.length < 3 || id.length > 20) {
+    return "아이디는 3자 이상 20자 이하여야 합니다.";
+  }
 
   if (mode === "signup") {
     const isDuplicated = await isDuplicatedId(id);
@@ -67,20 +71,33 @@ const validateId = async (
 };
 
 const validatePassword = (pw: string): string => {
-  if (/\s/.test(pw)) return "비밀번호는 공백을 포함할 수 없습니다.";
+  if (/\s/.test(pw)) {
+    return "비밀번호는 공백을 포함할 수 없습니다.";
+  }
 
-  if (pw.length < 5 || pw.length > 30)
-    return "비밀번호는 5자 이상 30자 이하여야 합니다.";
+  if (/[^a-zA-Z0-9!@#$%^&*?_]/.test(pw)) {
+    return "비밀번호는 영문자, 숫자 및 특수문자(!@#$%^&*?_)만 사용할 수 있습니다.";
+  }
+
+  if (pw.length < 8 || pw.length > 16) {
+    return "비밀번호는 8자 이상 16자 이하여야 합니다.";
+  }
+
+  if (!/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_])/.test(pw)) {
+    return "비밀번호는 영문자, 숫자 및 특수문자(!@#$%^&*?_)를 포함하여 구성되어야 합니다.";
+  }
 
   return "";
 };
 
 const validateNickname = (nickname: string): string => {
-  if (nickname.length < 1 || nickname.length > 20)
+  if (nickname.length < 1 || nickname.length > 20) {
     return "닉네임은 1자 이상 20자 이하여야 합니다.";
+  }
 
-  if (nickname.trim().length === 0)
+  if (nickname.trim().length === 0) {
     return "닉네임은 공백만으로 구성될 수 없습니다.";
+  }
 
   return "";
 };
