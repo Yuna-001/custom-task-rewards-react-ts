@@ -44,7 +44,15 @@ const ItemInput: React.FC<{
   isTextarea = false,
   required = false,
 }) => {
-  const conditionalAttributes = type === "number" ? { min: 0 } : {};
+  const conditionalAttributes =
+    type === "number"
+      ? {
+          min: 0,
+
+          onWheel: (event: React.WheelEvent) =>
+            (event.target as HTMLElement).blur(),
+        }
+      : {};
 
   let inputField = (
     <InputArea
