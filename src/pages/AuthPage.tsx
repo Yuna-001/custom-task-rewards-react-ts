@@ -17,7 +17,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 10rem);
+  height: 100%;
+  padding-bottom: 5rem;
 `;
 
 const Title = styled.h1`
@@ -50,13 +51,11 @@ const AuthPage: React.FC = () => {
   }, [data, setErrorMessage]);
 
   return (
-    <>
+    <Container>
       <Title>스스로 어른이</Title>
-      <Container>
-        <AuthForm />
-        <ErrorBox>{errorMessage}</ErrorBox>
-      </Container>
-    </>
+      <AuthForm />
+      <ErrorBox>{errorMessage}</ErrorBox>
+    </Container>
   );
 };
 

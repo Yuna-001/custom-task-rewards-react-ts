@@ -21,6 +21,11 @@ body {
   background-color: #fafaf5;
   margin: 0;
   font-family: "Noto Sans KR", sans-serif;
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
 }
 
 @media (max-width: 1023px) {
