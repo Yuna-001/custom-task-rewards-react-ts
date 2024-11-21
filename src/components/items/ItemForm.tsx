@@ -183,6 +183,7 @@ const ItemForm: React.FC = () => {
         defaultValue={item?.coin ? item.coin : ""}
         disabled={isDetail}
         required
+        max={category === "rewards-shop" ? 9999999999999 : 9999}
       />
       {category !== "rewards-shop" && (
         <ItemInput

@@ -35,6 +35,7 @@ const ItemInput: React.FC<{
   disabled: boolean;
   isTextarea?: boolean;
   required?: boolean;
+  max?: number;
 }> = ({
   type = "text",
   id,
@@ -43,12 +44,13 @@ const ItemInput: React.FC<{
   disabled,
   isTextarea = false,
   required = false,
+  max,
 }) => {
   const conditionalAttributes =
     type === "number"
       ? {
           min: 0,
-
+          max,
           onWheel: (event: React.WheelEvent) =>
             (event.target as HTMLElement).blur(),
         }
