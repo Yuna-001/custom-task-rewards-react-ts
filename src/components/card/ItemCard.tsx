@@ -4,13 +4,18 @@ import { ReactNode } from "react";
 
 import coinImg from "../../assets/coin.svg";
 import Card from "./Card";
-import ActionButton from "../UI/ActionButton";
+import TextButton from "../UI/TextButton";
 import CoinData from "../UI/CoinData";
 import ItemType from "../../models/itemType";
 import usePath from "../../hooks/usePath";
 import { dateFormatting } from "../../utils/formatting";
 import { useMutation } from "@tanstack/react-query";
-import { buyReward, completeTask, queryClient } from "../../utils/http";
+import {
+  buyReward,
+  completeTask,
+  fetchUserData,
+  queryClient,
+} from "../../utils/http";
 
 const Content = styled(Link)`
   width: 100%;
@@ -19,7 +24,7 @@ const Content = styled(Link)`
   flex-direction: column;
 `;
 
-const ActionButtons = styled.div`
+const TextButtons = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -50,7 +55,8 @@ const Title = styled.h3`
 
 const ItemCard: React.FC<{
   item: ItemType;
-}> = ({ item }) => {
+  onModalOpen: (gap: number) => void;
+}> = ({ item, onModalOpen }) => {
   const { category, userId } = usePath();
   const { title, coin, id: itemId } = item;
 
@@ -78,18 +84,29 @@ const ItemCard: React.FC<{
     },
   });
 
-  const handleActionButtonClick = () => {
+  const handleTextButtonClick = () => {
     mutate();
   };
 
-  let actionBtn1: ReactNode = (
+  const handleBuyItem = async () => {
+    const { coin: userCoin } = await fetchUserData();
+
+    if (userCoin >= coin) {
+      mutate();
+    } else {
+      const gap = coin - userCoin;
+      onModalOpen(gap);
+    }
+  };
+
+  const actionBtn1: ReactNode = (
     <Link to={`/${userId}/${category}/${itemId}/edit`}>
-      <ActionButton>편집</ActionButton>
+      <TextButton>편집</TextButton>
     </Link>
   );
 
   let actionBtn2: ReactNode = (
-    <ActionButton onClick={handleActionButtonClick}>완료</ActionButton>
+    <TextButton onClick={handleTextButtonClick}>완료</TextButton>
   );
 
   let showingTitle: string = title;
@@ -97,12 +114,7 @@ const ItemCard: React.FC<{
   if (title.length > 35) showingTitle = title.slice(0, 35) + "...";
 
   if (category === "rewards-shop") {
-    actionBtn2 = (
-      <ActionButton onClick={handleActionButtonClick}>구입</ActionButton>
-    );
-  } else if (category === "log") {
-    actionBtn1 = <></>;
-    actionBtn2 = <></>;
+    actionBtn2 = <TextButton onClick={handleBuyItem}>구입</TextButton>;
   }
 
   const footerElement =
@@ -111,10 +123,10 @@ const ItemCard: React.FC<{
         {item.completedDate ? dateFormatting(item.completedDate) : ""}
       </CompletedDate>
     ) : (
-      <ActionButtons>
+      <TextButtons>
         {actionBtn1}
         {actionBtn2}
-      </ActionButtons>
+      </TextButtons>
     );
 
   return (
