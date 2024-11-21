@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { v4 as uuidv4 } from "uuid";
 
 import { createNewItem, queryClient } from "../../utils/http";
-import ActionButton from "../UI/ActionButton";
+import TextButton from "../UI/TextButton";
 import ItemType from "../../models/itemType";
 
 const CloneTaskButton: React.FC<{ item: ItemType | undefined | null }> = ({
@@ -24,9 +24,7 @@ const CloneTaskButton: React.FC<{ item: ItemType | undefined | null }> = ({
     }
   };
 
-  return (
-    <ActionButton onClick={handleCloneTask}>동일한 할 일 생성</ActionButton>
-  );
+  return <TextButton onClick={handleCloneTask}>동일한 할 일 생성</TextButton>;
 };
 
 export default CloneTaskButton;

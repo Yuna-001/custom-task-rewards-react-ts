@@ -10,7 +10,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { v4 as uuidv4 } from "uuid";
 
 import media from "../../media";
-import ActionButton from "../UI/ActionButton";
+import TextButton from "../UI/TextButton";
 import ItemInput from "./ItemInput";
 import usePath from "../../hooks/usePath";
 import {
@@ -23,6 +23,7 @@ import {
 import ItemType from "../../models/itemType";
 import CloneTaskButton from "./CloneTaskButton";
 import LogToTaskButton from "./LogToTaskButton";
+import ActionButton from "../UI/ActionButton";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -39,24 +40,11 @@ const StyledForm = styled(Form)`
   `}
 `;
 
-const ActionButtons = styled.div`
+const TextButtons = styled.div`
   display: flex;
   justify-content: right;
   align-items: center;
   gap: 0.3rem;
-`;
-
-const SubmitButton = styled.button`
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 1rem;
-  background-color: #ccc7be;
-  font-weight: 600;
-  transition-duration: 0.2s;
-  &:hover {
-    background-color: #fff08c;
-  }
 `;
 
 const DeleteButtonContainer = styled.div`
@@ -75,7 +63,7 @@ const DeleteButton = styled.div`
   }
 `;
 
-const useActionButtons = () => {
+const useTextButtons = () => {
   const { pathname } = useLocation();
   const isEditing = pathname.endsWith("/edit");
   const isCreating = pathname.endsWith("/add");
@@ -87,7 +75,7 @@ const ItemForm: React.FC = () => {
   const { category, userId } = usePath();
   const { itemId } = useParams();
 
-  const { isEditing, isCreating } = useActionButtons();
+  const { isEditing, isCreating } = useTextButtons();
   const isDetail = !isCreating && !isEditing;
 
   const { data: item } = useQuery({
@@ -101,14 +89,14 @@ const ItemForm: React.FC = () => {
   if (category === "log") {
     actiontBtn = <LogToTaskButton item={item} />;
   } else if (isEditing) {
-    actiontBtn = <SubmitButton type="submit">저장</SubmitButton>;
+    actiontBtn = <ActionButton type="submit">저장</ActionButton>;
   } else if (isCreating) {
-    actiontBtn = <SubmitButton type="submit">추가</SubmitButton>;
+    actiontBtn = <ActionButton type="submit">추가</ActionButton>;
   } else {
     actiontBtn = (
-      <ActionButton>
+      <TextButton>
         <Link to="edit">편집</Link>
-      </ActionButton>
+      </TextButton>
     );
   }
 
@@ -212,15 +200,15 @@ const ItemForm: React.FC = () => {
         defaultValue={item?.description ?? ""}
         disabled={isDetail}
       />
-      <ActionButtons>
-        <ActionButton>
+      <TextButtons>
+        <TextButton>
           <Link to={`/${userId}/${category}`}>목록으로</Link>
-        </ActionButton>
+        </TextButton>
         {category !== "rewards-shop" && !isCreating && (
           <CloneTaskButton item={item} />
         )}
         {actiontBtn}
-      </ActionButtons>
+      </TextButtons>
     </StyledForm>
   );
 };

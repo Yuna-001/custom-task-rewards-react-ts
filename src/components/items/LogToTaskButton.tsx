@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 import ItemType from "../../models/itemType";
-import ActionButton from "../UI/ActionButton";
+import TextButton from "../UI/TextButton";
 import { logToTask, queryClient } from "../../utils/http";
 import usePath from "../../hooks/usePath";
 
@@ -35,7 +35,7 @@ const LogToTaskButton: React.FC<{ item: ItemType | undefined | null }> = ({
     }
   };
 
-  return <ActionButton onClick={handleCancelComplete}>완료 취소</ActionButton>;
+  return <TextButton onClick={handleCancelComplete}>완료 취소</TextButton>;
 };
 
 export default LogToTaskButton;
