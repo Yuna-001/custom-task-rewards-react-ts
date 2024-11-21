@@ -5,8 +5,8 @@ import ItemCard from "../components/card/ItemCard";
 import PageLayout from "../components/layout/PageLayout";
 import usePath from "../hooks/usePath";
 import { fetchItemsByCategory } from "../utils/http";
-import { useEffect, useRef, useState } from "react";
-import CoinShortageModal from "../components/card/CoinShortageModal";
+import { useRef } from "react";
+import CoinShortageModal from "../components/modal/CoinShortageModal";
 
 const MainPage: React.FC = () => {
   const { category } = usePath();
@@ -22,21 +22,23 @@ const MainPage: React.FC = () => {
   }>(null);
 
   const handleModalOpen = (requiredCoin: number) => {
-    modal.current?.setRequiredCoin(requiredCoin);
     modal.current?.open();
+    modal.current?.setRequiredCoin(requiredCoin);
   };
 
   return (
-    <PageLayout>
+    <>
       <CoinShortageModal ref={modal} />
-      <AddCard />
-      {items
-        ?.slice()
-        .reverse()
-        .map((item) => (
-          <ItemCard key={item.id} item={item} onModalOpen={handleModalOpen} />
-        ))}
-    </PageLayout>
+      <PageLayout>
+        <AddCard />
+        {items
+          ?.slice()
+          .reverse()
+          .map((item) => (
+            <ItemCard key={item.id} item={item} onModalOpen={handleModalOpen} />
+          ))}
+      </PageLayout>
+    </>
   );
 };
 

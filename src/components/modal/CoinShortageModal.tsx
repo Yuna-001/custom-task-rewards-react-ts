@@ -79,11 +79,9 @@ const CoinShortageModal = forwardRef<{
         <Dialog ref={dialog}>
           <Content>
             <h2>코인이 부족합니다.</h2>
-            {requiredCoin > 0 && (
-              <p>
-                부족한 코인 : <strong>{numberFormatting(requiredCoin)}</strong>
-              </p>
-            )}
+            <p>
+              부족한 코인 : <strong>{numberFormatting(requiredCoin)}</strong>
+            </p>
           </Content>
           <Buttons>
             <ButtonContainer>
