@@ -14,6 +14,7 @@ const Dialog = styled.dialog`
     flex-direction: column;
     text-align: center;
     border-radius: 1rem;
+    background-color: #fdfcf8;
   }
 `;
 
@@ -45,7 +46,7 @@ const StyledForm = styled.form`
 
 const Button = styled(ActionButton)`
   padding: 1rem;
-  background-color: #f7f5e8;
+  background-color: #e4e0d5;
   width: 90%;
 `;
 
