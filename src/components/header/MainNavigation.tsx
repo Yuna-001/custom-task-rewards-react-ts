@@ -14,7 +14,7 @@ const Nav = styled.nav`
 const LinkList = styled.ul`
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   margin: 0;
   padding: 0;
 `;
@@ -61,6 +61,9 @@ const MainNavigation: React.FC = () => {
         </li>
         <li>
           <LinkItem to={`/${userId}/log`}>기록</LinkItem>
+        </li>
+        <li>
+          <LinkItem to={`/${userId}/my-page`}>마이페이지</LinkItem>
         </li>
       </LinkList>
     </Nav>
