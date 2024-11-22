@@ -34,6 +34,7 @@ export const fetchItemsByCategory: (category: CategoryType) => Promise<{
 export const fetchUserData: () => Promise<{
   nickname: string;
   coin: number;
+  totalCoin: number;
   userDocRef: DocumentReference<DocumentData, DocumentData>;
 }> = async () => {
   try {
@@ -44,8 +45,9 @@ export const fetchUserData: () => Promise<{
 
     const nickname: string = data?.nickname || "";
     const coin: number = data?.coin || 0;
+    const totalCoin: number = data?.totalCoin || 0;
 
-    return { nickname, coin, userDocRef };
+    return { nickname, coin, totalCoin, userDocRef };
   } catch (error) {
     throw new Error("사용자의 데이터를 불러오는 데 실패하였습니다.");
   }
@@ -122,15 +124,22 @@ export const deleteItem: ({
   }
 };
 
-const updateUserCoin: (coin: number) => Promise<void> = async (coin) => {
+const updateUserCoin: (
+  coin: number,
+  isShopping: boolean,
+) => Promise<void> = async (coin, isShopping) => {
   try {
-    const { coin: userCoin, userDocRef } = await fetchUserData();
+    const { coin: userCoin, totalCoin, userDocRef } = await fetchUserData();
 
-    const updatedCoin = userCoin + coin;
+    const updatedData: { coin: number; totalCoin?: number } = {
+      coin: userCoin + coin,
+    };
 
-    await updateDoc(userDocRef, {
-      coin: updatedCoin,
-    });
+    if (!isShopping) {
+      updatedData.totalCoin = totalCoin + coin;
+    }
+
+    await updateDoc(userDocRef, updatedData);
   } catch (error) {
     throw new Error("데이터 업데이트에 실패하였습니다.");
   }
@@ -144,7 +153,7 @@ export const completeTask: ({
   coin: number;
 }) => Promise<void> = async ({ item, coin }) => {
   // 사용자의 coin을 업데이트
-  await updateUserCoin(coin);
+  await updateUserCoin(coin, false);
 
   // item 삭제
   await deleteItem({ category: "tasks", itemId: item.id });
@@ -166,7 +175,7 @@ export const logToTask: ({
   item: ItemType;
   coin: number;
 }) => Promise<void> = async ({ item, coin }) => {
-  await updateUserCoin(-coin);
+  await updateUserCoin(-coin, false);
 
   await deleteItem({ category: "log", itemId: item.id });
 
@@ -177,7 +186,7 @@ export const logToTask: ({
 
 export const buyReward: (coin: number) => Promise<void> = async (coin) => {
   // user의 coin을 업데이트
-  await updateUserCoin(-coin);
+  await updateUserCoin(-coin, true);
 };
 
 export const isDuplicatedId = async (id: string) => {

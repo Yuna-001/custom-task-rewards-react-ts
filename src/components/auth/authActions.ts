@@ -13,6 +13,7 @@ type AuthUser = {
   nickname?: string;
   identifier?: string;
   coin?: number;
+  totalCoin?: number;
   tasks?: Array<ItemType>;
   "rewards-shop"?: Array<ItemType>;
   log?: Array<ItemType>;
@@ -36,6 +37,7 @@ const authAction: (args: { request: Request }) => Promise<Response> = async ({
   if (authMode === "signup") {
     user.nickname = nickname;
     user.coin = 0;
+    user.totalCoin = 0;
     user.tasks = [];
     user["rewards-shop"] = [];
     user.log = [];
