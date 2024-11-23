@@ -11,6 +11,7 @@ import { QueryClient } from "@tanstack/react-query";
 
 import ItemType from "../models/itemType";
 import CategoryType from "../models/categoryType";
+import ChartDataType from "../models/chartDataType";
 
 export const queryClient = new QueryClient();
 
@@ -159,10 +160,10 @@ export const completeTask: ({
   await deleteItem({ category: "tasks", itemId: item.id });
 
   const now = new Date();
-  const compledDate =
+  const completedDate =
     now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
 
-  item.completedDate = compledDate;
+  item.completedDate = completedDate;
 
   // log에 추가
   await createNewItem({ category: "log", item });
@@ -213,4 +214,70 @@ export const identifierToId = async () => {
   } catch (error) {
     throw new Error("사용자의 데이터를 불러오는 데 실패하였습니다.");
   }
+};
+
+export const fetchMonthlyData: () => Promise<{
+  coinData: ChartDataType;
+  taskData: ChartDataType;
+}> = async () => {
+  const { items } = await fetchItemsByCategory("log");
+
+  const current = new Date();
+  const curYear = current.getFullYear();
+  const curMonth = current.getMonth() + 1;
+
+  const monthlyCoinData = new Map<string, number>();
+  const monthlyTaskData = new Map<string, number>();
+
+  for (const { completedDate, coin } of items) {
+    if (!completedDate) continue;
+
+    const date = new Date(completedDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    if (year === curYear || (year === curYear - 1 && month > curMonth)) {
+      const key = `${year}-${month}`;
+      monthlyCoinData.set(key, (monthlyCoinData.get(key) || 0) + coin);
+      monthlyTaskData.set(key, (monthlyTaskData.get(key) || 0) + 1);
+    }
+  }
+
+  const monthlyCoinArr = [];
+  const monthlyTaskArr = [];
+
+  let startYear = curYear - 1;
+  let startMonth = curMonth + 1;
+
+  if (curMonth === 12) {
+    startYear = curYear;
+    startMonth = 1;
+  }
+
+  for (let i = 0; i < 12; i++, startMonth++) {
+    if (startMonth === 13) {
+      startMonth = 1;
+      startYear++;
+    }
+
+    const key = `${startYear}-${startMonth}`;
+
+    monthlyCoinArr.push({ x: key, y: monthlyCoinData.get(key) || 0 });
+    monthlyTaskArr.push({ x: key, y: monthlyTaskData.get(key) || 0 });
+  }
+
+  const coinData = [
+    {
+      id: "월별 획득 코인 (최근 1년)",
+      data: [...monthlyCoinArr],
+    },
+  ];
+  const taskData = [
+    {
+      id: "월별 완료한 일 (최근 1년)",
+      data: [...monthlyTaskArr],
+    },
+  ];
+
+  return { coinData, taskData };
 };
