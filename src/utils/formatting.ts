@@ -1,5 +1,12 @@
-export const numberFormatting: (num: number) => string = (num) =>
-  num.toLocaleString();
+export const numberFormatting: (num: number) => string = (num) => {
+  const limit = 999999;
+
+  if (num > limit) {
+    return limit.toLocaleString() + "+";
+  }
+
+  return num.toLocaleString();
+};
 
 export const dateFormatting: (dateString: string) => string = (
   dateString: string,
