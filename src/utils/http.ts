@@ -222,21 +222,30 @@ export const fetchMonthlyData: () => Promise<{
 }> = async () => {
   const { items } = await fetchItemsByCategory("log");
 
+  let months = 12;
+
+  if (window.innerWidth < 550) {
+    // 화면이 550px 미만이면 최근 6개월 데이터만 가져오기
+    months = 6;
+  }
+
   const current = new Date();
-  const curYear = current.getFullYear();
-  const curMonth = current.getMonth() + 1;
 
   const monthlyCoinData = new Map<string, number>();
   const monthlyTaskData = new Map<string, number>();
 
+  const startDate = new Date();
+  startDate.setMonth(current.getMonth() - months + 1);
+  startDate.setDate(1);
+
   for (const { completedDate, coin } of items) {
     if (!completedDate) continue;
 
-    const date = new Date(completedDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
+    const itemDate = new Date(completedDate);
 
-    if (year === curYear || (year === curYear - 1 && month > curMonth)) {
+    if (itemDate >= startDate) {
+      const year = itemDate.getFullYear();
+      const month = itemDate.getMonth() + 1;
       const key = `${year}-${month}`;
       monthlyCoinData.set(key, (monthlyCoinData.get(key) || 0) + coin);
       monthlyTaskData.set(key, (monthlyTaskData.get(key) || 0) + 1);
@@ -246,15 +255,10 @@ export const fetchMonthlyData: () => Promise<{
   const monthlyCoinArr = [];
   const monthlyTaskArr = [];
 
-  let startYear = curYear - 1;
-  let startMonth = curMonth + 1;
+  let startYear = startDate.getFullYear();
+  let startMonth = startDate.getMonth() + 1;
 
-  if (curMonth === 12) {
-    startYear = curYear;
-    startMonth = 1;
-  }
-
-  for (let i = 0; i < 12; i++, startMonth++) {
+  for (let i = 0; i < months; i++, startMonth++) {
     if (startMonth === 13) {
       startMonth = 1;
       startYear++;
@@ -268,13 +272,13 @@ export const fetchMonthlyData: () => Promise<{
 
   const coinData = [
     {
-      id: "월별 획득 코인 (최근 1년)",
+      id: `월별 획득 코인 (최근 ${months}개월)`,
       data: [...monthlyCoinArr],
     },
   ];
   const taskData = [
     {
-      id: "월별 완료한 일 (최근 1년)",
+      id: `월별 완료한 일 (최근 ${months}개월)`,
       data: [...monthlyTaskArr],
     },
   ];
