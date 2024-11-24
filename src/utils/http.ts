@@ -5,6 +5,7 @@ import {
   updateDoc,
   DocumentReference,
   DocumentData,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { QueryClient } from "@tanstack/react-query";
@@ -198,11 +199,9 @@ export const isDuplicatedId = async (id: string) => {
 };
 
 export const identifierToId = async () => {
-  const identifier = sessionStorage.getItem("user") || "";
-
-  const identifierDocRef = doc(db, "identifiers", identifier);
-
   try {
+    const identifier = sessionStorage.getItem("user") || "";
+    const identifierDocRef = doc(db, "identifiers", identifier);
     const identifierDoc = await getDoc(identifierDocRef);
     const id = identifierDoc.data()?.id;
 
@@ -284,4 +283,19 @@ export const fetchMonthlyData: () => Promise<{
   ];
 
   return { coinData, taskData };
+};
+
+export const deleteAccount = async () => {
+  try {
+    const identifier = sessionStorage.getItem("user") || "";
+    const identifierDocRef = doc(db, "identifiers", identifier);
+
+    const userId = await identifierToId();
+    const userDocRef = doc(db, "users", userId);
+
+    await deleteDoc(identifierDocRef);
+    await deleteDoc(userDocRef);
+  } catch (error) {
+    throw new Error("계정 삭제에 실패하였습니다.");
+  }
 };
