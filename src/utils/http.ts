@@ -299,3 +299,16 @@ export const deleteAccount = async () => {
     throw new Error("계정 삭제에 실패하였습니다.");
   }
 };
+
+export const editNickname = async (enteredNickname: string) => {
+  try {
+    const userId = await identifierToId();
+    const userDocRef = doc(db, "users", userId);
+
+    await updateDoc(userDocRef, {
+      nickname: enteredNickname,
+    });
+  } catch (error) {
+    throw new Error("닉네임 변경에 실패하였습니다.");
+  }
+};
