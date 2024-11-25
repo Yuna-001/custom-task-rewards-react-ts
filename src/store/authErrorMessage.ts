@@ -1,15 +1,15 @@
 import { create } from "zustand";
 
-type ErrorMessageStore = {
+type AuthErrorMessageStore = {
   errorMessage: string;
   setErrorMessage: (message: string) => void;
   clearErrorMessage: () => void;
 };
 
-const useErrorMessageStore = create<ErrorMessageStore>((set) => ({
+const useAuthErrorMessageStore = create<AuthErrorMessageStore>((set) => ({
   errorMessage: "",
   setErrorMessage: (message) => set({ errorMessage: message }),
   clearErrorMessage: () => set({ errorMessage: "" }),
 }));
 
-export default useErrorMessageStore;
+export default useAuthErrorMessageStore;

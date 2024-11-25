@@ -3,7 +3,7 @@ import { Form } from "react-router-dom";
 
 import AuthInput from "./AuthInput";
 import AuthMenu from "./AuthMenu";
-import useErrorMessageStore from "../../store/errorMessage";
+import useAuthErrorMessageStore from "../../store/authErrorMessage";
 import useAuthModeStore from "../../store/authMode";
 import useInput from "../../hooks/useInput";
 
@@ -45,7 +45,7 @@ const StyledForm = styled(Form)`
 `;
 
 const AuthForm: React.FC = () => {
-  const clearErrorMessage = useErrorMessageStore(
+  const clearErrorMessage = useAuthErrorMessageStore(
     (state) => state.clearErrorMessage,
   );
 

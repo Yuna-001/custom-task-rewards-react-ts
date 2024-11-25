@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import useAuthModeStore from "../../store/authMode";
-import useErrorMessageStore from "../../store/errorMessage";
+import useAuthErrorMessageStore from "../../store/authErrorMessage";
 import AuthModeType from "../../models/authModeType";
 
 const Menu = styled.menu`
@@ -30,7 +30,7 @@ const AuthMenu: React.FC = () => {
     setAuthMode: state.setAuthMode,
   }));
 
-  const clearErrorMessage = useErrorMessageStore(
+  const clearErrorMessage = useAuthErrorMessageStore(
     (state) => state.clearErrorMessage,
   );
 

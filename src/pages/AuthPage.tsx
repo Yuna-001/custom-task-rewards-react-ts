@@ -3,7 +3,7 @@ import { useActionData } from "react-router-dom";
 import styled from "styled-components";
 
 import AuthForm from "../components/auth/AuthForm";
-import useErrorMessageStore from "../store/errorMessage";
+import useAuthErrorMessageStore from "../store/authErrorMessage";
 
 const ErrorBox = styled.p`
   margin-top: 20px;
@@ -39,10 +39,12 @@ const isActionData = (data: any): data is ActionData => {
 const AuthPage: React.FC = () => {
   const data = useActionData();
 
-  const { errorMessage, setErrorMessage } = useErrorMessageStore((state) => ({
-    errorMessage: state.errorMessage,
-    setErrorMessage: state.setErrorMessage,
-  }));
+  const { errorMessage, setErrorMessage } = useAuthErrorMessageStore(
+    (state) => ({
+      errorMessage: state.errorMessage,
+      setErrorMessage: state.setErrorMessage,
+    }),
+  );
 
   useEffect(() => {
     if (data && isActionData(data) && data.message) {
