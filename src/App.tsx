@@ -11,6 +11,7 @@ import { queryClient } from "./utils/http";
 import MyPageLayout from "./components/layout/MyPageLayout";
 import SettingPage from "./pages/SettingPage";
 import DashboardPage from "./pages/DashboardPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -26,6 +27,7 @@ function App() {
           <RootLayout />
         </ProtectedRoute>
       ),
+      errorElement: <ErrorPage />,
       children: [
         { index: true, element: <MainPage /> },
         {
