@@ -16,6 +16,7 @@ import {
   fetchUserData,
   queryClient,
 } from "../../utils/http";
+import useErrorStore from "../../store/error";
 
 const Content = styled(Link)`
   width: 100%;
@@ -60,6 +61,8 @@ const ItemCard: React.FC<{
   const { category, userId } = usePath();
   const { title, coin, id: itemId } = item;
 
+  const { addError } = useErrorStore();
+
   const { mutate } = useMutation({
     mutationFn: async () => {
       if (category === "tasks") return completeTask({ item, coin });
@@ -81,6 +84,9 @@ const ItemCard: React.FC<{
           queryKey: ["items", category],
         });
       }
+    },
+    onError: (error) => {
+      addError(error.message);
     },
   });
 

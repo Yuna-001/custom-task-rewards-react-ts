@@ -5,9 +5,7 @@ import media from "../../media";
 const PageLayout = styled.main`
   width: 80%;
   padding: 4rem 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;

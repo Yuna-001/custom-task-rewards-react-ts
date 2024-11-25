@@ -24,6 +24,7 @@ import ItemType from "../../models/itemType";
 import CloneTaskButton from "./CloneTaskButton";
 import LogToTaskButton from "./LogToTaskButton";
 import ActionButton from "../UI/ActionButton";
+import useErrorStore from "../../store/error";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -102,6 +103,8 @@ const ItemForm: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const { addError } = useErrorStore();
+
   const { mutate } = useMutation({
     mutationFn: isCreating ? createNewItem : updateItem,
     onSuccess: () => {
@@ -109,6 +112,9 @@ const ItemForm: React.FC = () => {
         queryKey: ["items", category],
       });
       navigate(`/${userId}/${category}`);
+    },
+    onError: (error) => {
+      addError(error.message);
     },
   });
 
@@ -142,6 +148,9 @@ const ItemForm: React.FC = () => {
         refetchType: "none",
       });
       navigate(`/${userId}/${category}`);
+    },
+    onError: (error) => {
+      addError(error.message);
     },
   });
 

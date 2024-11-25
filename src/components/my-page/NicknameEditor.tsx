@@ -7,6 +7,7 @@ import ActionButton from "../UI/ActionButton";
 import useInput from "../../hooks/useInput";
 import AuthInput from "../auth/AuthInput";
 import media from "../../media";
+import useErrorStore from "../../store/error";
 
 const Editor = styled.form`
   display: flex;
@@ -30,6 +31,8 @@ const EditButton = styled(ActionButton)`
 `;
 
 const NicknameEditor = () => {
+  const { addError } = useErrorStore();
+
   const { data } = useQuery({
     queryKey: ["user-data"],
     queryFn: fetchUserData,
@@ -41,6 +44,9 @@ const NicknameEditor = () => {
       queryClient.invalidateQueries({
         queryKey: ["user-data"],
       });
+    },
+    onError: (error) => {
+      addError(error.message);
     },
   });
 
@@ -66,18 +72,20 @@ const NicknameEditor = () => {
   };
 
   return (
-    <Editor onSubmit={handleSubmit}>
-      <AuthInput
-        type="text"
-        id="nickname"
-        label="닉네임"
-        value={enteredNickname}
-        onChange={handleNicknameChange}
-        hasError={nicknameHasError}
-        errorMessage={nicknameErrorMessage}
-      />
-      <EditButton disabled={nicknameHasError}>변경</EditButton>
-    </Editor>
+    <>
+      <Editor onSubmit={handleSubmit}>
+        <AuthInput
+          type="text"
+          id="nickname"
+          label="닉네임"
+          value={enteredNickname}
+          onChange={handleNicknameChange}
+          hasError={nicknameHasError}
+          errorMessage={nicknameErrorMessage}
+        />
+        <EditButton disabled={nicknameHasError}>변경</EditButton>
+      </Editor>
+    </>
   );
 };
 

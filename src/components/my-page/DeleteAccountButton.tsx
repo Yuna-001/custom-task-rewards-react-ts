@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { deleteAccount } from "../../utils/http";
 import TextButton from "../UI/TextButton";
+import useErrorStore from "../../store/error";
 
 const DeleteButton = styled(TextButton)`
   width: 10rem;
@@ -18,11 +19,16 @@ const DeleteButton = styled(TextButton)`
 const DeleteAccountButton = () => {
   const navigate = useNavigate();
 
+  const { addError } = useErrorStore();
+
   const { mutate } = useMutation({
     mutationFn: deleteAccount,
     onSuccess: () => {
       sessionStorage.removeItem("user");
       navigate("/");
+    },
+    onError: (error) => {
+      addError(error.message);
     },
   });
 

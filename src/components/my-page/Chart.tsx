@@ -29,6 +29,7 @@ const ChartWrapper = styled.div`
 
 const Title = styled.h3`
   font-size: 1rem;
+  margin-bottom: 1.5rem;
 `;
 
 interface ChartProps {
