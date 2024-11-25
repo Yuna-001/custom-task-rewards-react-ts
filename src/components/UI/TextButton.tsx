@@ -6,6 +6,8 @@ const TextButton = styled.div`
   padding: 1rem 1.5rem;
   cursor: pointer;
   transition-duration: 0.2s;
+  text-align: center;
+
   &:hover {
     color: black;
   }

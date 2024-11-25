@@ -1,9 +1,19 @@
+import styled from "styled-components";
+import DeleteAccountButton from "../components/my-page/DeleteAccountButton";
+import NicknameEditor from "../components/my-page/NicknameEditor";
+
+const Setting = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
 const SettingPage = () => {
   return (
-    <>
-      <div>닉네임 변경</div>
-      <div>탈퇴하기</div>
-    </>
+    <Setting>
+      <NicknameEditor />
+      <DeleteAccountButton />
+    </Setting>
   );
 };
 

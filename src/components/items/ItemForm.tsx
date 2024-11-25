@@ -59,7 +59,7 @@ const DeleteButton = styled.div`
   cursor: pointer;
   transition-duration: 0.2s;
   &:hover {
-    color: red;
+    color: #e74c3c;
   }
 `;
 

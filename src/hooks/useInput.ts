@@ -38,6 +38,7 @@ const useInput = (identifier: "id" | "password" | "nickname") => {
 
   return {
     enteredValue,
+    setEnteredValue,
     hasError,
     errorMessage,
     handleInputChange,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -39,7 +39,7 @@ const ErrorText = styled.p`
   font-size: 0.8rem;
 `;
 
-const Input: React.FC<{
+const AuthInput: React.FC<{
   type: string;
   id: string;
   label: string;
@@ -67,4 +67,4 @@ const Input: React.FC<{
   );
 };
 
-export default Input;
+export default AuthInput;

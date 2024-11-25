@@ -8,7 +8,9 @@ const ActionButton = styled.button`
   background-color: #ccc7be;
   font-weight: 600;
   transition-duration: 0.2s;
-  &:hover {
+  text-align: center;
+
+  &:hover:not(:disabled) {
     background-color: #f9e09c;
   }
 `;
