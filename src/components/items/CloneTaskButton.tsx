@@ -9,7 +9,7 @@ import useErrorStore from "../../store/error";
 const CloneTaskButton: React.FC<{ item: ItemType | undefined | null }> = ({
   item,
 }) => {
-  const { addError } = useErrorStore();
+  const addError = useErrorStore((state) => state.addError);
 
   const { mutate } = useMutation({
     mutationFn: createNewItem,

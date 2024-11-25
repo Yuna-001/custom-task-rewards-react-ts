@@ -31,7 +31,7 @@ const EditButton = styled(ActionButton)`
 `;
 
 const NicknameEditor = () => {
-  const { addError } = useErrorStore();
+  const addError = useErrorStore((state) => state.addError);
 
   const { data } = useQuery({
     queryKey: ["user-data"],

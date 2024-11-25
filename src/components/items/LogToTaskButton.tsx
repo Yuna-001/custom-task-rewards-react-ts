@@ -13,7 +13,7 @@ const LogToTaskButton: React.FC<{ item: ItemType | undefined | null }> = ({
   const navigate = useNavigate();
   const { userId } = usePath();
 
-  const { addError } = useErrorStore();
+  const addError = useErrorStore((state) => state.addError);
 
   const { mutate } = useMutation({
     mutationFn: logToTask,

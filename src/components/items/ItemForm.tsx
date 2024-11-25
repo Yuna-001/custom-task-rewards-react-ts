@@ -103,7 +103,7 @@ const ItemForm: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { addError } = useErrorStore();
+  const addError = useErrorStore((state) => state.addError);
 
   const { mutate } = useMutation({
     mutationFn: isCreating ? createNewItem : updateItem,

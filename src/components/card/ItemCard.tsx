@@ -61,7 +61,7 @@ const ItemCard: React.FC<{
   const { category, userId } = usePath();
   const { title, coin, id: itemId } = item;
 
-  const { addError } = useErrorStore();
+  const addError = useErrorStore((state) => state.addError);
 
   const { mutate } = useMutation({
     mutationFn: async () => {

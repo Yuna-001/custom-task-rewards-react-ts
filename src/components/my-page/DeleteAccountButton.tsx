@@ -19,7 +19,7 @@ const DeleteButton = styled(TextButton)`
 const DeleteAccountButton = () => {
   const navigate = useNavigate();
 
-  const { addError } = useErrorStore();
+  const addError = useErrorStore((state) => state.addError);
 
   const { mutate } = useMutation({
     mutationFn: deleteAccount,
