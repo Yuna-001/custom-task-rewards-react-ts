@@ -198,16 +198,15 @@ export const isDuplicatedId = async (id: string) => {
   return userDoc.exists();
 };
 
-export const identifierToId = async () => {
+export const identifierToId: () => Promise<string> = async () => {
   try {
-    const identifier = sessionStorage.getItem("user") || "";
+    const identifier = sessionStorage.getItem("user");
+
+    if (!identifier) return "";
+
     const identifierDocRef = doc(db, "identifiers", identifier);
     const identifierDoc = await getDoc(identifierDocRef);
     const id = identifierDoc.data()?.id;
-
-    if (id === undefined) {
-      throw new Error();
-    }
 
     return id;
   } catch (error) {
