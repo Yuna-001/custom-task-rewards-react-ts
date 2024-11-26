@@ -1,7 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { v4 as uuidv4 } from "uuid";
 
-import { createNewItem, queryClient } from "../../utils/http";
+import { queryClient } from "../../api/queryClient";
+import { createNewItem } from "../../api/itemApi";
 import TextButton from "../UI/TextButton";
 import ItemType from "../../models/itemType";
 import useErrorStore from "../../store/error";

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { isDuplicatedId } from "../utils/http";
+import { isDuplicatedId } from "../api/userApi";
 import useAuthModeStore from "../store/authMode";
 
 const useInput = (identifier: "id" | "password" | "nickname") => {

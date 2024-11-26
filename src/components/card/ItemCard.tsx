@@ -10,13 +10,10 @@ import ItemType from "../../models/itemType";
 import usePath from "../../hooks/usePath";
 import { dateFormatting } from "../../utils/formatting";
 import { useMutation } from "@tanstack/react-query";
-import {
-  buyReward,
-  completeTask,
-  fetchUserData,
-  queryClient,
-} from "../../utils/http";
+import { queryClient } from "../../api/queryClient";
 import useErrorStore from "../../store/error";
+import { buyReward, completeTask } from "../../api/itemApi";
+import { fetchUserData } from "../../api/userApi";
 
 const Content = styled(Link)`
   width: 100%;

@@ -4,7 +4,7 @@ import AddCard from "../components/card/AddCard";
 import ItemCard from "../components/card/ItemCard";
 import PageLayout from "../components/layout/PageLayout";
 import usePath from "../hooks/usePath";
-import { fetchItemsByCategory } from "../utils/http";
+import { fetchItemsByCategory } from "../api/itemApi";
 import { useRef } from "react";
 import CoinShortageModal from "../components/modal/CoinShortageModal";
 

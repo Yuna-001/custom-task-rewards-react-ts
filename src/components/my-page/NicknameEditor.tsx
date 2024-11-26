@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-import { editNickname, fetchUserData, queryClient } from "../../utils/http";
+import { queryClient } from "../../api/queryClient";
+import { editNickname, fetchUserData } from "../../api/userApi";
 import ActionButton from "../UI/ActionButton";
 import useInput from "../../hooks/useInput";
 import AuthInput from "../auth/AuthInput";

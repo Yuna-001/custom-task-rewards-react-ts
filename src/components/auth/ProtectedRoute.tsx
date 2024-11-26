@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { identifierToId } from "../../utils/http";
+import { identifierToId } from "../../api/userApi";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,

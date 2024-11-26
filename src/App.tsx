@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 
-import { queryClient } from "./utils/http";
+import { queryClient } from "./api/queryClient";
 import AuthPage from "./pages/AuthPage";
 import authAction from "./components/auth/authActions";
 import ProtectedRoute from "./components/auth/ProtectedRoute";

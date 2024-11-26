@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import Chart from "./Chart";
 import media from "../../media";
-import { fetchMonthlyData } from "../../utils/http";
+import { fetchMonthlyData } from "../../api/itemApi";
 
 const Charts = styled.div`
   display: flex;

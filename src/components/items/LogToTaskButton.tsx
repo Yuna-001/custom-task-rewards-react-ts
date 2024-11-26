@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import ItemType from "../../models/itemType";
 import TextButton from "../UI/TextButton";
-import { logToTask, queryClient } from "../../utils/http";
+import { queryClient } from "../../api/queryClient";
+import { logToTask } from "../../api/itemApi";
 import usePath from "../../hooks/usePath";
 import useErrorStore from "../../store/error";
 

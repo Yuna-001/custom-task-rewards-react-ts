@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import ItemType from "../../models/itemType";
 import useAuthModeStore from "../../store/authMode";
-import { isDuplicatedId } from "../../utils/http";
+import { isDuplicatedId } from "../../api/userApi";
 
 type AuthUser = {
   id: string;

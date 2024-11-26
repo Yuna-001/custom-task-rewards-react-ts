@@ -17,9 +17,9 @@ import {
   createNewItem,
   deleteItem,
   fetchItem,
-  queryClient,
   updateItem,
-} from "../../utils/http";
+} from "../../api/itemApi";
+import { queryClient } from "../../api/queryClient";
 import ItemType from "../../models/itemType";
 import CloneTaskButton from "./CloneTaskButton";
 import LogToTaskButton from "./LogToTaskButton";

@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { deleteAccount } from "../../utils/http";
+import { deleteAccount } from "../../api/userApi";
 import TextButton from "../UI/TextButton";
 import useErrorStore from "../../store/error";
 

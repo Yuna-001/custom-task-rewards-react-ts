@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import media from "../../media";
 import CoinData from "../UI/CoinData";
 import coinsImg from "../../assets/coins.svg";
-import { fetchUserData } from "../../utils/http";
+import { fetchUserData } from "../../api/userApi";
 
 const CoinInfo = styled.div`
   width: 100%;
