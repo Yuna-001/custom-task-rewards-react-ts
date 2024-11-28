@@ -19,7 +19,7 @@ const AddCard: React.FC = () => {
   const { category, userId } = usePath();
 
   if (category === "log") {
-    return <></>;
+    return null;
   }
 
   return (
