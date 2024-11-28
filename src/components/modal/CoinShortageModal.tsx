@@ -8,6 +8,10 @@ import { numberFormatting } from "../../utils/formatting";
 
 const Dialog = styled.dialog`
   &[open] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 25rem;
     padding: 1.5rem;
     display: flex;
