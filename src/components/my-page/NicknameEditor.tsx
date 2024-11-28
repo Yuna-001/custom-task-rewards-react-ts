@@ -45,6 +45,7 @@ const NicknameEditor = () => {
       queryClient.invalidateQueries({
         queryKey: ["user-data"],
       });
+      setNicknameHasError(true);
     },
     onError: (error) => {
       addError(error.message);
@@ -57,6 +58,7 @@ const NicknameEditor = () => {
     enteredValue: enteredNickname,
     setEnteredValue: setEnteredNickname,
     hasError: nicknameHasError,
+    setHasError: setNicknameHasError,
     errorMessage: nicknameErrorMessage,
     handleInputChange: handleNicknameChange,
   } = useInput("nickname");
