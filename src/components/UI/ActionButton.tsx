@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 const ActionButton = styled.button`
-  padding: 1rem 1.4rem;
+  padding: 1rem 1.2rem;
   font-size: 1rem;
   cursor: pointer;
   border-radius: 1rem;
