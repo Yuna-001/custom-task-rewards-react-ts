@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useActionData } from "react-router-dom";
 import styled from "styled-components";
 
 import AuthForm from "../components/auth/AuthForm";
-import useAuthErrorMessageStore from "../store/authErrorMessage";
 
 const ErrorBox = styled.p`
   margin-top: 20px;
@@ -38,24 +37,28 @@ const isActionData = (data: any): data is ActionData => {
 
 const AuthPage: React.FC = () => {
   const data = useActionData();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const { errorMessage, setErrorMessage } = useAuthErrorMessageStore(
-    (state) => ({
-      errorMessage: state.errorMessage,
-      setErrorMessage: state.setErrorMessage,
-    }),
-  );
+  const handleRemoveErrorMessage = () => {
+    setErrorMessage("");
+  };
 
   useEffect(() => {
     if (data && isActionData(data) && data.message) {
       setErrorMessage(data.message);
     }
-  }, [data, setErrorMessage]);
+  }, [data]);
+
+  const memoizedTitle = useMemo(() => <Title>스스로 어른이</Title>, []);
+  const memoizedAuthForm = useMemo(
+    () => <AuthForm onRemoveError={handleRemoveErrorMessage} />,
+    [],
+  );
 
   return (
     <Container>
-      <Title>스스로 어른이</Title>
-      <AuthForm />
+      {memoizedTitle}
+      {memoizedAuthForm}
       <ErrorBox>{errorMessage}</ErrorBox>
     </Container>
   );

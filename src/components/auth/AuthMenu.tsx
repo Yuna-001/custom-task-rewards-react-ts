@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import useAuthModeStore from "../../store/authMode";
-import useAuthErrorMessageStore from "../../store/authErrorMessage";
 import AuthModeType from "../../models/authModeType";
 
 const Menu = styled.menu`
@@ -24,19 +23,17 @@ const MenuItem = styled.li`
   }
 `;
 
-const AuthMenu: React.FC = () => {
+const AuthMenu: React.FC<{ onRemoveError: () => void }> = ({
+  onRemoveError,
+}) => {
   const { authMode, setAuthMode } = useAuthModeStore((state) => ({
     authMode: state.authMode,
     setAuthMode: state.setAuthMode,
   }));
 
-  const clearErrorMessage = useAuthErrorMessageStore(
-    (state) => state.clearErrorMessage,
-  );
-
   const handleClick = (mode: AuthModeType) => {
     if (mode !== authMode) {
-      clearErrorMessage();
+      onRemoveError();
       setAuthMode(mode);
     }
   };

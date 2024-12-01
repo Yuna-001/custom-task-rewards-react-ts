@@ -44,11 +44,9 @@ const StyledForm = styled(Form)`
   padding-bottom: 2rem;
 `;
 
-const AuthForm: React.FC = () => {
-  const clearErrorMessage = useAuthErrorMessageStore(
-    (state) => state.clearErrorMessage,
-  );
-
+const AuthForm: React.FC<{ onRemoveError: () => void }> = ({
+  onRemoveError,
+}) => {
   const authMode = useAuthModeStore((state) => state.authMode);
 
   const {
@@ -79,8 +77,8 @@ const AuthForm: React.FC = () => {
 
   return (
     <Authentication>
-      <AuthMenu />
-      <StyledForm method="POST" onFocus={() => clearErrorMessage()}>
+      <AuthMenu onRemoveError={onRemoveError} />
+      <StyledForm method="POST" onFocus={() => onRemoveError()}>
         {authMode === "signup" && (
           <AuthInput
             type="text"
