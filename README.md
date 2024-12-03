@@ -70,8 +70,8 @@
 - `Zustand`
 - `React Query`
 - `React Router`
+- `Nivo`
 - `uuid`
-- `nivo`
 
 ###  DB
 
@@ -107,7 +107,13 @@
    VITE_FIREBASE_MESSAGING_SENDER_ID = <Your_Firebase_Messaging_Sender_ID>
    ```
 
-4. **개발 서버 실행**
+4. **Firestore 컬렉션 설정**
+   Firebase Console에서 Firestore를 활성화하고 아래 컬렉션들을 추가합니다.
+
+   - users: 사용자 정보를 저장하는 컬렉션
+   - identifiers: 고유 식별자를 관리하는 컬렉션
+
+5. **개발 서버 실행**
 
    ```bash
    npm run dev
