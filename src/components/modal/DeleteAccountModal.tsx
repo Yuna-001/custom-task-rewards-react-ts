@@ -17,7 +17,7 @@ const Button = styled(ActionButton)`
 const DeleteAccountModal = forwardRef<{
   open: () => void;
   close: () => void;
-}>((props, ref) => {
+}>((_, ref) => {
   const navigate = useNavigate();
 
   const addError = useErrorStore((state) => state.addError);
