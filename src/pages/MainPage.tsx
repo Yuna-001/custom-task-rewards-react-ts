@@ -5,7 +5,6 @@ import ItemCard from "../components/card/ItemCard";
 import PageLayout from "../components/layout/PageLayout";
 import usePath from "../hooks/usePath";
 import { fetchItemsByCategory } from "../api/itemApi";
-import { useRef } from "react";
 import CoinShortageModal from "../components/modal/CoinShortageModal";
 
 const MainPage: React.FC = () => {
@@ -14,29 +13,18 @@ const MainPage: React.FC = () => {
     queryKey: ["items", category],
     queryFn: () => fetchItemsByCategory(category),
   });
+
   const items = data?.items;
-
-  const modal = useRef<{
-    open: () => void;
-    setRequiredCoin: (gap: number) => void;
-  }>(null);
-
-  const handleModalOpen = (requiredCoin: number) => {
-    modal.current?.open();
-    modal.current?.setRequiredCoin(requiredCoin);
-  };
 
   return (
     <>
-      <CoinShortageModal ref={modal} />
+      {category === "rewards-shop" && <CoinShortageModal />}
       <PageLayout>
         <AddCard />
         {items
           ?.slice()
           .reverse()
-          .map((item) => (
-            <ItemCard key={item.id} item={item} onModalOpen={handleModalOpen} />
-          ))}
+          .map((item) => <ItemCard key={item.id} item={item} />)}
       </PageLayout>
     </>
   );

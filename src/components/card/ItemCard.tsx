@@ -14,6 +14,7 @@ import { queryClient } from "../../api/queryClient";
 import useErrorStore from "../../store/error";
 import { buyReward, completeTask } from "../../api/itemApi";
 import { fetchUserData } from "../../api/userApi";
+import useRequiredCoinStore from "../../store/requiredCoin";
 
 const Content = styled(Link)`
   width: 100%;
@@ -53,8 +54,7 @@ const Title = styled.h3`
 
 const ItemCard: React.FC<{
   item: ItemType;
-  onModalOpen: (gap: number) => void;
-}> = ({ item, onModalOpen }) => {
+}> = ({ item }) => {
   const { category, userId } = usePath();
   const { title, coin, id: itemId } = item;
 
@@ -87,6 +87,10 @@ const ItemCard: React.FC<{
     },
   });
 
+  const setRequiredCoin = useRequiredCoinStore(
+    (state) => state.setRequiredCoin,
+  );
+
   const handleTextButtonClick = () => {
     mutate();
   };
@@ -98,7 +102,7 @@ const ItemCard: React.FC<{
       mutate();
     } else {
       const gap = coin - userCoin;
-      onModalOpen(gap);
+      setRequiredCoin(gap);
     }
   };
 
