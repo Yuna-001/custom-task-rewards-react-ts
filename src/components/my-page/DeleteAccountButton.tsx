@@ -1,10 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import styled from "styled-components";
 
-import { deleteAccount } from "../../api/userApi";
 import TextButton from "../UI/TextButton";
-import useErrorStore from "../../store/error";
+import DeleteAccountModal from "../modal/DeleteAccountModal";
 
 const DeleteButton = styled(TextButton)`
   width: 10rem;
@@ -17,26 +15,21 @@ const DeleteButton = styled(TextButton)`
 `;
 
 const DeleteAccountButton = () => {
-  const navigate = useNavigate();
-
-  const addError = useErrorStore((state) => state.addError);
-
-  const { mutate } = useMutation({
-    mutationFn: deleteAccount,
-    onSuccess: () => {
-      sessionStorage.removeItem("user");
-      navigate("/");
-    },
-    onError: (error) => {
-      addError(error.message);
-    },
-  });
+  const modal = useRef<{
+    open: () => void;
+    close: () => void;
+  }>(null);
 
   const handleClick = () => {
-    mutate();
+    modal.current?.open();
   };
 
-  return <DeleteButton onClick={handleClick}>탈퇴하기</DeleteButton>;
+  return (
+    <>
+      <DeleteAccountModal ref={modal} />
+      <DeleteButton onClick={handleClick}>탈퇴하기</DeleteButton>
+    </>
+  );
 };
 
 export default DeleteAccountButton;
