@@ -43,8 +43,12 @@ const ChartList = () => {
 
   return (
     <Charts>
-      <Chart data={data.coinData} title={data.coinData?.[0].id || ""} />
-      <Chart data={data.taskData} title={data.taskData?.[0].id || ""} />
+      {data?.coinData && (
+        <Chart data={data.coinData} title={data.coinData?.[0]?.id || ""} />
+      )}
+      {data?.taskData && (
+        <Chart data={data.taskData} title={data.taskData?.[0].id || ""} />
+      )}
     </Charts>
   );
 };
