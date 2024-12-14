@@ -13,7 +13,7 @@ import ErrorPage from "./pages/ErrorPage";
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const SettingPage = lazy(() => import("./pages/SettingPage"));
 const MainPage = lazy(() => import("./pages/MainPage"));
-const ItemForm = lazy(() => import("./components/items/ItemForm"));
+const ItemPage = lazy(() => import("./pages/ItemPage"));
 
 function App() {
   const router = createBrowserRouter([
@@ -44,12 +44,12 @@ function App() {
           path: ":category",
           children: [
             { index: true, element: <MainPage /> },
-            { path: "add", element: <ItemForm /> },
+            { path: "add", element: <ItemPage /> },
             {
               path: ":itemId",
               children: [
-                { index: true, element: <ItemForm /> },
-                { path: "edit", element: <ItemForm /> },
+                { index: true, element: <ItemPage /> },
+                { path: "edit", element: <ItemPage /> },
               ],
             },
           ],

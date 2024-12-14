@@ -9,22 +9,22 @@ import styled from "styled-components";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { v4 as uuidv4 } from "uuid";
 
-import media from "../../media";
-import TextButton from "../UI/TextButton";
-import ItemInput from "./ItemInput";
-import usePath from "../../hooks/usePath";
+import media from "../media";
+import TextButton from "../components/UI/TextButton";
+import ItemInput from "../components/items/ItemInput";
+import usePath from "../hooks/usePath";
 import {
   createNewItem,
   deleteItem,
   fetchItem,
   updateItem,
-} from "../../api/itemApi";
-import { queryClient } from "../../api/queryClient";
-import ItemType from "../../models/itemType";
-import CloneTaskButton from "./CloneTaskButton";
-import LogToTaskButton from "./LogToTaskButton";
-import ActionButton from "../UI/ActionButton";
-import useErrorStore from "../../store/error";
+} from "../api/itemApi";
+import { queryClient } from "../api/queryClient";
+import ItemType from "../models/itemType";
+import CloneTaskButton from "../components/items/CloneTaskButton";
+import LogToTaskButton from "../components/items/LogToTaskButton";
+import ActionButton from "../components/UI/ActionButton";
+import useErrorStore from "../store/error";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -72,7 +72,7 @@ const useTextButtons = () => {
   return { isEditing, isCreating };
 };
 
-const ItemForm: React.FC = () => {
+const ItemPage: React.FC = () => {
   const { category, userId } = usePath();
   const { itemId } = useParams();
 
@@ -223,4 +223,4 @@ const ItemForm: React.FC = () => {
   );
 };
 
-export default ItemForm;
+export default ItemPage;
