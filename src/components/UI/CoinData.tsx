@@ -15,7 +15,7 @@ const CoinData: React.FC<{ image: string; coin: number }> = ({
 }) => {
   return (
     <Coins>
-      <img src={image} alt="동전" width={32} />
+      <img src={image} alt="동전" width={32} height={32} />
       <div>{numberFormatting(coin)}</div>
     </Coins>
   );
