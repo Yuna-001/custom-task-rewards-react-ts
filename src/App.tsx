@@ -1,17 +1,19 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { lazy } from "react";
 
 import { queryClient } from "./api/queryClient";
 import AuthPage from "./pages/AuthPage";
 import authAction from "./components/auth/authActions";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import RootLayout from "./components/layout/RootLayout";
-import MainPage from "./pages/MainPage";
-import ItemForm from "./components/items/ItemForm";
 import MyPageLayout from "./components/layout/MyPageLayout";
-import SettingPage from "./pages/SettingPage";
-import DashboardPage from "./pages/DashboardPage";
 import ErrorPage from "./pages/ErrorPage";
+
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const SettingPage = lazy(() => import("./pages/SettingPage"));
+const MainPage = lazy(() => import("./pages/MainPage"));
+const ItemForm = lazy(() => import("./components/items/ItemForm"));
 
 function App() {
   const router = createBrowserRouter([

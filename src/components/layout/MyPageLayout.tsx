@@ -1,6 +1,9 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+
 import MyPageHeader from "../header/MyPageHeader";
+import LoadingPage from "../../pages/LoadingPage";
 
 const Layout = styled.main`
   width: 80%;
@@ -11,7 +14,9 @@ const MyPageLayout = () => {
   return (
     <Layout>
       <MyPageHeader />
-      <Outlet />
+      <Suspense fallback={<LoadingPage />}>
+        <Outlet />
+      </Suspense>
     </Layout>
   );
 };
