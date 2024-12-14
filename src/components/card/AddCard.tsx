@@ -24,7 +24,10 @@ const AddCard: React.FC = () => {
 
   return (
     <Card>
-      <AddButton to={`/${userId}/${category}/add`}>
+      <AddButton
+        to={`/${userId}/${category}/add`}
+        aria-label={`새 ${category === "tasks" ? "할 일" : "보상"} 추가 버튼`}
+      >
         <FontAwesomeIcon icon={faPlus} size="8x" color="#F7F5E8" />
       </AddButton>
     </Card>
