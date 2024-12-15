@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const TextButton = styled.div`
-  color: #74726e;
+  color: #5a5954;
   font-weight: 600;
   padding: 1rem 1.2rem;
   cursor: pointer;
@@ -10,6 +10,8 @@ const TextButton = styled.div`
 
   &:hover {
     color: black;
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 `;
 

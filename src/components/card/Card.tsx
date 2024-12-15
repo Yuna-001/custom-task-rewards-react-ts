@@ -14,7 +14,7 @@ const Card = styled.section`
   transition-duration: 0.3s;
 
   &:hover {
-    scale: 1.02;
+    transform: scale(1.02);
     box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
   }
 `;

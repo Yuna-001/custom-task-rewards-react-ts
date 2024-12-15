@@ -29,14 +29,14 @@ const LinkItem = styled(NavLink)<{ ishome?: string }>`
 
   &:hover,
   &.active {
-    background-color: #ada8a1;
+    background-color: #746f66;
     color: #ffffff;
   }
 
   ${({ ishome }) =>
     ishome === "true" &&
     `
-    background-color: #ada8a1;
+    background-color: #746f66;
     color: #ffffff;
   `}
 `;
