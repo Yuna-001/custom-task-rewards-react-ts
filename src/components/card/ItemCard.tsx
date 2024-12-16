@@ -9,32 +9,14 @@ import CoinData from "../UI/CoinData";
 import ItemType from "../../models/itemType";
 import usePath from "../../hooks/usePath";
 import { dateFormatting } from "../../utils/formatting";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "../../api/queryClient";
-import useErrorStore from "../../store/error";
-import { buyReward, completeTask } from "../../api/itemApi";
-import { fetchUserData } from "../../api/userApi";
-import useRequiredCoinStore from "../../store/requiredCoin";
+import CardFooter from "./CardFooter";
+import useItemCardActions from "../../hooks/useItemCardActions";
 
 const Content = styled(Link)`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const TextButtons = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-bottom: -0.5rem;
-`;
-
-const CompletedDate = styled.div`
-  width: 100%;
-  margin-bottom: -0.5rem;
-  color: #74726e;
-  padding: 1rem 1.5rem;
 `;
 
 const Header = styled.header`
@@ -57,54 +39,7 @@ const ItemCard: React.FC<{
 }> = ({ item }) => {
   const { category, userId } = usePath();
   const { title, coin, id: itemId } = item;
-
-  const addError = useErrorStore((state) => state.addError);
-
-  const { mutate } = useMutation({
-    mutationFn: async () => {
-      if (category === "tasks") return completeTask({ item, coin });
-      if (category === "rewards-shop") return buyReward(coin);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["user-data"],
-      });
-      if (category === "tasks" || category === "log") {
-        queryClient.invalidateQueries({
-          queryKey: ["items", "tasks"],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["items", "log"],
-        });
-      } else {
-        queryClient.invalidateQueries({
-          queryKey: ["items", category],
-        });
-      }
-    },
-    onError: (error) => {
-      addError(error.message);
-    },
-  });
-
-  const setRequiredCoin = useRequiredCoinStore(
-    (state) => state.setRequiredCoin,
-  );
-
-  const handleTextButtonClick = () => {
-    mutate();
-  };
-
-  const handleBuyItem = async () => {
-    const { coin: userCoin } = await fetchUserData();
-
-    if (userCoin >= coin) {
-      mutate();
-    } else {
-      const gap = coin - userCoin;
-      setRequiredCoin(gap);
-    }
-  };
+  const { handleBuyItem, handleCompleteTask } = useItemCardActions(item);
 
   const actionBtn1: ReactNode = (
     <Link to={`/${userId}/${category}/${itemId}/edit`}>
@@ -112,29 +47,14 @@ const ItemCard: React.FC<{
     </Link>
   );
 
-  let actionBtn2: ReactNode = (
-    <TextButton onClick={handleTextButtonClick}>완료</TextButton>
-  );
-
-  let showingTitle: string = title;
-
-  if (title.length > 35) showingTitle = title.slice(0, 35) + "...";
-
-  if (category === "rewards-shop") {
-    actionBtn2 = <TextButton onClick={handleBuyItem}>구입</TextButton>;
-  }
-
-  const footerElement =
-    category === "log" ? (
-      <CompletedDate>
-        {item.completedDate ? dateFormatting(item.completedDate) : ""}
-      </CompletedDate>
+  const actionBtn2: ReactNode =
+    category === "rewards-shop" ? (
+      <TextButton onClick={handleBuyItem}>구입</TextButton>
     ) : (
-      <TextButtons>
-        {actionBtn1}
-        {actionBtn2}
-      </TextButtons>
+      <TextButton onClick={handleCompleteTask}>완료</TextButton>
     );
+
+  const showingTitle = title.length > 35 ? `${title.slice(0, 35)}...` : title;
 
   return (
     <Card>
@@ -145,7 +65,12 @@ const ItemCard: React.FC<{
         </Header>
         <Title> {showingTitle}</Title>
       </Content>
-      {footerElement}
+      <CardFooter
+        category={category}
+        actionBtn1={actionBtn1}
+        actionBtn2={actionBtn2}
+        completedDate={item.completedDate}
+      />
     </Card>
   );
 };
