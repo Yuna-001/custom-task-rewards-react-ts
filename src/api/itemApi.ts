@@ -101,15 +101,9 @@ export const deleteItem: ({
   }
 };
 
-export const completeTask: ({
-  item,
-  coin,
-}: {
-  item: Item;
-  coin: number;
-}) => Promise<void> = async ({ item, coin }) => {
+export const completeTask: (item: Item) => Promise<void> = async (item) => {
   // 사용자의 coin을 업데이트
-  await updateUserCoin(coin, false);
+  await updateUserCoin(item.coin, false);
 
   // item 삭제
   await deleteItem({ category: "tasks", itemId: item.id });
@@ -124,14 +118,8 @@ export const completeTask: ({
   await createNewItem({ category: "log", item });
 };
 
-export const logToTask: ({
-  item,
-  coin,
-}: {
-  item: Item;
-  coin: number;
-}) => Promise<void> = async ({ item, coin }) => {
-  await updateUserCoin(-coin, false);
+export const logToTask: (item: Item) => Promise<void> = async (item) => {
+  await updateUserCoin(-item.coin, false);
 
   await deleteItem({ category: "log", itemId: item.id });
 

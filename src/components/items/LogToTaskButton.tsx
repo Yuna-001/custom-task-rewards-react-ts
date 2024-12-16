@@ -38,7 +38,7 @@ const LogToTaskButton: React.FC<{ item: Item | undefined | null }> = ({
 
   const handleCancelComplete = () => {
     if (item) {
-      mutate({ item, coin: item.coin });
+      mutate(item);
     }
   };
 

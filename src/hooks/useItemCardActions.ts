@@ -13,7 +13,7 @@ const useItemCardActions = (item: Item) => {
   );
 
   const { mutate: completeTaskMutation } = useMutation({
-    mutationFn: async () => completeTask({ item, coin: item.coin }),
+    mutationFn: async () => completeTask(item),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user-data"],
@@ -31,7 +31,7 @@ const useItemCardActions = (item: Item) => {
   });
 
   const { mutate: buyRewardMutation } = useMutation({
-    mutationFn: async () => buyReward(item.coin),
+    mutationFn: buyReward,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user-data"],
@@ -50,7 +50,7 @@ const useItemCardActions = (item: Item) => {
     const { coin: userCoin } = await fetchUserData();
 
     if (userCoin >= item.coin) {
-      buyRewardMutation();
+      buyRewardMutation(item.coin);
     } else {
       const gap = item.coin - userCoin;
       setRequiredCoin(gap);
