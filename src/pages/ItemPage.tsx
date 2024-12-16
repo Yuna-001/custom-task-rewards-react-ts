@@ -1,30 +1,15 @@
-import {
-  Form,
-  useParams,
-  Link,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Form, useParams, Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { v4 as uuidv4 } from "uuid";
+import { useQuery } from "@tanstack/react-query";
 
 import media from "../media";
 import TextButton from "../components/UI/TextButton";
 import ItemInput from "../components/items/ItemInput";
 import usePath from "../hooks/usePath";
-import {
-  createNewItem,
-  deleteItem,
-  fetchItem,
-  updateItem,
-} from "../api/itemApi";
-import { queryClient } from "../api/queryClient";
-import ItemType from "../models/itemType";
-import CloneTaskButton from "../components/items/CloneTaskButton";
-import LogToTaskButton from "../components/items/LogToTaskButton";
-import ActionButton from "../components/UI/ActionButton";
-import useErrorStore from "../store/error";
+import { fetchItem } from "../api/itemApi";
+import ItemPageActionButtons from "../components/items/ItemPageActionButtons";
+import ItemPageMode from "../models/itemPageMode";
+import useItemPageActions from "../hooks/useItemPageActions";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -64,20 +49,28 @@ const DeleteButton = styled.div`
   }
 `;
 
-const useTextButtons = () => {
+const useItemMode: () => ItemPageMode = () => {
   const { pathname } = useLocation();
-  const isEditing = pathname.endsWith("/edit");
-  const isCreating = pathname.endsWith("/add");
 
-  return { isEditing, isCreating };
+  if (pathname.endsWith("/edit")) {
+    return "edit";
+  } else if (pathname.endsWith("/add")) {
+    return "create";
+  }
+
+  return "detail";
 };
 
 const ItemPage: React.FC = () => {
   const { category, userId } = usePath();
   const { itemId } = useParams();
-
-  const { isEditing, isCreating } = useTextButtons();
-  const isDetail = !isCreating && !isEditing;
+  const mode = useItemMode();
+  const { handleDelete, handleSubmit } = useItemPageActions(
+    category,
+    mode,
+    itemId,
+    userId,
+  );
 
   const { data: item } = useQuery({
     queryKey: ["items", category, itemId],
@@ -85,84 +78,12 @@ const ItemPage: React.FC = () => {
     enabled: itemId !== undefined,
   });
 
-  let actiontBtn = <></>;
-
-  if (category === "log") {
-    actiontBtn = <LogToTaskButton item={item} />;
-  } else if (isEditing) {
-    actiontBtn = <ActionButton type="submit">저장</ActionButton>;
-  } else if (isCreating) {
-    actiontBtn = <ActionButton type="submit">추가</ActionButton>;
-  } else {
-    actiontBtn = (
-      <TextButton>
-        <Link to="edit">편집</Link>
-      </TextButton>
-    );
-  }
-
-  const navigate = useNavigate();
-
-  const addError = useErrorStore((state) => state.addError);
-
-  const { mutate } = useMutation({
-    mutationFn: isCreating ? createNewItem : updateItem,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["items", category],
-      });
-      navigate(`/${userId}/${category}`);
-    },
-    onError: (error) => {
-      addError(error.message);
-    },
-  });
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const data = new FormData(event.currentTarget);
-
-    const title = data.get("title")?.toString().trim() || "";
-    const coinString = data.get("coin")?.toString().trim() || "";
-    const coin = Number(coinString);
-    const endDate = data.get("endDate")?.toString().trim() || "";
-    const description = data.get("description")?.toString().trim() || "";
-
-    const item: ItemType = {
-      id: itemId ?? uuidv4(),
-      title,
-      coin,
-      endDate,
-      description,
-    };
-
-    mutate({ category, item });
-  };
-
-  const { mutate: mutateDeleteItem } = useMutation({
-    mutationFn: deleteItem,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["items", category],
-        refetchType: "none",
-      });
-      navigate(`/${userId}/${category}`);
-    },
-    onError: (error) => {
-      addError(error.message);
-    },
-  });
-
-  const handleDelete: () => void = () => {
-    if (itemId) {
-      mutateDeleteItem({ category, itemId });
-    }
-  };
-
   return (
-    <StyledForm method={isCreating ? "POST" : "PATCH"} onSubmit={handleSubmit}>
-      {!isCreating && (
+    <StyledForm
+      method={mode === "create" ? "POST" : "PATCH"}
+      onSubmit={handleSubmit}
+    >
+      {mode !== "create" && (
         <DeleteButtonContainer>
           <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
         </DeleteButtonContainer>
@@ -172,7 +93,7 @@ const ItemPage: React.FC = () => {
         id="title"
         label={category === "rewards-shop" ? "이름" : "제목"}
         defaultValue={item?.title ?? ""}
-        disabled={isDetail}
+        disabled={mode === "detail"}
         required
       />
       {category === "log" && (
@@ -190,9 +111,9 @@ const ItemPage: React.FC = () => {
         id="coin"
         label={category === "rewards-shop" ? "가격" : "완료 후 획득 코인"}
         defaultValue={item?.coin ? item.coin : ""}
-        disabled={isDetail}
+        disabled={mode === "detail"}
         required
-        max={category === "rewards-shop" ? 9999999999999 : 9999}
+        max={category === "rewards-shop" ? 9999999999999 : 99999}
       />
       {category !== "rewards-shop" && (
         <ItemInput
@@ -200,7 +121,7 @@ const ItemPage: React.FC = () => {
           id="endDate"
           label="기한"
           defaultValue={item?.endDate ?? ""}
-          disabled={isDetail}
+          disabled={mode === "detail"}
         />
       )}
       <ItemInput
@@ -208,16 +129,13 @@ const ItemPage: React.FC = () => {
         label="설명"
         isTextarea
         defaultValue={item?.description ?? ""}
-        disabled={isDetail}
+        disabled={mode === "detail"}
       />
       <TextButtons>
         <TextButton>
           <Link to={`/${userId}/${category}`}>목록으로</Link>
         </TextButton>
-        {category !== "rewards-shop" && !isCreating && (
-          <CloneTaskButton item={item} />
-        )}
-        {actiontBtn}
+        <ItemPageActionButtons item={item} category={category} mode={mode} />
       </TextButtons>
     </StyledForm>
   );
