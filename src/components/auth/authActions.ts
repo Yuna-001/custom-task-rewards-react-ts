@@ -3,7 +3,7 @@ import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 
-import ItemType from "../../models/itemType";
+import Item from "../../models/item";
 import useAuthModeStore from "../../store/authMode";
 import { isDuplicatedId } from "../../api/userApi";
 
@@ -14,9 +14,9 @@ type AuthUser = {
   identifier?: string;
   coin?: number;
   totalCoin?: number;
-  tasks?: Array<ItemType>;
-  "rewards-shop"?: Array<ItemType>;
-  log?: Array<ItemType>;
+  tasks?: Array<Item>;
+  "rewards-shop"?: Array<Item>;
+  log?: Array<Item>;
 };
 
 const authAction: (args: { request: Request }) => Promise<Response> = async ({

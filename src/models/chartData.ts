@@ -1,4 +1,4 @@
-type ChartDataType = {
+type ChartData = {
   id: string;
   data: {
     x: string;
@@ -6,4 +6,4 @@ type ChartDataType = {
   }[];
 }[];
 
-export default ChartDataType;
+export default ChartData;

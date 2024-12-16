@@ -8,13 +8,13 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-import ItemType from "../models/itemType";
-import CategoryType from "../models/categoryType";
-import ChartDataType from "../models/chartDataType";
+import Item from "../models/item";
+import Category from "../models/category";
+import ChartData from "../models/chartData";
 import { identifierToId, updateUserCoin } from "./userApi";
 
-export const fetchItemsByCategory: (category: CategoryType) => Promise<{
-  items: ItemType[];
+export const fetchItemsByCategory: (category: Category) => Promise<{
+  items: Item[];
   userDocRef: DocumentReference<DocumentData, DocumentData>;
 }> = async (category) => {
   try {
@@ -22,7 +22,7 @@ export const fetchItemsByCategory: (category: CategoryType) => Promise<{
     const userDocRef = doc(db, "users", userId);
     const userDoc = await getDoc(userDocRef);
     const data = userDoc.data();
-    const items: Array<ItemType> = data ? data[category] : [];
+    const items: Array<Item> = data ? data[category] : [];
 
     return { items, userDocRef };
   } catch (error) {
@@ -31,9 +31,9 @@ export const fetchItemsByCategory: (category: CategoryType) => Promise<{
 };
 
 export const fetchItem: (
-  category: CategoryType,
+  category: Category,
   itemId: string | undefined,
-) => Promise<ItemType | null> = async (category, itemId) => {
+) => Promise<Item | null> = async (category, itemId) => {
   const { items } = await fetchItemsByCategory(category);
   const item = items?.find(({ id }) => id === itemId);
 
@@ -44,8 +44,8 @@ export const createNewItem: ({
   category,
   item,
 }: {
-  category: CategoryType;
-  item: ItemType;
+  category: Category;
+  item: Item;
 }) => Promise<void> = async ({ category, item }) => {
   try {
     const userId = await identifierToId();
@@ -63,13 +63,13 @@ export const updateItem: ({
   category,
   item,
 }: {
-  category: CategoryType;
-  item: ItemType;
+  category: Category;
+  item: Item;
 }) => Promise<void> = async ({ category, item: updatedItem }) => {
   try {
     const { items, userDocRef } = await fetchItemsByCategory(category);
 
-    const updatedItems = items.map((item: ItemType) =>
+    const updatedItems = items.map((item: Item) =>
       item.id === updatedItem.id ? updatedItem : item,
     );
 
@@ -85,13 +85,13 @@ export const deleteItem: ({
   category,
   itemId,
 }: {
-  category: CategoryType;
+  category: Category;
   itemId: string;
 }) => Promise<void> = async ({ category, itemId }) => {
   try {
     const { items, userDocRef } = await fetchItemsByCategory(category);
 
-    const updatedItems = items.filter((item: ItemType) => item.id !== itemId);
+    const updatedItems = items.filter((item: Item) => item.id !== itemId);
 
     await updateDoc(userDocRef, {
       [category]: updatedItems,
@@ -105,7 +105,7 @@ export const completeTask: ({
   item,
   coin,
 }: {
-  item: ItemType;
+  item: Item;
   coin: number;
 }) => Promise<void> = async ({ item, coin }) => {
   // 사용자의 coin을 업데이트
@@ -128,7 +128,7 @@ export const logToTask: ({
   item,
   coin,
 }: {
-  item: ItemType;
+  item: Item;
   coin: number;
 }) => Promise<void> = async ({ item, coin }) => {
   await updateUserCoin(-coin, false);
@@ -146,8 +146,8 @@ export const buyReward: (coin: number) => Promise<void> = async (coin) => {
 };
 
 export const fetchMonthlyData: () => Promise<{
-  coinData: ChartDataType;
-  taskData: ChartDataType;
+  coinData: ChartData;
+  taskData: ChartData;
 }> = async () => {
   const { items } = await fetchItemsByCategory("log");
 

@@ -4,10 +4,10 @@ import { v4 as uuidv4 } from "uuid";
 import { queryClient } from "../../api/queryClient";
 import { createNewItem } from "../../api/itemApi";
 import TextButton from "../UI/TextButton";
-import ItemType from "../../models/itemType";
+import Item from "../../models/item";
 import useErrorStore from "../../store/error";
 
-const CloneTaskButton: React.FC<{ item: ItemType | undefined | null }> = ({
+const CloneTaskButton: React.FC<{ item: Item | undefined | null }> = ({
   item,
 }) => {
   const addError = useErrorStore((state) => state.addError);

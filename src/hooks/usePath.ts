@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import CategoryType from "../models/categoryType";
+import Category from "../models/category";
 
 const usePath = () => {
   const params = useParams();
@@ -15,7 +15,7 @@ const usePath = () => {
     throw new Error("잘못된 주소입니다.");
   }
 
-  return { userId, category } as { userId: string; category: CategoryType };
+  return { userId, category } as { userId: string; category: Category };
 };
 
 export default usePath;

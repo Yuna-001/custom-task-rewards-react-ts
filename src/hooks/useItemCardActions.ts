@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import useErrorStore from "../store/error";
 import useRequiredCoinStore from "../store/requiredCoin";
-import ItemType from "../models/itemType";
+import Item from "../models/item";
 import { queryClient } from "../api/queryClient";
 import { buyReward, completeTask } from "../api/itemApi";
 import { fetchUserData } from "../api/userApi";
 
-const useItemCardActions = (item: ItemType) => {
+const useItemCardActions = (item: Item) => {
   const addError = useErrorStore((state) => state.addError);
   const setRequiredCoin = useRequiredCoinStore(
     (state) => state.setRequiredCoin,

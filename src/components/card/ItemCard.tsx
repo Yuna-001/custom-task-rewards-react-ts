@@ -6,7 +6,7 @@ import coinImg from "../../assets/coin.svg";
 import Card from "./Card";
 import TextButton from "../UI/TextButton";
 import CoinData from "../UI/CoinData";
-import ItemType from "../../models/itemType";
+import Item from "../../models/item";
 import usePath from "../../hooks/usePath";
 import { dateFormatting } from "../../utils/formatting";
 import CardFooter from "./CardFooter";
@@ -35,7 +35,7 @@ const Title = styled.h3`
 `;
 
 const ItemCard: React.FC<{
-  item: ItemType;
+  item: Item;
 }> = ({ item }) => {
   const { category, userId } = usePath();
   const { title, coin, id: itemId } = item;

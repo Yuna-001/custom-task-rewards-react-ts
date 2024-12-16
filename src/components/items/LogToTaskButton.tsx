@@ -1,14 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import ItemType from "../../models/itemType";
+import Item from "../../models/item";
 import TextButton from "../UI/TextButton";
 import { queryClient } from "../../api/queryClient";
 import { logToTask } from "../../api/itemApi";
 import usePath from "../../hooks/usePath";
 import useErrorStore from "../../store/error";
 
-const LogToTaskButton: React.FC<{ item: ItemType | undefined | null }> = ({
+const LogToTaskButton: React.FC<{ item: Item | undefined | null }> = ({
   item,
 }) => {
   const navigate = useNavigate();

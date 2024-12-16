@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
-import CategoryType from "../../models/categoryType";
+import Category from "../../models/category";
 import ActionButton from "../UI/ActionButton";
 import TextButton from "../UI/TextButton";
 import LogToTaskButton from "./LogToTaskButton";
-import ItemType from "../../models/itemType";
+import Item from "../../models/item";
 import CloneTaskButton from "./CloneTaskButton";
 import ItemPageMode from "../../models/itemPageMode";
 
 interface ItemPageActionButtonsProps {
-  item: ItemType | undefined | null;
-  category: CategoryType;
+  item: Item | undefined | null;
+  category: Category;
   mode: ItemPageMode;
 }
 

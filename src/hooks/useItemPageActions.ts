@@ -6,11 +6,11 @@ import useErrorStore from "../store/error";
 import { createNewItem, deleteItem, updateItem } from "../api/itemApi";
 import { queryClient } from "../api/queryClient";
 import ItemPageMode from "../models/itemPageMode";
-import ItemType from "../models/itemType";
-import CategoryType from "../models/categoryType";
+import Item from "../models/item";
+import Category from "../models/category";
 
 const useItemPageActions = (
-  category: CategoryType,
+  category: Category,
   mode: ItemPageMode,
   itemId: string | undefined,
   userId: string,
@@ -57,7 +57,7 @@ const useItemPageActions = (
     const endDate = data.get("endDate")?.toString().trim() || "";
     const description = data.get("description")?.toString().trim() || "";
 
-    const item: ItemType = {
+    const item: Item = {
       id: itemId ?? uuidv4(),
       title,
       coin,

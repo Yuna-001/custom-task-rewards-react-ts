@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import useAuthModeStore from "../../store/authMode";
-import AuthModeType from "../../models/authModeType";
+import AuthMode from "../../models/authMode";
 
 const Menu = styled.menu`
   width: 100%;
@@ -31,7 +31,7 @@ const AuthMenu: React.FC<{ onRemoveError: () => void }> = ({
     setAuthMode: state.setAuthMode,
   }));
 
-  const handleClick = (mode: AuthModeType) => {
+  const handleClick = (mode: AuthMode) => {
     if (mode !== authMode) {
       onRemoveError();
       setAuthMode(mode);

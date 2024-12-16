@@ -2,7 +2,7 @@ import { ResponsiveLine } from "@nivo/line";
 import styled from "styled-components";
 
 import media from "../../media";
-import ChartDataType from "../../models/chartDataType";
+import ChartData from "../../models/chartData";
 
 const Container = styled.div`
   height: 25rem;
@@ -33,7 +33,7 @@ const Title = styled.h3`
 `;
 
 interface ChartProps {
-  data: ChartDataType;
+  data: ChartData;
   title: string;
 }
 

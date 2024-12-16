@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import AuthModeType from "../models/authModeType";
+import AuthMode from "../models/authMode";
 
 type AuthModeStore = {
-  authMode: AuthModeType;
-  setAuthMode: (mode: AuthModeType) => void;
+  authMode: AuthMode;
+  setAuthMode: (mode: AuthMode) => void;
 };
 
 const useAuthModeStore = create<AuthModeStore>((set) => ({
