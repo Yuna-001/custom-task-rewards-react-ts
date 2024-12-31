@@ -59,6 +59,7 @@ const AuthInput: React.FC<{
           required
           onChange={onChange}
           $hasError={hasError}
+          autoComplete="off"
         />
         <ErrorText>{hasError ? errorMessage : ""}</ErrorText>
       </Content>
