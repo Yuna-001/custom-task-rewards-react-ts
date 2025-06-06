@@ -1,10 +1,11 @@
-import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
+import { styled } from "styled-components";
 
-import media from "../../media";
-import CoinData from "../UI/CoinData";
-import coinsImg from "../../assets/coins.svg";
 import { fetchUserData } from "../../api/userApi";
+import coinsImg from "../../assets/coins.svg";
+import media from "../../media";
+import useErrorStore from "../../store/error";
+import CoinData from "../UI/CoinData";
 
 const CoinInfo = styled.div`
   width: 100%;
@@ -35,10 +36,17 @@ const CoinStatus = styled.div`
 `;
 
 const CoinSummary = () => {
-  const { data } = useQuery({
+  const addError = useErrorStore((state) => state.addError);
+
+  const { data, isError, error } = useQuery({
     queryKey: ["user-data"],
     queryFn: fetchUserData,
   });
+
+  if (isError) {
+    addError(error.message);
+    return null;
+  }
 
   const currentCoin = data?.coin || 0;
   const totalCoin = data?.totalCoin || 0;

@@ -34,10 +34,14 @@ export const fetchItem: (
   category: Category,
   itemId: string | undefined,
 ) => Promise<Item | null> = async (category, itemId) => {
-  const { items } = await fetchItemsByCategory(category);
-  const item = items?.find(({ id }) => id === itemId);
+  try {
+    const { items } = await fetchItemsByCategory(category);
+    const item = items?.find(({ id }) => id === itemId);
 
-  return item ?? null;
+    return item ?? null;
+  } catch (error) {
+    throw new Error("데이터를 불러오는 데 실패하였습니다.");
+  }
 };
 
 export const createNewItem: ({

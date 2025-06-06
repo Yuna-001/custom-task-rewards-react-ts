@@ -1,15 +1,16 @@
-import { Form, useParams, Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
+import { Form, Link, useLocation, useParams } from "react-router-dom";
+import styled from "styled-components";
 
-import media from "../media";
+import { fetchItem } from "../api/itemApi";
 import TextButton from "../components/UI/TextButton";
 import ItemInput from "../components/items/ItemInput";
-import usePath from "../hooks/usePath";
-import { fetchItem } from "../api/itemApi";
 import ItemPageActionButtons from "../components/items/ItemPageActionButtons";
-import ItemPageMode from "../models/itemPageMode";
 import useItemPageActions from "../hooks/useItemPageActions";
+import usePath from "../hooks/usePath";
+import media from "../media";
+import ItemPageMode from "../models/itemPageMode";
+import useErrorStore from "../store/error";
 
 const StyledForm = styled(Form)`
   width: 50%;
@@ -71,12 +72,22 @@ const ItemPage: React.FC = () => {
     itemId,
     userId,
   );
+  const addError = useErrorStore((state) => state.addError);
 
-  const { data: item } = useQuery({
+  const {
+    data: item,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["items", category, itemId],
     queryFn: () => fetchItem(category, itemId),
     enabled: itemId !== undefined,
   });
+
+  if (isError) {
+    addError(error.message);
+    return null;
+  }
 
   return (
     <StyledForm

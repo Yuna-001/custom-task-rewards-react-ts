@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-import coinsImg from "../../assets/coins.svg";
-import CoinData from "../UI/CoinData";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserData } from "../../api/userApi";
+import coinsImg from "../../assets/coins.svg";
+import useErrorStore from "../../store/error";
+import CoinData from "../UI/CoinData";
 
 const Data = styled.div`
   margin: 1rem;
@@ -17,13 +18,20 @@ const Nickname = styled.p`
 `;
 
 const UserData: React.FC = () => {
-  const { data } = useQuery({
+  const addError = useErrorStore((state) => state.addError);
+
+  const { data, isError, error } = useQuery({
     queryKey: ["user-data"],
     queryFn: fetchUserData,
   });
 
   const nickname = data?.nickname || "";
   const coin = data?.coin || 0;
+
+  if (isError) {
+    addError(error.message);
+    return null;
+  }
 
   return (
     <Data>

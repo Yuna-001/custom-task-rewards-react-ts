@@ -1,14 +1,14 @@
-import styled from "styled-components";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import styled from "styled-components";
 
 import { queryClient } from "../../api/queryClient";
 import { editNickname, fetchUserData } from "../../api/userApi";
-import ActionButton from "../UI/ActionButton";
 import useInput from "../../hooks/useInput";
-import AuthInput from "../auth/AuthInput";
 import media from "../../media";
 import useErrorStore from "../../store/error";
+import AuthInput from "../auth/AuthInput";
+import ActionButton from "../UI/ActionButton";
 
 const Editor = styled.form`
   display: flex;
@@ -34,7 +34,7 @@ const EditButton = styled(ActionButton)`
 const NicknameEditor = () => {
   const addError = useErrorStore((state) => state.addError);
 
-  const { data } = useQuery({
+  const { data, isError, error } = useQuery({
     queryKey: ["user-data"],
     queryFn: fetchUserData,
   });
@@ -73,6 +73,11 @@ const NicknameEditor = () => {
     event.preventDefault();
     mutate(enteredNickname);
   };
+
+  if (isError) {
+    addError(error.message);
+    return null;
+  }
 
   return (
     <>

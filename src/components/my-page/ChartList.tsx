@@ -1,9 +1,10 @@
-import { styled } from "styled-components";
 import { useQuery } from "@tanstack/react-query";
+import { styled } from "styled-components";
 
-import Chart from "./Chart";
-import media from "../../media";
 import { fetchMonthlyData } from "../../api/itemApi";
+import media from "../../media";
+import useErrorStore from "../../store/error";
+import Chart from "./Chart";
 
 const Charts = styled.div`
   display: flex;
@@ -33,13 +34,20 @@ const initialData = {
 };
 
 const ChartList = () => {
-  const { data, isFetching } = useQuery({
+  const addError = useErrorStore((state) => state.addError);
+
+  const { data, isFetching, isError, error } = useQuery({
     queryFn: fetchMonthlyData,
     queryKey: ["items", "log"],
     initialData,
   });
 
   if (isFetching) return null;
+
+  if (isError) {
+    addError(error.message);
+    return null;
+  }
 
   return (
     <Charts>
