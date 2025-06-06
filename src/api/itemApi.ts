@@ -1,16 +1,16 @@
 import {
   arrayUnion,
   doc,
+  DocumentData,
+  DocumentReference,
   getDoc,
   updateDoc,
-  DocumentReference,
-  DocumentData,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-import Item from "../models/item";
 import Category from "../models/category";
 import ChartData from "../models/chartData";
+import Item from "../models/item";
 import { identifierToId, updateUserCoin } from "./userApi";
 
 export const fetchItemsByCategory: (category: Category) => Promise<{
@@ -109,8 +109,7 @@ export const completeTask: (item: Item) => Promise<void> = async (item) => {
   await deleteItem({ category: "tasks", itemId: item.id });
 
   const now = new Date();
-  const completedDate =
-    now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+  const completedDate = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")}`;
 
   item.completedDate = completedDate;
 
