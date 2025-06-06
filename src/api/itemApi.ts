@@ -25,7 +25,7 @@ export const fetchItemsByCategory: (category: Category) => Promise<{
     const items: Array<Item> = data ? data[category] : [];
 
     return { items, userDocRef };
-  } catch (error) {
+  } catch {
     throw new Error("데이터를 불러오는 데 실패하였습니다.");
   }
 };
@@ -34,14 +34,10 @@ export const fetchItem: (
   category: Category,
   itemId: string | undefined,
 ) => Promise<Item | null> = async (category, itemId) => {
-  try {
-    const { items } = await fetchItemsByCategory(category);
-    const item = items?.find(({ id }) => id === itemId);
+  const { items } = await fetchItemsByCategory(category);
+  const item = items?.find(({ id }) => id === itemId);
 
-    return item ?? null;
-  } catch (error) {
-    throw new Error("데이터를 불러오는 데 실패하였습니다.");
-  }
+  return item ?? null;
 };
 
 export const createNewItem: ({
@@ -58,7 +54,7 @@ export const createNewItem: ({
     await updateDoc(userDocRef, {
       [category]: arrayUnion(item),
     });
-  } catch (error) {
+  } catch {
     throw Error("데이터를 추가하는 데 실패하였습니다.");
   }
 };
@@ -80,7 +76,7 @@ export const updateItem: ({
     await updateDoc(userDocRef, {
       [category]: updatedItems,
     });
-  } catch (error) {
+  } catch {
     throw new Error("데이터 업데이트에 실패하였습니다.");
   }
 };
@@ -100,7 +96,7 @@ export const deleteItem: ({
     await updateDoc(userDocRef, {
       [category]: updatedItems,
     });
-  } catch (error) {
+  } catch {
     throw new Error("데이터 삭제에 실패하였습니다.");
   }
 };

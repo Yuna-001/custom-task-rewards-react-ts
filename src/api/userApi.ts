@@ -1,10 +1,10 @@
 import {
+  DocumentData,
+  DocumentReference,
+  deleteDoc,
   doc,
   getDoc,
   updateDoc,
-  DocumentReference,
-  DocumentData,
-  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -25,7 +25,7 @@ export const fetchUserData: () => Promise<{
     const totalCoin: number = data?.totalCoin || 0;
 
     return { nickname, coin, totalCoin, userDocRef };
-  } catch (error) {
+  } catch {
     throw new Error("사용자의 데이터를 불러오는 데 실패하였습니다.");
   }
 };
@@ -46,7 +46,7 @@ export const updateUserCoin: (
     }
 
     await updateDoc(userDocRef, updatedData);
-  } catch (error) {
+  } catch {
     throw new Error("데이터 업데이트에 실패하였습니다.");
   }
 };
@@ -62,7 +62,7 @@ export const identifierToId: () => Promise<string> = async () => {
     const id = identifierDoc.data()?.id;
 
     return id;
-  } catch (error) {
+  } catch {
     throw new Error("사용자의 데이터를 불러오는 데 실패하였습니다.");
   }
 };
@@ -77,7 +77,7 @@ export const deleteAccount = async () => {
 
     await deleteDoc(identifierDocRef);
     await deleteDoc(userDocRef);
-  } catch (error) {
+  } catch {
     throw new Error("계정 삭제에 실패하였습니다.");
   }
 };
@@ -90,7 +90,7 @@ export const editNickname = async (enteredNickname: string) => {
     await updateDoc(userDocRef, {
       nickname: enteredNickname,
     });
-  } catch (error) {
+  } catch {
     throw new Error("닉네임 변경에 실패하였습니다.");
   }
 };
