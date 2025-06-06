@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Form, Link, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
+import { useEffect } from "react";
 import { fetchItem } from "../api/itemApi";
 import TextButton from "../components/UI/TextButton";
 import ItemInput from "../components/items/ItemInput";
@@ -89,8 +90,6 @@ const ItemPage: React.FC = () => {
       addError(error.message);
     }
   }, [isError, error]);
-
-  if (isError) return null;
 
   return (
     <StyledForm

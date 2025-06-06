@@ -21,7 +21,7 @@ const Nickname = styled.p`
 const UserData: React.FC = () => {
   const addError = useErrorStore((state) => state.addError);
 
-  const { data, isError, error } = useQuery({
+  const { data, isError, error, isPending } = useQuery({
     queryKey: ["user-data"],
     queryFn: fetchUserData,
   });
@@ -35,12 +35,10 @@ const UserData: React.FC = () => {
     }
   }, [isError, error]);
 
-  if (isError) return null;
-
   return (
     <Data>
       <Nickname>{nickname}</Nickname>
-      <CoinData image={coinsImg} coin={coin} />
+      {!isError && !isPending && <CoinData image={coinsImg} coin={coin} />}
     </Data>
   );
 };

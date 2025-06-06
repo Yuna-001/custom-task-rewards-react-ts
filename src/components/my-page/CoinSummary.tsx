@@ -50,8 +50,6 @@ const CoinSummary = () => {
     }
   }, [isError, error]);
 
-  if (isError) return null;
-
   const currentCoin = data?.coin || 0;
   const totalCoin = data?.totalCoin || 0;
 

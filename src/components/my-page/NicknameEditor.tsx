@@ -80,8 +80,6 @@ const NicknameEditor = () => {
     }
   }, [isError, error]);
 
-  if (isError) return null;
-
   return (
     <>
       <Editor onSubmit={handleSubmit}>

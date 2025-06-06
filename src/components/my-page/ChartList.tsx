@@ -37,7 +37,7 @@ const initialData = {
 const ChartList = () => {
   const addError = useErrorStore((state) => state.addError);
 
-  const { data, isFetching, isError, error } = useQuery({
+  const { data, isError, error, isPending } = useQuery({
     queryFn: fetchMonthlyData,
     queryKey: ["items", "log"],
     initialData,
@@ -49,8 +49,7 @@ const ChartList = () => {
     }
   }, [isError, error]);
 
-  if (isError) return null;
-  if (isFetching) return null;
+  if (isError || isPending) return null;
 
   return (
     <Charts>

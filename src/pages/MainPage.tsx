@@ -8,12 +8,13 @@ import PageLayout from "../components/layout/PageLayout";
 import CoinShortageModal from "../components/modal/CoinShortageModal";
 import usePath from "../hooks/usePath";
 import useErrorStore from "../store/error";
+import LoadingPage from "./LoadingPage";
 
 const MainPage: React.FC = () => {
   const addError = useErrorStore((state) => state.addError);
 
   const { category } = usePath();
-  const { data, isError, error } = useQuery({
+  const { data, isError, error, isPending } = useQuery({
     queryKey: ["items", category],
     queryFn: () => fetchItemsByCategory(category),
   });
@@ -25,6 +26,7 @@ const MainPage: React.FC = () => {
   }, [isError, error]);
 
   if (isError) return null;
+  if (isPending) return <LoadingPage />;
 
   const items = data?.items;
 
