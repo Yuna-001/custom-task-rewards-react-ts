@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { useEffect } from "react";
 import { fetchItemsByCategory } from "../api/itemApi";
 import AddCard from "../components/card/AddCard";
 import ItemCard from "../components/card/ItemCard";
@@ -17,10 +18,13 @@ const MainPage: React.FC = () => {
     queryFn: () => fetchItemsByCategory(category),
   });
 
-  if (isError) {
-    addError(error.message);
-    return null;
-  }
+  useEffect(() => {
+    if (isError && error) {
+      addError(error.message);
+    }
+  }, [isError, error]);
+
+  if (isError) return null;
 
   const items = data?.items;
 

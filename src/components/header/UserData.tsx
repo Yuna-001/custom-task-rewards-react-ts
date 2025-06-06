@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { fetchUserData } from "../../api/userApi";
 import coinsImg from "../../assets/coins.svg";
 import useErrorStore from "../../store/error";
@@ -28,10 +29,13 @@ const UserData: React.FC = () => {
   const nickname = data?.nickname || "";
   const coin = data?.coin || 0;
 
-  if (isError) {
-    addError(error.message);
-    return null;
-  }
+  useEffect(() => {
+    if (isError && error) {
+      addError(error.message);
+    }
+  }, [isError, error]);
+
+  if (isError) return null;
 
   return (
     <Data>

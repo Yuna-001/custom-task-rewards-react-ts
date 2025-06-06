@@ -74,10 +74,13 @@ const NicknameEditor = () => {
     mutate(enteredNickname);
   };
 
-  if (isError) {
-    addError(error.message);
-    return null;
-  }
+  useEffect(() => {
+    if (isError && error) {
+      addError(error.message);
+    }
+  }, [isError, error]);
+
+  if (isError) return null;
 
   return (
     <>

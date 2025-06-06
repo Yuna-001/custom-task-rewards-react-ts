@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { styled } from "styled-components";
 
+import { useEffect } from "react";
 import { fetchUserData } from "../../api/userApi";
 import coinsImg from "../../assets/coins.svg";
 import media from "../../media";
@@ -43,10 +44,13 @@ const CoinSummary = () => {
     queryFn: fetchUserData,
   });
 
-  if (isError) {
-    addError(error.message);
-    return null;
-  }
+  useEffect(() => {
+    if (isError && error) {
+      addError(error.message);
+    }
+  }, [isError, error]);
+
+  if (isError) return null;
 
   const currentCoin = data?.coin || 0;
   const totalCoin = data?.totalCoin || 0;

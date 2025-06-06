@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { styled } from "styled-components";
 
+import { useEffect } from "react";
 import { fetchMonthlyData } from "../../api/itemApi";
 import media from "../../media";
 import useErrorStore from "../../store/error";
@@ -42,12 +43,14 @@ const ChartList = () => {
     initialData,
   });
 
-  if (isFetching) return null;
+  useEffect(() => {
+    if (isError && error) {
+      addError(error.message);
+    }
+  }, [isError, error]);
 
-  if (isError) {
-    addError(error.message);
-    return null;
-  }
+  if (isError) return null;
+  if (isFetching) return null;
 
   return (
     <Charts>
