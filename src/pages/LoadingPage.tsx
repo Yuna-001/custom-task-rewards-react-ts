@@ -16,6 +16,11 @@ const Loading = styled.div`
   margin-top: 5rem;
   text-align: center;
   animation: ${loading} 1.2s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    color: black;
+  }
 `;
 
 const LoadingPage = () => {
