@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import useErrorStore from "../../store/error";
 
@@ -6,9 +5,6 @@ const MessageList = styled.ul`
   position: fixed;
   bottom: 1rem;
   right: 2rem;
-  /* top: 1rem; */
-  /* left: 50%;
-  transform: translateX(-50%); */
   display: flex;
   flex-direction: column-reverse;
   gap: 1rem;
@@ -19,7 +15,7 @@ const MessageList = styled.ul`
 const fadeIn = keyframes`
   from {
     opacity: 0;
-    transform: translateY(-10px); /* 위에서 부드럽게 내려오도록 */
+    transform: translateY(-10px); 
   }
   to {
     opacity: 1;
@@ -38,19 +34,7 @@ const Message = styled.li`
 `;
 
 const ErrorMessageList = () => {
-  const { errors, removeError } = useErrorStore();
-  const prevLength = useRef<number>(0);
-
-  useEffect(() => {
-    // 에러가 새로 추가될 때만 setTimeout 설정
-    if (errors.length > prevLength.current) {
-      setTimeout(() => {
-        removeError();
-      }, 2500);
-    }
-
-    prevLength.current = errors.length;
-  }, [errors.length]);
+  const errors = useErrorStore((state) => state.errors);
 
   return (
     <MessageList>
